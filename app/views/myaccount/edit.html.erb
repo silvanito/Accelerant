@@ -1,10 +1,12 @@
 <h1 class="lower">Edit Your Account</h1>
 <% form_for @user, :html => { :multipart => true } do |f| -%>
+<% unless self.current_user.participant %>
 <p>
 	Name:<br/>
 	<%= f.text_field :name %>
 </p>
 
+<% end %>
 <p>
 	Email Address:<br/>
 	<%= f.text_field :email %>
