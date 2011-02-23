@@ -440,10 +440,10 @@ img {
 
   .targets  {width:100px;height:50px;border:1px dotted #000;margin:10px;display:inline-block;float:left;}
 
-  .perceptiontargets  {width:200px;height:150px;display:inline-block;float:right;border:1px solid #ddd;}
+  .perceptiontargets  {width:200px;height:150px;display:inline-block;float:right;}
 
   .hover {
-    border: 1px dashed #aaa;
+
     background:#ff9; }
 
   .targetFrame {
@@ -489,3 +489,20 @@ filter: flipv fliph;
 }
 
 .x-label    {float:right;width:640px;display:block;clear:both;margin-top:-130px;text-align:center;}
+
+.neutraltarget  {
+    
+    width:100px;
+    height:20px;
+    display:block;
+    left:150px;
+    top:165px;
+    
+    
+}
+
+  .hover2 {
+    border: 1px dashed #aaa;
+    background: url("../images/neutral.png") #ff9;
+    
+  }

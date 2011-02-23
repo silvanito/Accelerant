@@ -26,22 +26,24 @@ participants will be dragging and dropping.  Go ahead and try it!</p>
 
 
 <div class="targetFrame">
+
+<div class="neutraltarget" id="groupabletargets_0">
+</div>
+<%= drop_receiving_element("groupabletargets_0",
+  :hoverclass => 'hover2',
+  :url =>{ :controller => "groupableitems",
+    :action => "group",
+    :target => 0,
+    :user => self.current_user.id }) %>
+
 <div style="clear:both"></div>
 <% i = 0 %>
 <% @groupabletargets.each do|groupabletarget| %>
 
-<%
-  i = i +1
-  if i==3
-    %>
 
-<%
-  end
-%>
-
-  <% div_for groupabletarget, :class => "perceptiontargets" do %>
+<% div_for groupabletarget, :class => "perceptiontargets" do %>
       <%#=  groupabletarget.description %>
-   <% end %>
+<% end %>
 
 <%= drop_receiving_element("groupabletargets_#{groupabletarget.id}",
   :hoverclass => 'hover',
@@ -51,9 +53,9 @@ participants will be dragging and dropping.  Go ahead and try it!</p>
     :user => self.current_user.id }) %>
 <%end%>
 
-
-
 </div>
+
+
 <p class="y-label">
 <%= @Y.description %>
 </p>

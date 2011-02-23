@@ -25,6 +25,7 @@ class GroupableitemsController < ApplicationController
       groupableitem = groupableitem.gsub('groupableitems_','')
       puts "groupable_item:"
       puts groupableitem
+      puts "target:"
       puts params[:target]
       puts "user:"
       puts params[:user]
