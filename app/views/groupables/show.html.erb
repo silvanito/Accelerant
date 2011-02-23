@@ -24,7 +24,7 @@ participants will be dragging and dropping.  Go ahead and try it!</p>
 </div>
 <div ></div>
 
-
+<div class="outerTargetFrame">
 <div class="targetFrame">
 
 <div class="neutraltarget" id="groupabletargets_0">
@@ -53,8 +53,11 @@ participants will be dragging and dropping.  Go ahead and try it!</p>
     :user => self.current_user.id }) %>
 <%end%>
 
-</div>
+</div> <!-- inner -->
 
+<div id="yHigh">High</div>
+<div id="apex">Low</div>
+<div id="xHigh">High</div>
 
 <p class="y-label">
 <%= @Y.description %>
@@ -63,3 +66,16 @@ participants will be dragging and dropping.  Go ahead and try it!</p>
 <div class="x-label">
 <%= @X.description %>
 </div>
+
+</div><!-- outter -->
+
+<div class="nulltarget" id="groupabletargets_null" style="margin-left:100px;">
+  Don't know
+</div>
+<%= drop_receiving_element("groupabletargets_null",
+  :hoverclass => 'hover',
+  :url =>{ :controller => "groupableitems",
+    :action => "group",
+    :target => -1,
+    :user => self.current_user.id }) %>
+
