@@ -72,6 +72,16 @@
 <div class="targetFrame">
 
 <div class="neutraltarget" id="groupabletargets_0">
+  <% @usergroupables = Usergroupables.find_all_by_groupable(discussions.groupable,
+        :conditions => {:position => 0, :user => self.current_user.id}) %>
+<% @usergroupables.each do |ug| %>
+<%  unless Groupableitems.find(ug.groupableitem).image.url == "" %>
+<%= image_tag Groupableitems.find(ug.groupableitem).image.url(:size50), :style => "vertical-align:middle;" %><br/>
+<% else %>
+<%= Groupableitems.find(ug.groupableitem).description %>
+<% end %>
+<br/>
+<% end %>
 </div>
 <%= drop_receiving_element("groupabletargets_0",
   :hoverclass => 'hover2',
@@ -135,7 +145,19 @@
 </div><!-- outter -->
 
 <div class="nulltarget" id="groupabletargets_null">
-  Don't know
+  Don't know<br/>
+
+<% @usergroupables = Usergroupables.find_all_by_groupable(discussions.groupable,
+        :conditions => {:position => -1, :user => self.current_user.id}) %>
+<% @usergroupables.each do |ug| %>
+<%  unless Groupableitems.find(ug.groupableitem).image.url == "" %>
+<%= image_tag Groupableitems.find(ug.groupableitem).image.url(:size50), :style => "vertical-align:middle;" %><br/>
+<% else %>
+<%= Groupableitems.find(ug.groupableitem).description %>
+<% end %>
+<br/>
+<% end %>
+
 </div>
 <%= drop_receiving_element("groupabletargets_null",
   :hoverclass => 'hover',
