@@ -52,14 +52,21 @@ class GroupablesController < ApplicationController
           groupabletargets[0].description,
           groupabletargets[1].description,
           groupabletargets[2].description,
-          groupabletargets[3].description]
+          groupabletargets[3].description,
+          'neutral',
+          'unknown'
+          ]
           groupableitems.each do |c|
             countarray = Array.new
             groupabletargets.each do |d|
               usergroupable = Usergroupables.count(:conditions => {:position => d.id, :groupableitem => c.id})
+              usergroupableneutral = Usergroupables.count(:conditions => {:position => 0, :groupableitem => c.id })
+              usergroupabledunno = Usergroupables.count(:conditions => {:position => -1, :groupableitem => c.id })
               countarray << usergroupable
             end
-            content << [c.description,countarray[0],countarray[1],countarray[2],countarray[3]]
+            usergroupableneutral = Usergroupables.count(:conditions => {:position => 0, :groupableitem => c.id })
+            usergroupabledunno = Usergroupables.count(:conditions => {:position => -1, :groupableitem => c.id })
+            content << [c.description,countarray[0],countarray[1],countarray[2],countarray[3],usergroupableneutral,usergroupabledunno]
           end
         end
        report.rewind
