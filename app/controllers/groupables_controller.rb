@@ -4,7 +4,7 @@ class GroupablesController < ApplicationController
   require 'csv'
   
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :new, :create, :edit, :update, :show, :destroy, :export_to_csv
+    ssl_required :index, :new, :create, :edit, :update, :show, :destroy, :by_user, :export_to_csv
   end
 
   def index
@@ -40,6 +40,10 @@ class GroupablesController < ApplicationController
     @X = Groupableaxis.find(:last, :conditions => {:orientation => "X", :groupable => params[:id]})
     @Y = Groupableaxis.find(:last, :conditions => {:orientation => "Y", :groupable => params[:id]})
     #@groupabletargets = Groupabletargets.find_all_by_groupable(params[:id], :order => "id ASC")
+  end
+
+  def by_user
+    @usergroupables = Usergroupables.find_all_by_groupable(params[:id], :group => :user)
   end
 
   def export_to_csv
