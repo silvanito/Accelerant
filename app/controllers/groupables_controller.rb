@@ -66,7 +66,7 @@ class GroupablesController < ApplicationController
             end
             usergroupableneutral = Usergroupables.count(:conditions => {:position => 0, :groupableitem => c.id })
             usergroupabledunno = Usergroupables.count(:conditions => {:position => -1, :groupableitem => c.id })
-            content << [c.description,countarray[0],countarray[1],countarray[2],countarray[3],usergroupableneutral,usergroupabledunno]
+            content << [c.description + c.image_file_name.to_s,countarray[0],countarray[1],countarray[2],countarray[3],usergroupableneutral,usergroupabledunno]
           end
         end
        report.rewind
