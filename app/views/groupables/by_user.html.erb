@@ -1,9 +1,106 @@
 <h1 class="lower">How participants have responded...</h1>
-<div style="width:500px;float:left;">
+<div style="width:500px;float:left;margin-left:50px;margin-top:20px;">
  
 
-<% @usergroupables.each do |groupable| %>
-  <%=  User.find(groupable.user).name %><br/>
+<% @usergroupings.each do |usergroupable| %>
+  <% if User.find(usergroupable.user).participant %>
+  <%= render_avatar(User.find(usergroupable.user)) %><br/>
+
+ <!-- START NEW/OLD -->
+
+
+<div style="clear:left;"></div>
+
+<% i = 0 %>
+
+<% @groupabletargets = Groupabletargets.find_all_by_groupable(usergroupable.groupable, :order => "id DESC")
+    @X = Groupableaxis.find(:last, :conditions => {:orientation => "X", :groupable => usergroupable.groupable})
+    @Y = Groupableaxis.find(:last, :conditions => {:orientation => "Y", :groupable => usergroupable.groupable})
+    %>
+<div class="outerTargetFrame">
+<div class="targetFrame">
+
+<div class="neutraltarget" id="groupabletargets_0" style="display:block;position:relative;border:1px dotted #ddd;top:120px; left:150px;">
+  <% @usergroupables = Usergroupables.find_all_by_groupable(usergroupable.groupable,
+        :conditions => {:position => 0, :user => usergroupable.user}) %>
+<% @usergroupables.each do |ug| %>
+<%  unless Groupableitems.find(ug.groupableitem).image.url == "" %>
+<%= image_tag Groupableitems.find(ug.groupableitem).image.url(:size50), :style => "vertical-align:middle;" %><br/>
+<% else %>
+<%= Groupableitems.find(ug.groupableitem).description %>
+<% end %>
+<br/>
+<% end %>
+</div>
+
+
+<div style="clear:both"></div>
+
+<% i = 0 %>
+<% @groupabletargets.each do|groupabletarget| %>
+
+<%
+  i = i +1
+  if i==3
+    %>
+<div style="clear:both"></div>
+<%
+  end
+%>
+
+<% div_for groupabletarget, :class => "perceptiontargets" do %>
+      <% @usergroupables = Usergroupables.find_all_by_groupable(usergroupable.groupable,
+        :conditions => {:position => groupabletarget.id, :user => usergroupable.user}) %>
+<% @usergroupables.each do |ug| %>
+<%  unless Groupableitems.find(ug.groupableitem).image.url == "" %>
+                      <%= image_tag Groupableitems.find(ug.groupableitem).image.url(:size50), :style => "vertical-align:middle;" %><br/>
+                    <% else %>
+                      <%= Groupableitems.find(ug.groupableitem).description %>
+                    <% end %>
+          <br/>
+        <% end %>
+   <% end %>
+
+<%end%>
+
+
+
+</div> <!-- inner -->
+
+<div id="yHigh">High</div>
+<div id="apex">Low</div>
+<div id="xHigh">High</div>
+
+<p class="y-label">
+<%= @Y.description %>
+</p>
+
+<div class="x-label">
+<%= @X.description %>
+</div>
+
+</div><!-- outter -->
+
+<div class="nulltarget" id="groupabletargets_null">
+  Don't know<br/>
+
+<% @usergroupables = Usergroupables.find_all_by_groupable(usergroupable.groupable,
+        :conditions => {:position => -1, :user => usergroupable.user}) %>
+<% @usergroupables.each do |ug| %>
+<%  unless Groupableitems.find(ug.groupableitem).image.url == "" %>
+<%= image_tag Groupableitems.find(ug.groupableitem).image.url(:size50), :style => "vertical-align:middle;" %><br/>
+<% else %>
+<%= Groupableitems.find(ug.groupableitem).description %>
+<% end %>
+<br/>
+<% end %>
+
+</div>
+
+
+
+  <!-- end NEW/OLD -->
+<% end %>
 <% end %>
 
 </div>

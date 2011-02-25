@@ -43,7 +43,7 @@ class GroupablesController < ApplicationController
   end
 
   def by_user
-    @usergroupables = Usergroupables.find_all_by_groupable(params[:id], :group => :user)
+    @usergroupings = Usergroupables.find_all_by_groupable(params[:id], :group => :user)
   end
 
   def export_to_csv
