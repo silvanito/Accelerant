@@ -18,9 +18,8 @@ class ApplicationController < ActionController::Base
    require 'rtf'
   include RTF
   include AuthenticatedSystem
-
   include SslRequirement
-  
+
   uses_yui_editor
 
   #http://www.ruby-forum.com/topic/204710#new
