@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 
 #RAILS_GEM_VERSION = '1.3.3' unless defined? RAILS_GEM_VERSION
 
@@ -80,10 +80,10 @@ Rails::Initializer.run do |config|
   #config.active_record.observers = :user_observer
 
   
-  config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
+  #config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
   #config.gem 'rtf', :lib => false, :source => 'http://rubygems.org/gems/'
   #config.gem 'wysihat-engine', :source => 'http://gemcutter.org'
-  require 'tmail_extensions'
+  #require 'tmail_extensions'
 
   #ActionController::Request.recent_activity_limit = 2.hours
   #ActiveRecord::SessionStore::Session.recent_activity_limit = 2.hours
