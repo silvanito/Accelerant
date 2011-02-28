@@ -22,7 +22,7 @@ module AssignmentHelper
   def heatmap_screenshot(discussion)
    heatmap = discussion.heatmaps.find(:last, :conditions => {:user_id => self.current_user.id})
    if heatmap
-      heatmap.image_result
+      heatmap.create_tmp_image
    else
       ""
    end
