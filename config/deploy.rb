@@ -44,9 +44,14 @@ namespace :deploy do
   task :start, :roles => :app do
     #nothing -- need to override default cap start task when using passenger
   end
+  task :migrate, :roles => :app do
+    run "cd #{current_path}; rake db:migrate RAILS_ENV=production"
+  end
+
 end
 
-after "deploy:symlink", "deploy:update_crontab"
+after "deploy:symlink", "deploy:migrate"
+after "deploy:migrate", "deploy:update_crontab"
 
 namespace :deploy do
   desc "Update the crontab file"
