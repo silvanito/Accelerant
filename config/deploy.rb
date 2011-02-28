@@ -32,7 +32,7 @@ role :app, location
 role :web, location
 role :db,  location, :primary => true
 
-after 'deploy:update_code', "deploy:update_crontab"
+
 
 
 namespace :deploy do
@@ -46,11 +46,15 @@ namespace :deploy do
     task t, :roles => :app do ; end
   end
 
+end
+
+after "deploy:symlink", "deploy:update_crontab"
+
+namespace :deploy do
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
     run "cd #{release_path} && whenever --update-crontab #{application}"
   end
 end
-
 
 
