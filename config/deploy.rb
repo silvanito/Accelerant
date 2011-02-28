@@ -19,7 +19,7 @@ set :repository,  "git@github.com:silvanito/Accelerant.git"
 # your SCM below:
 
 set :scm, "git"
-set :branch, "silvano"
+set :branch, "blognog2-silvano"
 #ssh_options[:forward_agent] = true
 #set :user, "chazzer@Accelerant"  # The server's user for deploys
 #set :scm_passphrase, "At0m1cD0g"  # The deploy user's password
