@@ -5,9 +5,7 @@ class UserImage < ActiveRecord::Base
       :min_size => 0,
       :max_size => 3.megabytes,
       :resize_to => '640x480',
-      :thumbnails => { :medium => '200x200', :small => '80x80', :tiny => '40x40' },
-      :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
-      :path => ":attachment/:id/:style/:filename"
+      :thumbnails => { :medium => '200x200', :small => '80x80', :tiny => '40x40' }
 
     # Override the default AttachmentFu error messages.
     def validate
