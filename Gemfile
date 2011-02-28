@@ -10,3 +10,7 @@ source "http://rubygems.org"
   gem "passenger", "2.2.2"
   gem "tmail", "1.2.7.1"
 
+group :development do
+  gem "sqlite3"
+end
+
