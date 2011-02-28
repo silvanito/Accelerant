@@ -32,8 +32,8 @@ role :app, location
 role :web, location
 role :db,  location, :primary => true
 
-after 'deploy:update_code', 'bundler:bundle_new_release'
-after "bundler:bundle_new_release", "deploy:update_crontab"
+after 'deploy:update_code', "deploy:update_crontab"
+
 
 namespace :deploy do
   desc "Restarting mod_rails with restart.txt"
@@ -52,16 +52,5 @@ namespace :deploy do
   end
 end
 
-namespace :bundler do
-  task :create_symlink, :roles => :app do
-    shared_dir = File.join(shared_path, 'bundle')
-    release_dir = File.join(current_release, '.bundle')
-    run("mkdir -p #{shared_dir} && ln -s #{shared_dir} #{release_dir}")
-  end
- 
-  task :bundle_new_release, :roles => :app do
-    bundler.create_symlink
-    run "cd #{release_path} && bundle update"
-  end
-end
+
 
