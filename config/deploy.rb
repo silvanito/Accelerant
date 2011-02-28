@@ -7,7 +7,7 @@ set :deploy_to, "/home/chazzer/public_html/#{application}"
  
 default_run_options[:pty] = true
 #set :repository,  "git://github.com/chazzerguy/Accelerant.git"
-set :repository,  "git@github.com:chazzerguy/Accelerant.git"
+set :repository,  "git@github.com:silvanito/Accelerant.git"
  
  
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -19,7 +19,7 @@ set :repository,  "git@github.com:chazzerguy/Accelerant.git"
 # your SCM below:
 
 set :scm, "git"
-set :branch, "master"
+set :branch, "silvano"
 #ssh_options[:forward_agent] = true
 #set :user, "chazzer@Accelerant"  # The server's user for deploys
 #set :scm_passphrase, "At0m1cD0g"  # The deploy user's password
@@ -33,17 +33,22 @@ role :web, location
 role :db,  location, :primary => true
  
 namespace :deploy do
-  desc "Restart Application"
-  task :restart, :roles => :app do
+  task "bundle_gems" do
+    run "cd #{deploy_to}/current && bundle install vendor/gems"
+  end
+  desc "Restarting mod_rails with restart.txt"
+  task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
   end
-  desc "Start Application -- not needed for Passenger"
-  task :start, :roles => :app do
-    #nothing -- need to override default cap start task when using passenger
+ 
+  [:start, :stop].each do |t|
+    desc "#{t} task is a no-op with mod_rails"
+    task t, :roles => :app do ; end
   end
 end
+after "deploy", "deploy:bundle_gems"
+after "deploy:bundle_gems", "deploy:update_crontab"
 
-after "deploy:symlink", "deploy:update_crontab"
 
 namespace :deploy do
   desc "Update the crontab file"
