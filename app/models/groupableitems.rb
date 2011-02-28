@@ -1,7 +1,6 @@
 class Groupableitems < ActiveRecord::Base
 
   has_attached_file :image,
-  :storage => :s3,
   :whiny => false,
   :whiny_thumbnails => false,
   :styles => {

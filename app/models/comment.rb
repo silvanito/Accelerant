@@ -16,7 +16,6 @@ class Comment < ActiveRecord::Base
   #has_many :attachments
 
   has_attached_file :photo,
-  :storage => :s3,
   :whiny => false, 
   :whiny_thumbnails => false, 
   :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "50x50>", :tiny => "20x20>" },

@@ -1,7 +1,6 @@
 class Sortableitems < ActiveRecord::Base
 acts_as_list
 has_attached_file :image,
-  :storage => :s3,
   :whiny => false,
   :whiny_thumbnails => false,
   :styles => {
