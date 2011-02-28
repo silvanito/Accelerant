@@ -37,7 +37,7 @@ after "deploy:bundle_gems", "deploy:update_crontab"
 
 namespace :deploy do
   task "bundle_gems" do
-    run "cd #{deploy_to}/current && bundle install vendor/gems"
+    run "cd #{deploy_to}/current && bundle update vendor/gems"
   end
   desc "Restarting mod_rails with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
