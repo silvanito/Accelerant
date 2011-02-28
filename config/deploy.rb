@@ -31,7 +31,10 @@ set :location, "67.23.9.5"
 role :app, location
 role :web, location
 role :db,  location, :primary => true
- 
+
+after "deploy", "deploy:bundle_gems"
+after "deploy:bundle_gems", "deploy:update_crontab"
+
 namespace :deploy do
   task "bundle_gems" do
     run "cd #{deploy_to}/current && bundle install vendor/gems"
@@ -45,12 +48,7 @@ namespace :deploy do
     desc "#{t} task is a no-op with mod_rails"
     task t, :roles => :app do ; end
   end
-end
-after "deploy", "deploy:bundle_gems"
-after "deploy:bundle_gems", "deploy:update_crontab"
 
-
-namespace :deploy do
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
     run "cd #{release_path} && whenever --update-crontab #{application}"
