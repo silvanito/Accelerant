@@ -32,13 +32,10 @@ role :app, location
 role :web, location
 role :db,  location, :primary => true
 
-after "deploy", "deploy:bundle_gems"
-after "deploy:bundle_gems", "deploy:update_crontab"
+after 'deploy:update_code', 'bundler:bundle_new_release'
+after "bundler:bundle_new_release", "deploy:update_crontab"
 
 namespace :deploy do
-  task "bundle_gems" do
-    run "cd #{deploy_to}/current && bundle update vendor/gems"
-  end
   desc "Restarting mod_rails with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
@@ -54,3 +51,17 @@ namespace :deploy do
     run "cd #{release_path} && whenever --update-crontab #{application}"
   end
 end
+
+namespace :bundler do
+  task :create_symlink, :roles => :app do
+    shared_dir = File.join(shared_path, 'bundle')
+    release_dir = File.join(current_release, '.bundle')
+    run("mkdir -p #{shared_dir} && ln -s #{shared_dir} #{release_dir}")
+  end
+ 
+  task :bundle_new_release, :roles => :app do
+    bundler.create_symlink
+    run "cd #{release_path} && bundle install --without test"
+  end
+end
+
