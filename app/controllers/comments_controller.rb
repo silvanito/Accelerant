@@ -65,18 +65,19 @@ class CommentsController < ApplicationController
     render :nothing => true
   end
 
-  def update_report_flag
-    @comment = Comment.find(params[:id])
-    if @comment.for_report == 1
-      @comment.for_report = 0
-      @comment.save
-      render :text => "Deleted of report"
-    else
-      @comment.for_report = 1
-      @comment.save
-      render :text => "Added of report"
-    end
-  end 
+#filter comments add to report
+#  def update_report_flag
+#    @comment = Comment.find(params[:id])
+#    if @comment.for_report == 1
+#      @comment.for_report = 0
+#      @comment.save
+#      render :text => "Deleted of report"
+#    else
+#      @comment.for_report = 1
+#      @comment.save
+#      render :text => "Added of report"
+#    end
+#  end 
 
   def report_comments
     @discussion = Discussion.find(params[:id])

@@ -2,6 +2,7 @@
 <div id="responses">
     <div class="clientMainEntry" id="latestresponse"></div>
     	<!-- Start comments -->
+
         <%
           if params[:sort] == "by_user"
             @latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => "user_id ASC, id DESC", :include => :user)
@@ -28,6 +29,7 @@
                 displayflag = false
               end
             else
+                session[:user_filter] = testuser.id
                 displayflag = true
             end
           end
@@ -59,6 +61,7 @@
             end
           end
           %>
-         
+        <%= cookies[:sql]%>
+        <%= session[:user_filter]%>
     </div><!-- responses -->
     

@@ -72,20 +72,20 @@ module CommentsHelper
             :update => "commentSub#{comment.id}")
         end
 
-        if (self.current_user.admin || self.current_user.moderator)
-          if comment.for_report == 1
-            flag = true
-          else
-            flag = false
-          end
-  				out = out + " | Add to Report "
-          out = out + check_box_tag("comment_#{comment.id}",comment.id, flag, 
-        :onclick => remote_function(
-        :update => "comment_#{comment.id}", 
-        :url => {:controller => "comments", :action => :update_report_flag }, 
-        :with => "'id='+$('comment_#{comment.id}').value", 
-        :complete => "new Effect.SlideDown('subCommentForm#{comment.id}', { duration: .5 })" ))
-        end
+#        if (self.current_user.admin || self.current_user.moderator)
+#          if comment.for_report == 1
+#            flag = true
+#          else
+#            flag = false
+#          end
+#  	#			out = out + " | Add to Report "
+#          out = out + check_box_tag("comment_#{comment.id}",comment.id, flag, 
+#        :onclick => remote_function(
+#        :update => "comment_#{comment.id}", 
+#        :url => {:controller => "comments", :action => :update_report_flag }, 
+#        :with => "'id='+$('comment_#{comment.id}').value", 
+#        :complete => "new Effect.SlideDown('subCommentForm#{comment.id}', { duration: .5 })" ))
+#        end
 		
 		if self.current_user.admin  || self.current_user.moderator
 				out = out + " | "

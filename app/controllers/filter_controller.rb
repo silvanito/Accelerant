@@ -146,6 +146,7 @@ class FilterController < ApplicationController
     }
     #puts sql
     cookies[:sql] = {:value => sql, :expires => Time.now + 3600}
+    session[:user_filter] = nil
     puts "cookies set"
     render :update do |page|
       page << "window.location.reload(false)"
