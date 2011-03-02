@@ -10,6 +10,7 @@ module AssignmentHelper
 
   def show_heatmap(discussion)
     if discussion.has_heatmap 
+      sleep 2
       heatmap = Heatmap.find(:last, :conditions => {:discussion_id => discussion.id , :user_id => self.current_user.id})
       unless heatmap && self.current_user.participant
         true
@@ -22,7 +23,7 @@ module AssignmentHelper
   def heatmap_screenshot(discussion)
    heatmap = discussion.heatmaps.find(:last, :conditions => {:user_id => self.current_user.id})
    if heatmap
-      heatmap.image_result
+      heatmap.create_tmp_image
    else
       ""
    end

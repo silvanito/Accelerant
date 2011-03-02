@@ -10,6 +10,3 @@ source "http://rubygems.org"
   gem "capistrano"
   gem "passenger", "2.2.2"
   gem "tmail", "1.2.7.1"
-
-
-

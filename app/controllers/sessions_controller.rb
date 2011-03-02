@@ -74,8 +74,13 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    heatmaps = []
+    self.current_user.heatmaps.each do |heatmap|
+      heatmap.delete_tmp_image
+    end
     logout_killing_session!
     flash[:notice] = "You have been logged out."
+    
     redirect_to  "/login"
   end
 
