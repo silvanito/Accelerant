@@ -10,7 +10,10 @@ set :deploy_to, "/home/chazzer/public_html/#{application}"
 default_run_options[:pty] = true
 #set :repository,  "git://github.com/chazzerguy/Accelerant.git"
 set :repository,  "git@github.com:silvanito/Accelerant.git"
- 
+set :bundle_gemfile,      "Gemfile"
+set :bundle_dir,          fetch(:shared_path)+"/bundle"
+set :bundle_flags,       "--deployment --quiet"
+set :bundle_without,      [:development, :test]
  
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
