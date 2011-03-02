@@ -11,7 +11,7 @@ default_run_options[:pty] = true
 #set :repository,  "git://github.com/chazzerguy/Accelerant.git"
 set :repository,  "git@github.com:silvanito/Accelerant.git"
 set :bundle_gemfile,      "Gemfile"
-set :bundle_dir,          fetch(:shared_path)+"/bundle"
+set :bundle_dir,          File.join(fetch(:shared_path), 'bundle'
 set :bundle_flags,       "--deployment --quiet"
 set :bundle_without,      [:development, :test]
  
