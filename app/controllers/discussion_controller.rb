@@ -38,6 +38,7 @@ class DiscussionController < ApplicationController
   end
 
   def show
+    @testusers = []
     @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
     @project = Project.find(params[:project_id])
@@ -164,7 +165,7 @@ class DiscussionController < ApplicationController
 
   def discussion_show
     discussion =  Discussion.find(session[:discussion_id])
-    xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filter])
+    xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters])
     respond_to do |format|
      format.xml { render :xml => xml_data.to_xml(:dasherize => false)}
     end

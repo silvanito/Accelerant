@@ -12,14 +12,19 @@ class Discussion < ActiveRecord::Base
   :styles => { :large => "300x300>", :medium => "100x100>", :small => "50x50>", :tiny => "20x20>" }
 
 
-  def self.create_xml(user, discussion, user_filter)
+  def self.create_xml(user, discussion, user_filters)
     if user.participant 
        xml_data = []
        xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id }
        xml_data
     else
-      unless user_filter.nil?
-        heatmaps = discussion.heatmaps.find(:all, :conditions => {:user_id => user_filter} )
+
+      unless user_filters.empty?
+        user_heatmaps = []
+        user_filters.each do |user_filter|
+          user_heatmaps << discussion.heatmaps.find(:all, :conditions => {:user_id => user_filter} )
+        end
+        heatmaps = user_heatmaps.flatten
       else
         heatmaps = discussion.heatmaps
       end

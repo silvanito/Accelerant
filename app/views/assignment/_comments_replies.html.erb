@@ -29,7 +29,7 @@
                 displayflag = false
               end
             else
-                session[:user_filter] = testuser.id
+                 @testusers << testuser.id
                 displayflag = true
             end
           end
@@ -60,8 +60,7 @@
               end
             end
           end
+          session[:user_filters] = @testusers
           %>
-        <%= cookies[:sql]%>
-        <%= session[:user_filter]%>
     </div><!-- responses -->
     

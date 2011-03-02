@@ -54,7 +54,7 @@ class AssignmentController < ApplicationController
   end
   
   def show
-
+    @testusers = []
     @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
     #@project = Project.find(:all, :conditions => {:id => params[:id]})
     @project = Project.find(params[:id])
