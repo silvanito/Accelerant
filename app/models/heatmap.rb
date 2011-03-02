@@ -1,5 +1,6 @@
 class Heatmap < ActiveRecord::Base
   require 'tmpdir'
+  require 'base64'
   belongs_to :user
   belongs_to :discussion
   belongs_to :comment
@@ -29,7 +30,7 @@ class Heatmap < ActiveRecord::Base
     root_path = "#{RAILS_ROOT}/public"
     path =  "/tmp/#{self.discussion_id}_heatmap_image#{self.id}.jpg"
     unless File.exists?(root_path + path)
-      file = File.open(root_path + path, "wb") { |f| f.write(binaryData) }
+      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
     end
     #f.write(binaryData)
     #path =  file
