@@ -1,3 +1,5 @@
+require "bundler/capistrano"
+
 set :application, "accelerant"
 set :user, "chazzer"
 set :admin_runner, "chazzer"
