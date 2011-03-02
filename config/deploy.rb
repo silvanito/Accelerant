@@ -45,7 +45,7 @@ namespace :deploy do
     #nothing -- need to override default cap start task when using passenger
   end
   task :migrate, :roles => :app do
-    run "cd #{current_path}; rake db:migrate RAILS_ENV=production"
+    run "cd #{current_path}; rake db:migrate RAILS_ENV='production'd"
   end
 
 end
