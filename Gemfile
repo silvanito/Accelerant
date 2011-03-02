@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-group :deploy do
+group :deployment do
   gem "rails", "2.3.2"
   gem "fastercsv", "1.1"
   gem "rtf"
