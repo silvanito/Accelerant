@@ -39,7 +39,12 @@ class CommentsController < ApplicationController
       @comment = Comment.new(params[:comments])
       @comment.save
       session[:comment_id] = @comment.id
-      redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
+      if @discussion.has_heatmap
+         redirect_to "/myassignments/show"
+      else
+       redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
+      end
+
     else
       render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
     end
