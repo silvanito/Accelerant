@@ -59,6 +59,7 @@ class SessionsController < ApplicationController
       if user.participant?
         redirect_to  "/myassignments/show"
       end
+      session[:sleep] = 0
       flash[:notice] = "Logged in successfully"
     else
       note_failed_signin
