@@ -30,9 +30,6 @@ class CommentsController < ApplicationController
   def create
     if params[:comments]
       @discussion = Discussion.find(params[:comments][:discussion_id])
-      if @discussion.has_heatmap?
-        session[:sleep] = 18
-      end
     end
     if @discussion.character_minimum.nil?
       @discussion.character_minimum = 0
