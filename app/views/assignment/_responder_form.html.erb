@@ -46,12 +46,15 @@
     Hide responses until answered:
     <%= f.check_box :hide_until_answered %>
   <% end %>
-  <div class="postButton" style="margin-top:-20px;">
-    <button id="share">Share</button><%#= submit_tag "Share", :style => "margin-right:10px;" %>
-  </div>
 </div>
+    <div class="postButton clear" style="margin-top:-20px;">
+      <%= submit_tag "Share", :style => "margin-right:10px;" %>
+    </div>
       </div>
     <% end %><!-- form for -->
+
+
+
   </div>
 <%end%>
 <% content_for :scripts do -%>
