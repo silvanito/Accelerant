@@ -1,5 +1,5 @@
 Event.observe(window, 'load', function() {
-  Event.observe('my_form', 'submit', onSubmit);
+  Event.observe('share', 'click', onSubmit);
 });
 function thisMovie(movieName) {
       if (navigator.appName.indexOf("Microsoft") != -1) {
@@ -15,4 +15,9 @@ function onSubmit()
 
  thisMovie("HeatMap").onSubmit();
 
+}
+
+fucntion formSumbmit()
+{
+  $("my_form").onSubmit();
 }
