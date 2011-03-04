@@ -119,10 +119,10 @@ class DiscussionController < ApplicationController
       end
     end
     end
-    @action = "comment_heatmap"
+    @action = "create"
     if @discussion.has_heatmap
       heatmap = Heatmap.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
-      unless heatmap #no contestado
+      if heatmap.nil? #no contestado
         @action = "comment_heatmap"
       end
       if heatmap && heatmap.comment_id.nil?
