@@ -17,7 +17,7 @@ function onSubmit()
 
 }
 
-fucntion formSumbmit()
+function formSumbmit()
 {
   $("my_form").onSubmit();
 }
