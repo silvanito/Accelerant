@@ -16,8 +16,9 @@
 -->
 <%else%>
   <% size = size_helper(self.current_user)%>
-  <img src="<%= heatmap_screenshot(discussions)%>" width = "440" height = "310">
-
+ <% unless heatmap_screenshot(discussions).blank? %>
+    <img src="<%= heatmap_screenshot(discussions)%>" width = "440" height = "310"/>
+  <%end%>
 <%end%>
   <div style="padding-top:15px;clear:both;" id="responder_form" >
 <% unless self.current_user.client %>
