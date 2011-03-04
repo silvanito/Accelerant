@@ -497,3 +497,7 @@ filter: flipv fliph;
 .right{
   float: right;
 }
+.notice{
+
+  color: #07395A;
+}

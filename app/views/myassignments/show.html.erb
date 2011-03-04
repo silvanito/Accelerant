@@ -1,3 +1,11 @@
+<% if session[:notice] %>
+  <div id="notice", class="notice">
+    <%= session[:notice] %>
+  </div>
+  <script type="text/javascript">
+    setTimeout("new Effect.Fade('notice');", 15000)
+  </script>
+<% end %>
 <h1 class="lower">Your Assignments:</h1>
 <p>&nbsp;</p>
 <% for assignment in @your_assignments %>

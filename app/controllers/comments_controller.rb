@@ -48,6 +48,26 @@ class CommentsController < ApplicationController
     end
   end
 
+  def comment_heatmap
+     if params[:comments]
+      @discussion = Discussion.find(params[:comments][:discussion_id])
+    end
+
+    if @discussion.character_minimum.nil?
+    @discussion.character_minimum = 0
+    @discussion.save
+    end
+    if (@discussion.character_minimum == 0 || (@discussion.character_minimum != 0) && (params[:comments][:comment].length >= @discussion.character_minimum))
+      @comment = Comment.new(params[:comments])
+      @comment.save
+      session[:comment_id] = @comment.id
+      session[:notice] = "Preparing your heatmap result. Please enter to discussion for see your result."
+      redirect_to :controller => "myassignments", :action => "show"
+
+    else
+      render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
+    end
+  end
   
   def destroy
     @comment = Comment.find(params[:id])

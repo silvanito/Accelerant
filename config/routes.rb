@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
   map.discussion_show 'discussion_show', :controller => "discussion", :action => "discussion_show"
   map.show_image '/discussion/show_image', :controller => "discussion", :action => "show_image"
   map.comment '/comment', :controller => 'comment', :action => 'show'
+  map.comment_heatmap '/comment_heatmap', :controller=>"comments", :action => "comment_heatmap"
   map.importer '/importer', :controller => 'importer', :action => 'index'
   map.resources :users
   map.resources :themes, :belongs_to => :project

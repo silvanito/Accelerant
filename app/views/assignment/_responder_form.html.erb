@@ -18,11 +18,15 @@
   <% size = size_helper(self.current_user)%>
  <% unless heatmap_screenshot(discussions).blank? %>
     <img src="<%= heatmap_screenshot(discussions)%>" width = "440" height = "310"/>
+ <%else%>
+    <%if discussions.has_heatmap%>
+      <p>Preparing your heatmap result, please refresh your browser!</p>
+    <%end%>
   <%end%>
 <%end%>
   <div style="padding-top:15px;clear:both;" id="responder_form" >
 <% unless self.current_user.client %>
-    <% form_for :comments,:html => {:id => "my_form", :multipart => true}, :url =>{:controller => 'comments', :action => 'create'} do |f| -%>
+    <% form_for :comments,:html => {:id => "my_form", :multipart => true}, :url =>{:controller => 'comments', :action => @action} do |f| -%>
 
       <div class="avatar">
         <%= render_avatar(self.current_user) %>
