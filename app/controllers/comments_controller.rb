@@ -61,7 +61,8 @@ class CommentsController < ApplicationController
       @comment = Comment.new(params[:comments])
       @comment.save
       session[:comment_id] = @comment.id
-      session[:notice] = "Preparing your heatmap result. Please enter to discussion for see your result."
+      session[:notice_comment] = "Preparing your heatmap result. Please enter to discussion for see your result."
+      session[:comment_heatmap] = "display_none"
       redirect_to :controller => "myassignments", :action => "show"
 
     else

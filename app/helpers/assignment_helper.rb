@@ -26,7 +26,6 @@ module AssignmentHelper
    else
       ""
    end
-    sleep 3
   end
 
     #Heatmap.create_tmp_image(discussion.id, self.current_user.id)
