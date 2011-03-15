@@ -3,7 +3,8 @@
 <% if show_heatmap(discussions)%>
     <!-- Heatmap -->
   <% size = size_helper(self.current_user)%>
-  <br/>
+  <br />
+  <%= image_tag "heatmap_rule.jpg", :class => "heatmap_explication"%>
  <%javascript_tag do -%>
    swfobject.embedSWF("/heatMap/HeatMap.swf", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf");
   <%end%>

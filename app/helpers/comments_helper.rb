@@ -136,14 +136,29 @@ module CommentsHelper
         end
       end
 		end
+    image = heatmap_screen_by_comment(comment.id)
 		out = out + "<div id='#{dom_id(comment)}'>"
 		out = out + "</div>"
     out = out + "<a name='subCommentForm#{comment.id}' ></a>"
     #out = out + "<div id='subCommentForm#{comment.id}' class='replyStyle' style='display:none;'></div>"
 		out = out + "</div>"
+    out = out + "<div class='heatmap'>"
+
+    out = out + "<img src='#{image}' width = '440' height = '310'/>"
+    out = out + "</div>"
 		out = out + "<hr noshade='noshade'/>"
     out = out + "</div>"
     return out
+  end
+
+  def heatmap_screen_by_comment(comment_id)
+    comment = Comment.find(comment_id)
+    heatmap = Heatmap.find(:last, :conditions => {:user_id =>  comment.user_id, :comment_id =>  comment.id})
+    if heatmap
+      heatmap.create_tmp_image
+    else
+      ""
+    end
   end
 
   def show_comment_lite(comment)
