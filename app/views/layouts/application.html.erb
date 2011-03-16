@@ -60,7 +60,7 @@
 	<%end%>
 	<% end %>
 	</div>
-    <div id="topNavRight"><%= link_to "Manage Account", :controller => "myaccount", :action => "edit" %><%= link_to "Support", :controller => "support", :action => "index" %><% if logged_in? %><%= link_to "Log Out", logout_path %><% end %></div>
+    <div id="topNavRight"><%= link_to "Manage Account", :controller => "myaccount", :action => "edit" %><%= link_to "Support", :controller => "support", :action => "index" %><% if logged_in? %><%= link_to "Log Out", logout_path, :id=>"logout"  %><% end %></div>
   </div>
   <div id="container">
 
