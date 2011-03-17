@@ -143,8 +143,9 @@ module CommentsHelper
     #out = out + "<div id='subCommentForm#{comment.id}' class='replyStyle' style='display:none;'></div>"
 		out = out + "</div>"
     out = out + "<div class='heatmap'>"
-
-    out = out + "<img src='#{image}' width = '440' height = '310'/>"
+    unless image.blank?
+      out = out + "<img src='#{image}' width = '440' height = '310'/>"
+    end
     out = out + "</div>"
 		out = out + "<hr noshade='noshade'/>"
     out = out + "</div>"
