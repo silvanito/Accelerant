@@ -25,5 +25,4 @@ class HeatmapController < ApplicationController
       end
     end
   end
-
 end

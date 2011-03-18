@@ -14,15 +14,4 @@
  
 <% end %>
 </div>
-<% if session[:notice] %>
-  <div id="notice", class="notice">
-    <%= image_tag "loader.gif"%>
-    <br/>
-    <%= session[:notice] %>
-  </div>
-  <script type="text/javascript">
-     $('logout').hide();
-     new Effect.Opacity('myassygnments', {duration:28 , from:0, to:1.0});
-     setTimeout("new Effect.Fade('notice');", 15000);
-  </script>
-<% end %>
+

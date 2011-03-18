@@ -12,12 +12,12 @@ class MyassignmentsController < ApplicationController
     @last_ass = UserAssignments.find(:last, :conditions => { :user_id => self.current_user.id})
     @ass = Project.find(@last_ass.project_id)
     @theme = Themes.find(@ass.theme)
-    if session[:notice_comment]
-      session[:notice] = session[:notice_comment]
-      session[:notice_comment] = nil
-    else
-      session[:notice] = nil
-    end
+#    if session[:notice_comment]
+#      session[:notice] = session[:notice_comment]
+#      session[:notice_comment] = nil
+#    else
+#      session[:notice] = nil
+#    end
     unless @theme.nil?
       session[:theme] = @theme.id
     else

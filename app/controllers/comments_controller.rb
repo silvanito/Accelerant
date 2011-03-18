@@ -61,10 +61,12 @@ class CommentsController < ApplicationController
       @comment = Comment.new(params[:comments])
       @comment.save
       session[:comment_id] = @comment.id
-      session[:notice_comment] = "Preparing your heatmap result. Please enter to discussion for see your result."
+      session[:notice_comment] = "Preparing your heatmap result. Please wait!."
       session[:comment_heatmap] = "display_none"
-      redirect_to :controller => "myassignments", :action => "show"
-
+      render :action => :comment_heatmap
+      #redirect_to :controller => "myassignments", :action => "show"
+      #redirect_to :controller => "heatmap", :action => "loading"
+      #redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
     else
       render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
     end
