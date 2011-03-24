@@ -4,7 +4,7 @@ module AssignmentHelper
     if user.participant
       size = [585, 465]
     else
-      size = [440, 310]
+      size = [517, 368]
     end
   end
 
