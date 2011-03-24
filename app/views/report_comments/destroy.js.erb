@@ -1,0 +1,1 @@
+$('<%= escape_javascript("report_comments_#{@comment_id}")%>').update("<%= escape_javascript(render :partial=>'index', :locals=>{:comment_id => @comment_id}) %>")

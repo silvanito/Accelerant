@@ -3,6 +3,7 @@ class Comment < ActiveRecord::Base
   belongs_to :discussion
   belongs_to :comment_assignment
   has_one :heatmap
+  has_one :report_comment
 
   # for paperclip (polymorphic)
   #acts_as_polymorphic_paperclip

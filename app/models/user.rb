@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :replies
   has_many :heatmaps
   belongs_to :user_assignments
-
+  has_many :report_comments
 
   named_scope :is_moderator, :conditions => {:moderator => true}
   named_scope :is_admin, :conditions => {:admin => true}

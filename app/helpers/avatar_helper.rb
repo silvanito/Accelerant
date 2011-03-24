@@ -1,6 +1,7 @@
 module AvatarHelper
   
   def render_avatar(user)
+    user = User.find(user)
     if user.avatar.url == "" #No avatar
       unless user.participant? || !self.current_user.participant?
         return image_tag('gravatar-40.png')
@@ -18,6 +19,7 @@ module AvatarHelper
   end
 
   def render_small_avatar(user)
+    user = User.find(user)
     if user.avatar.url == ""
       unless user.participant? || !self.current_user.participant?
         return image_tag('gravatar-20.png')

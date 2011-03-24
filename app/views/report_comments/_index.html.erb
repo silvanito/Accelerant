@@ -1,0 +1,9 @@
+<%= link_to_remote "New comment", :url => new_report_comment_path(:comment_id => comment_id),  :html => {:class => "left"}%>
+<%@report_comments.each do |report_comment|%>
+  <div class="report_comment left clear <%= user_class(report_comment.owner)%>">
+    <%= render_small_avatar(report_comment.owner)%>
+    <%="said #{report_comment.content}"%>
+    <%= link_to_remote "Delete", :url => report_comment_path(:id =>report_comment), :method => "DELETE",  :html => {:class => "left"}%>
+  </div>
+<%end%>
+

@@ -37,6 +37,7 @@ class CommentsController < ApplicationController
     end
     if (@discussion.character_minimum == 0 || (@discussion.character_minimum != 0) && (params[:comments][:comment].length >= @discussion.character_minimum))
       @comment = Comment.new(params[:comments])
+      @comment.for_report = 0
       @comment.save
       session[:comment_id] = @comment.id
 
@@ -92,23 +93,33 @@ class CommentsController < ApplicationController
   end
 
 #filter comments add to report
-#  def update_report_flag
-#    @comment = Comment.find(params[:id])
-#    if @comment.for_report == 1
-#      @comment.for_report = 0
-#      @comment.save
-#      render :text => "Deleted of report"
-#    else
-#      @comment.for_report = 1
-#      @comment.save
-#      render :text => "Added of report"
-#    end
-#  end 
+  def update_report_flag
+    @comment = Comment.find(params[:comment_id])
+    @report_comments = ReportComment.find(:all, :conditions => {:comment_id => @comment.id})
+    @report_comment = ReportComment.new
+    @comment_id = @comment.id
+    @owner = self.current_user.id
+    if @report_comments.empty? 
+      @report_comment = "new"
+    else
+      @report_comment = "index"
+    end
+    if @comment.for_report == 1
+      @comment.for_report = 0
+      @comment.save
+    else
+      @comment.for_report = 1
+      @comment.save
+    end
+    respond_to do |format|
+      format.js 
+    end
+  end 
 
-  def report_comments
-    @discussion = Discussion.find(params[:id])
-    @project = Project.find(@discussion.project_id)
-    @comments = Comment.find(:all, :conditions => {:discussion_id => params[:id], :for_report => 1 }, :order => "created_at DESC", :include => :user)
-  end
+#  def report_comments
+#    @discussion = Discussion.find(params[:id])
+#    @project = Project.find(@discussion.project_id)
+#    @comments = Comment.find(:all, :conditions => {:discussion_id => params[:id], :for_report => 1 }, :order => "created_at DESC", :include => :user)
+#  end
 
 end

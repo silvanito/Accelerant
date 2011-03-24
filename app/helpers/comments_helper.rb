@@ -72,25 +72,33 @@ module CommentsHelper
             :update => "commentSub#{comment.id}")
         end
 
-#        if (self.current_user.admin || self.current_user.moderator)
-#          if comment.for_report == 1
-#            flag = true
-#          else
-#            flag = false
-#          end
-#  	#			out = out + " | Add to Report "
-#          out = out + check_box_tag("comment_#{comment.id}",comment.id, flag, 
-#        :onclick => remote_function(
-#        :update => "comment_#{comment.id}", 
-#        :url => {:controller => "comments", :action => :update_report_flag }, 
-#        :with => "'id='+$('comment_#{comment.id}').value", 
-#        :complete => "new Effect.SlideDown('subCommentForm#{comment.id}', { duration: .5 })" ))
-#        end
-		
-		if self.current_user.admin  || self.current_user.moderator
-				out = out + " | "
-        out = out + link_to("Reorder",
-          :controller => 'comments', :action => 'sort', :id => comment.discussion_id)
+        if self.current_user.admin  || self.current_user.moderator
+  				out = out + " | "
+          out = out + link_to("Reorder",
+            :controller => 'comments', :action => 'sort', :id => comment.discussion_id)
+        end
+
+        if (self.current_user.admin || self.current_user.moderator || self.current_user.client)
+            if comment.for_report == 0
+              status = false
+            else
+              status = true
+            end
+            out = out + " | Add to Report "
+            out = out + check_box_tag("comment_#{comment.id}",comment.id, status, 
+          :onclick => remote_function(
+          :update => "comment_#{comment.id}", 
+          :url => {:controller => :comments, :action => :update_report_flag }, 
+          :with => "'comment_id='+$('comment_#{comment.id}').value", 
+          :complete => "new Effect.SlideDown('report_comments_#{comment.id}', { duration: .5 })" ))
+          if comment.for_report == 0
+            out = out + "<div id='report_comments_#{comment.id}'> </div>"
+          else
+            out = out + "<div  id='report_comments_#{comment.id}'>"
+            @report_comments = ReportComment.find(:all, :conditions=>{:comment_id => comment.id})
+            out = out + render(:partial => "report_comments/index", :locals => {:comment_id => comment.id})
+            out = out + "</div>"
+          end
         end
       end
     end
