@@ -146,7 +146,7 @@ class DiscussionController < ApplicationController
     answers = users_heatmap & users_assigned
     session[:answers] = answers
     session[:users_assigned] = users_assigned
-    discussion = {:user_name => self.current_user.name, :user_id => self.current_user.id, :admin => self.current_user.admin, :image_path => @discussion.media.url, :discussion_id => @discussion.id, :discussion_users => users_assigned.count, :answers => answers.count}
+    discussion = {:user_name => self.current_user.name, :user_id => self.current_user.id, :admin => self.current_user.admin, :image_path => @discussion.media.url, :discussion_id => @discussion.id, :discussion_users => users_assigned.size, :answers => answers.size}
     respond_to do |format|
      format.html
      format.xml { render :xml => discussion.to_xml(:dasherize => false), :layout => false}
