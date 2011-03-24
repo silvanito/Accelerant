@@ -52,15 +52,9 @@ namespace :deploy do
   task :migrate, :roles => :app do
     run "cd #{current_path}; rake db:migrate RAILS_ENV='production'"
   end
-
-  task :comments, :roles => :app do
-    run "cd #{current_path}; rake comments"
-  end
-
 end
 
-after "deploy:symlink", "deploy:comments"
-after "deploy:comments", "deploy:migrate"
+after "deploy:symlink", "deploy:migrate"
 after "deploy:migrate", "deploy:update_crontab"
 
 namespace :deploy do
