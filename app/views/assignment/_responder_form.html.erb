@@ -8,7 +8,9 @@
     <%= image_tag "heatmap_rule.jpg", :class => "heatmap_explication"%>
   <%end%>
  <%javascript_tag do -%>
-   swfobject.embedSWF("/heatMap/HeatMap.swf", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf");
+   var params = {};
+   params.allowfullscreen = "true";
+   swfobject.embedSWF("/heatMap/HeatMap.swf", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf","", params);
   <%end%>
 <div class="heatmapContainer" id="HeatMap">
   <h1>Alternative content</h1>

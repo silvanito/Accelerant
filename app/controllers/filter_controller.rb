@@ -11,6 +11,7 @@ class FilterController < ApplicationController
   sql = " "
   previousen = ""
   orflag = false
+  
   #puts i
   #1.upto(10) max
   1.upto(i) { |n|
@@ -146,6 +147,12 @@ class FilterController < ApplicationController
     }
     #puts sql
     cookies[:sql] = {:value => sql, :expires => Time.now + 3600}
+    if params[:report]
+      cookies[:report] = {:value => "true", :expires => Time.now + 3600}
+      cookies[:filter] = {:value => "yes", :expires => Time.now + 3600}
+    else
+      cookies[:report] = {:value => "false", :expires => Time.now + 3600}
+    end
     session[:user_filters] = []
     @testusers = []
     puts "cookies set"

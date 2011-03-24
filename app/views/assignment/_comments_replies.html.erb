@@ -23,20 +23,35 @@
           if cookies[k.to_sym].split('_')[0] == "field"
             testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
             if testuser.nil?
+              @testusers << ["nothing"]
               if !User.is_participant.find_by_id(comment.user.id)
                 displayflag = true
               else
                 displayflag = false
               end
             else
-                 @testusers << testuser.id
+                @testusers << testuser.id
+                displayflag = true
+            end
+          end
+        end
+        if cookies[:report] == "true"
+          if comment.for_report == 1
+            testuser = User.find(comment.user_id)
+            if testuser.nil?
+              @testusers << ["nothing"]
+              if !User.is_participant.find_by_id(comment.user.id)
+                displayflag = true
+              else
+                displayflag = false
+              end
+            else
+                @testusers << testuser.id
                 displayflag = true
             end
           end
         end
       end
-
-
 
 
 

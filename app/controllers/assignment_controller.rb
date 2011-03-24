@@ -63,8 +63,24 @@ class AssignmentController < ApplicationController
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
 
     unless @discussions.nil?
-      session[:discussion_id] = Discussion.find(:last)
+      @discussion = Discussion.find(:last)
+      session[:discussion_id] = @discussion
+      heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
+      users_heatmap = []
+      heatmaps.each do |heatmap|
+        users_heatmap << heatmap.user_id
+      end
+      users_heatmap.uniq!
+      users_assigned = []
+
+      @project_members.each do |user_assigned|
+        users_assigned << user_assigned.user_id
+      end 
+      answers = users_heatmap & users_assigned
+      session[:answers] = answers
+      session[:users_assigned] = users_assigned
     end
+
     unless !@discussions_desc || @discussions_desc.sortable.nil?
     @sortable = Sortables.find(@discussions_desc.sortable)
     unless @sortable.nil?

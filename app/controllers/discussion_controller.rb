@@ -132,7 +132,21 @@ class DiscussionController < ApplicationController
       end
     end
     session[:discussion_id] = params[:id].blank? ? @discussion.id : params[:id]
-    discussion = {:user_name => self.current_user.name, :user_id => self.current_user.id, :admin => self.current_user.admin, :image_path => @discussion.media.url, :discussion_id => @discussion.id}
+    heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
+    users_heatmap = []
+    heatmaps.each do |heatmap|
+      users_heatmap << heatmap.user_id
+    end
+    users_heatmap.uniq!
+    users_assigned = []
+
+    @project_members.each do |user_assigned|
+      users_assigned << user_assigned.user_id
+    end 
+    answers = users_heatmap & users_assigned
+    session[:answers] = answers
+    session[:users_assigned] = users_assigned
+    discussion = {:user_name => self.current_user.name, :user_id => self.current_user.id, :admin => self.current_user.admin, :image_path => @discussion.media.url, :discussion_id => @discussion.id, :discussion_users => users_assigned.count, :answers => answers.count}
     respond_to do |format|
      format.html
      format.xml { render :xml => discussion.to_xml(:dasherize => false), :layout => false}
@@ -169,7 +183,8 @@ class DiscussionController < ApplicationController
 
   def discussion_show
     discussion =  Discussion.find(session[:discussion_id])
-    xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters])
+    size = Hash.new
+    xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters], session[:users_assigned], session[:answers])
     respond_to do |format|
      format.xml { render :xml => xml_data.to_xml(:dasherize => false)}
     end
