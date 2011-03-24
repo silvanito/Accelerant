@@ -45,7 +45,12 @@
             end
             @testusers_report = @testusers & @testusers_report
           else
-            @testusers_report = @testusers
+            if @testusers.empty?
+              @testusers_report << "nothing"
+            else
+              @testusers_report = @testusers
+            end
+             
           end
         else
           @testusers_report = @testusers

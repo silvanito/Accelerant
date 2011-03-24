@@ -61,14 +61,16 @@ class AssignmentController < ApplicationController
     @project = Project.find(params[:id])
     @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
+
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
 
+
+    if self.current_user.admin || self.current_user.moderator
+      @new_discussion = Discussion.new
+    end
     unless @discussions.nil?
-      if self.current_user.admin
-        @new_discussion = Discussion.new
-      end
       @discussion = Discussion.find(:last)
-      session[:discussion_id] = @discussion
+      session[:discussion_id] = @discussions_desc
       heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
       users_heatmap = []
       heatmaps.each do |heatmap|
