@@ -30,7 +30,7 @@ class Discussion < ActiveRecord::Base
         heatmaps = discussion.heatmaps
       end
       xml_data = []
-      xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => users_assigned.count, :answers => answers.count, :w => "440", :h => "310"} 
+      xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => users_assigned.count, :answers => answers.size, :w => "440", :h => "310"} 
       heatmaps.each do |heatmap|
         xml_data <<  heatmap.heatmap_coords
       end
