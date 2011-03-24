@@ -39,6 +39,7 @@ class DiscussionController < ApplicationController
 
   def show
     @testusers = []
+    @testusers_report = []
     if self.current_user.admin
       @new_discussion = Discussion.new
     end

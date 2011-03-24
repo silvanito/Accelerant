@@ -23,8 +23,8 @@
           if cookies[k.to_sym].split('_')[0] == "field"
             testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
             if testuser.nil?
-              @testusers << ["nothing"]
-              if !User.is_participant.find_by_id(comment.user.id)
+              @testusers << "nothing"
+              if !User.is_participant.find_by_id(comment.user_id)
                 displayflag = true
               else
                 displayflag = false
@@ -39,18 +39,18 @@
           if comment.for_report == 1
             testuser = User.find(comment.user_id)
             if testuser.nil?
-              @testusers << ["nothing"]
-              if !User.is_participant.find_by_id(comment.user.id)
-                displayflag = true
-              else
-                displayflag = false
-              end
+              @testusers_report << "nothing"
             else
-                @testusers << testuser.id
-                displayflag = true
+                @testusers_report << testuser.id
             end
+            @testusers_report = @testusers & @testusers_report
+          else
+            @testusers_report = @testusers
           end
+        else
+          @testusers_report = @testusers
         end
+
       end
 
 
@@ -75,7 +75,7 @@
               end
             end
           end
-          session[:user_filters] = @testusers
+          session[:user_filters] = @testusers_report
           %>
     </div><!-- responses -->
     

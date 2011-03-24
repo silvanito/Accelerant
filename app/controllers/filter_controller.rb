@@ -155,6 +155,7 @@ class FilterController < ApplicationController
     end
     session[:user_filters] = []
     @testusers = []
+    @testusers_report = []
     puts "cookies set"
     render :update do |page|
       page << "window.location.reload(false)"

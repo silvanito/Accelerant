@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_filter :login_required
 
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :update, :new, :create, :get, :destroy, :sort, :reorder, :comment_heatmap
+    ssl_required :index, :show, :update, :new, :create, :get, :destroy, :sort, :reorder, :comment_heatmap, :update_report_flag
   end
 
   
@@ -39,6 +39,7 @@ class CommentsController < ApplicationController
       @comment = Comment.new(params[:comments])
       @comment.for_report = 0
       @comment.save
+      debugger
       session[:comment_id] = @comment.id
 
        redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
@@ -60,6 +61,7 @@ class CommentsController < ApplicationController
     end
     if (@discussion.character_minimum == 0 || (@discussion.character_minimum != 0) && (params[:comments][:comment].length >= @discussion.character_minimum))
       @comment = Comment.new(params[:comments])
+      @comment.for_report = 0
       @comment.save
       session[:comment_id] = @comment.id
       session[:notice_comment] = "Preparing your heatmap result. Please wait!."
