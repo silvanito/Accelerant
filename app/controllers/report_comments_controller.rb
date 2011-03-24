@@ -1,7 +1,9 @@
 class ReportCommentsController < ApplicationController
+  before_filter :login_required
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :new, :create, :edit, :update, :destroy
   end
+
   def index
     @report_comments = ReportComment.all
   end
