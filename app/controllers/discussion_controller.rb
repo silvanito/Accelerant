@@ -1,7 +1,7 @@
 class DiscussionController < ApplicationController
   before_filter :login_required
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :new, :create, :edit, :update, :delete
+    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show
   end
 
   def new
