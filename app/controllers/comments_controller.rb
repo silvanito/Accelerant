@@ -39,7 +39,6 @@ class CommentsController < ApplicationController
       @comment = Comment.new(params[:comments])
       @comment.for_report = 0
       @comment.save
-      debugger
       session[:comment_id] = @comment.id
 
        redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
