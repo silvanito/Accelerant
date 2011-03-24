@@ -17,7 +17,8 @@ class DiscussionController < ApplicationController
   end
 
   def create
-    @discussion = Discussion.new(params[:discussion])
+    debugger
+    @discussion = Discussion.new(params[:new_discussion])
     @discussion.save
     #new stuff
       if self.current_user.admin? || self.current_user.moderator?
