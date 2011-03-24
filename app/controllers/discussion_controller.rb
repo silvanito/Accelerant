@@ -39,6 +39,9 @@ class DiscussionController < ApplicationController
 
   def show
     @testusers = []
+    if self.current_user.admin
+      @new_discussion = Discussion.new
+    end
     @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
     @project = Project.find(params[:project_id])

@@ -4,7 +4,7 @@
   <div id="discussion_form" class="adminFlyout" style="display:none;">
     
       <br/>
-  <% form_for :discussion,
+  <% form_for :new_discussion,
             :html => {:id => "top_form", :multipart => true},
             :url => {:controller => 'discussion', :action => 'create'} do |f|%>
       <p>Discussion Title: <%= f.text_field :title %></p>

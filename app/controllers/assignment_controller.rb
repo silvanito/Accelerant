@@ -63,6 +63,9 @@ class AssignmentController < ApplicationController
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
 
     unless @discussions.nil?
+      if self.current_user.admin
+        @new_discussion = Discussion.new
+      end
       @discussion = Discussion.find(:last)
       session[:discussion_id] = @discussion
       heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 

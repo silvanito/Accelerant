@@ -1,6 +1,9 @@
 <!-- discussion/show -->
 <div id="rightColumn">
   <% if self.current_user.admin%>
+    <% unless @project.lock %>
+      <%= render :partial => 'discussion_form' %>
+    <% end %>
   <% if params[:sort] != "by_user"%>
   <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
   <% else %>
