@@ -112,6 +112,7 @@ class CommentsController < ApplicationController
       @comment.for_report = 1
       @comment.save
     end
+    @replies = Replies.find(:all, :conditions=>{:comment_id => @comment.id})
     respond_to do |format|
       format.js 
     end

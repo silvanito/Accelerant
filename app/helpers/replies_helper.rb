@@ -44,6 +44,25 @@ module RepliesHelper
 					:url => {:controller => 'plain', :action => 'follow_up', :id => replies.id},
 					:update => "probe#{replies.id}")
       end
+      comment = Comment.find(replies.comment_id)
+      if (self.current_user.admin || self.current_user.moderator || self.current_user.client )
+        if replies.for_report == 0
+          status = false
+        else
+          status = true
+        end
+        if comment.for_report == 1
+         reply_status = "display:inline;"
+        else
+         reply_status = "display:none;"
+        end
+        output = output + "<label id='label_#{replies.id}' for='replies_#{replies.id}'> | Add to Report </label> "
+        output = output + check_box_tag("replies_#{replies.id}",replies.id, status, 
+      :onclick => remote_function( 
+      :url => {:controller => :replies, :action => :add_to_report}, 
+      :with => "'id='+#{replies.id}", 
+      :complete => "new Effect.SlideDown('reply#{replies.id}', { duration: .5 })" ), :style=>"#{reply_status}")
+      end
     end
     if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) )
       @follows = FollowUps.find(:all, :conditions => {:reply_id => replies.id}, :order => "id ASC")

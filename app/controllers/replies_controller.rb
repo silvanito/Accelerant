@@ -31,6 +31,7 @@ class RepliesController < ApplicationController
     #puts (params[:reply][:content].length >= @discussion.character_minimum)
     if (charMin == 0) || ((charMin != 0 && params[:reply][:content].length >= charMin))
       @reply = Replies.new(params[:reply])
+      @reply.for_report = 0
       @reply.save
       #@comment = Comment.find(@reply.comment_id)
       #@discussion = Discussion.find(params[:reply][:discussion_id])
@@ -74,6 +75,17 @@ class RepliesController < ApplicationController
     @reply = Replies.find(params[:id])
     puts "reply content:"
     puts @reply.content
+  end
+
+  def add_to_report
+    @reply=  Replies.find(params[:id])
+    if @reply.for_report == 1
+      @reply.for_report = 0
+      @reply.save
+    else
+      @reply.for_report = 1
+      @reply.save
+    end
   end
 
   def update

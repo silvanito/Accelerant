@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.update_report_flag '/comments/update_report_flag', :controller => "comments", :action => "update_report_flag", :method => :post
   map.report_coments '/comments/report_comments/:id', :controller => "comments", :action => "report_comments"
   map.resources :replies, :belongs_to => :comments
+  map.update_report_flag '/replies/add_to_report', :controller => "replies", :action => "add_to_report", :method => :post
   map.resources :subcomments, :belongs_to => :comments
   map.resources :client, :has_many => :projects
   map.resources :project, :has_many => :assignments

@@ -43,17 +43,31 @@
             else
                 @testusers_report << testuser.id
             end
-            @testusers_report = @testusers & @testusers_report
+            if @testusers.empty?
+              @testusers =  @testusers_report
+              displayflag = true
+            else
+              @testusers_report = @testusers & @testusers_report
+            end
           else
             if @testusers.empty?
               @testusers_report << "nothing"
             else
               @testusers_report = @testusers
             end
-             
+            #code_subcomments
+            @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
+            if @replies.empty?
+              displayflag = false
+            else
+              displayflag = true
+            end
+            #endsubcomment
           end
         else
           @testusers_report = @testusers
+          #nofilterset_for subcoment
+          displayflag = true
         end
 
       end

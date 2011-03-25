@@ -137,6 +137,16 @@ module CommentsHelper
           end
         end
       end
+      if cookies[:report] == "true"
+        @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
+        if @replies.empty?
+          displayflag = false
+        else
+          displayflag = true
+        end
+      else
+        displayflag = true
+      end
       #displayflag = filter_results(replies)
       if displayflag && User.exists?(replies.user_id)
         if !@project.one_to_one || ((replies.user.id == self.current_user.id || replies.user.admin? || replies.user.moderator?) || self.current_user.admin? || self.current_user.moderator? || self.current_user.client? )

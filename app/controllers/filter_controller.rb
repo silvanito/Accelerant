@@ -171,6 +171,7 @@ class FilterController < ApplicationController
       end
     end
     cookies.delete(:filter)
+    cookies.delete(:report)
     #render :text => "Filter cleared"
 
     render :update do |page|
