@@ -2,7 +2,7 @@ class RepliesController < ApplicationController
   before_filter :login_required
   
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :get, :update, :new, :create, :edit
+    ssl_required :index, :show, :get, :update, :new, :create, :edit, :add_to_report
   end
 
   def index
