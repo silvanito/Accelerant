@@ -56,7 +56,7 @@ module RepliesHelper
         else
          reply_status = "display:none;"
         end
-        output = output + "<label id='label_#{replies.id}' for='replies_#{replies.id}'> | Add to Report </label> "
+        output = output + "<label id='label_#{replies.id}' for='replies_#{replies.id}' style='#{reply_status}'> | Add to Report </label> "
         output = output + check_box_tag("replies_#{replies.id}",replies.id, status, 
       :onclick => remote_function( 
       :url => {:controller => :replies, :action => :add_to_report}, 
