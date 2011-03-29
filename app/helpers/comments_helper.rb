@@ -78,13 +78,13 @@ module CommentsHelper
             :controller => 'comments', :action => 'sort', :id => comment.discussion_id)
         end
 
-        if (self.current_user.admin || self.current_user.moderator || self.current_user.client)
+        if ((self.current_user.admin || self.current_user.moderator || self.current_user.client) && (comment.user.participant? == true))
             if comment.for_report == 0
               status = false
             else
               status = true
             end
-            out = out + " | Add to Report "
+            out = out + " | TAG "
             out = out + check_box_tag("comment_#{comment.id}",comment.id, status, 
           :onclick => remote_function(
           :update => "comment_#{comment.id}", 
@@ -135,19 +135,20 @@ module CommentsHelper
               #puts "match"
             end
           end
+          if cookies[:report] == "true"
+            @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
+            if @replies.empty?
+              displayflag = false
+            else
+              displayflag = true
+            end
+          else
+            displayflag = true
+          end
+          #displayflag = filter_results(replies)
         end
       end
-      if cookies[:report] == "true"
-        @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
-        if @replies.empty?
-          displayflag = false
-        else
-          displayflag = true
-        end
-      else
-        displayflag = true
-      end
-      #displayflag = filter_results(replies)
+
       if displayflag && User.exists?(replies.user_id)
         if !@project.one_to_one || ((replies.user.id == self.current_user.id || replies.user.admin? || replies.user.moderator?) || self.current_user.admin? || self.current_user.moderator? || self.current_user.client? )
           out = out + render_reply(replies)

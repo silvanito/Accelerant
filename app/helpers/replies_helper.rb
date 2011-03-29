@@ -1,7 +1,11 @@
 module RepliesHelper
   def render_reply(replies)
-    
-    output = "<div id='reply#{replies.id}' class='replyStyle'>"
+    if  replies.for_report == 1
+      reply_style = "background-color:#A7C8DF;"
+    else
+      reply_style = "background-color:#CDD7DE;"
+    end
+    output = "<div id='reply#{replies.id}' class='replyStyle' style='#{reply_style}'>"
 
     output = output + render_small_avatar(replies.user)
     output = output + "&nbsp;&nbsp;"
@@ -45,23 +49,25 @@ module RepliesHelper
 					:update => "probe#{replies.id}")
       end
       comment = Comment.find(replies.comment_id)
-      if (self.current_user.admin || self.current_user.moderator || self.current_user.client )
+      if ((self.current_user.admin || self.current_user.moderator || self.current_user.client) && (replies.user.participant? == true) )
         if replies.for_report == 0
           status = false
         else
           status = true
         end
         if comment.for_report == 1
-         reply_status = "display:inline;"
+         reply_status = "display:inline"
         else
          reply_status = "display:none;"
         end
-        output = output + "<label id='label_#{replies.id}' for='replies_#{replies.id}' style='#{reply_status}'> | Add to Report </label> "
+        output = output + "<label id='label_#{replies.id}' for='replies_#{replies.id}' style='#{reply_status}'> | TAG </label> "
         output = output + check_box_tag("replies_#{replies.id}",replies.id, status, 
       :onclick => remote_function( 
       :url => {:controller => :replies, :action => :add_to_report}, 
-      :with => "'id='+#{replies.id}", 
-      :complete => "new Effect.SlideDown('reply#{replies.id}', { duration: .5 })" ), :style=>"#{reply_status}")
+      :with => "'id='+#{replies.id}",
+      404 => "alert('Not found...? Wrong URL...?')",
+      :failure => "alert('HTTP Error ' + request.status + '!')",
+      :complete => "if(request.responseText == 'added'){ new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 });new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#A7C8DF;', duration: 0.3 });}else{new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 }); new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#CDD7DE;', duration: 0.5 });}" ))
       end
     end
     if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) )

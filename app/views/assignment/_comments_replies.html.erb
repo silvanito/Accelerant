@@ -37,37 +37,13 @@
         end
         if cookies[:report] == "true"
           if comment.for_report == 1
-            testuser = User.find(comment.user_id)
-            if testuser.nil?
-              @testusers_report << "nothing"
-            else
-                @testusers_report << testuser.id
-            end
-            if @testusers.empty?
-              @testusers =  @testusers_report
-              displayflag = true
-            else
-              @testusers_report = @testusers & @testusers_report
-            end
-          else
-            if @testusers.empty?
-              @testusers_report << "nothing"
-            else
-              @testusers_report = @testusers
-            end
-            #code_subcomments
-            @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
-            if @replies.empty?
-              displayflag = false
-            else
+            report_user = comment.user
+            if report_user
+              @testusers << comment.user_id
               displayflag = true
             end
-            #endsubcomment
           end
-        else
-          @testusers_report = @testusers
-          #nofilterset_for subcoment
-          displayflag = true
+          #end tag for report
         end
 
       end
@@ -94,7 +70,7 @@
               end
             end
           end
-          session[:user_filters] = @testusers_report
+          session[:user_filters] = @testusers
           %>
     </div><!-- responses -->
     

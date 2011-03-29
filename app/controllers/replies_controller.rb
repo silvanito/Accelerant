@@ -82,6 +82,7 @@ class RepliesController < ApplicationController
     if @reply.for_report == 1
       @reply.for_report = 0
       @reply.save
+      @reply_style = 'red'
       render :text => "deleted"
     else
       @reply.for_report = 1
