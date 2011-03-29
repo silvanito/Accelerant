@@ -55,7 +55,9 @@ module RepliesHelper
         else
           status = true
         end
-        if comment.for_report == 1
+        if comment.user.admin || comment.user.moderator
+         reply_status = "display:inline"
+        elsif comment.for_report == 1 && comment.user.participant
          reply_status = "display:inline"
         else
          reply_status = "display:none;"
@@ -67,7 +69,7 @@ module RepliesHelper
       :with => "'id='+#{replies.id}",
       404 => "alert('Not found...? Wrong URL...?')",
       :failure => "alert('HTTP Error ' + request.status + '!')",
-      :complete => "if(request.responseText == 'added'){ new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 });new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#A7C8DF;', duration: 0.3 });}else{new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 }); new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#CDD7DE;', duration: 0.5 });}" ))
+      :complete => "if(request.responseText == 'added'){ new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 });new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#A7C8DF;', duration: 0.3 });}else{new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 }); new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#CDD7DE;', duration: 0.5 });}" ), :style => reply_status)
       end
     end
     if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) )
