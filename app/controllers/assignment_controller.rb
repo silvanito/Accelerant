@@ -61,7 +61,6 @@ class AssignmentController < ApplicationController
     @project = Project.find(params[:id])
     @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
-
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
 
 
@@ -79,7 +78,8 @@ class AssignmentController < ApplicationController
       users_heatmap.uniq!
       users_assigned = []
 
-      @project_members.each do |user_assigned|
+      @discussion_members = CommentAssignments.find(:all, :conditions => {:discussion_id=> @discussion.id})
+      @discussion_members.each do |user_assigned|
         users_assigned << user_assigned.user_id
       end 
       answers = users_heatmap & users_assigned

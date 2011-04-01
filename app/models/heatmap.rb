@@ -6,21 +6,53 @@ class Heatmap < ActiveRecord::Base
   belongs_to :comment
   has_many :heatmap_coords
 
-  def self.create_heatmap(image, coords, user_id, discussion_id)
+
+  def self.create_heatmap(image, coords, user_id, discussion_id, screen_size)
     discussion = Discussion.find(discussion_id)
+    screen_size = screen_size.split(',')
+    discussion.width = screen_size[0]
+    discussion.height = screen_size[1]
+    discussion.save
     user = User.find(user_id)
     heatmap = Heatmap.new(:image_result => image, :user_id => user.id)
     if heatmap.save
-       discussion.heatmaps << heatmap
-       image_coords = []
-       coords = coords.split(",")
-       while coords.length >= 3
-          coord = coords.slice!(0..2)
-          heatmap_coords = HeatmapCoord.new(:coord_x => coord[0], :coord_y => coord[1], :coord_radio => coord[2])
-          heatmap.heatmap_coords << heatmap_coords  if heatmap_coords.save
+      coords = coords.split(",")
+      coords_saved = Heatmap.heatmap_criteria(heatmap, discussion.heatmap_type.heatmap_type, coords)
+      if coords_saved
+        discussion.heatmaps << heatmap
+        true
+      else
+        false
+      end
+    end
+  end
 
-       end
-       true
+  def self.heatmap_criteria(heatmap, type, coords)
+    case type.to_sym
+    when :Image
+      total_coords = coords.length/3
+      while coords.length >= 3
+        coord = coords.slice!(0..2)
+        heatmap_coords = HeatmapCoord.new(:coord_x => coord[0], :coord_y => coord[1], :coord_radio => coord[2])
+        heatmap.heatmap_coords << heatmap_coords  if heatmap_coords.save
+      end
+      if heatmap.heatmap_coords.size == total_coords
+        true
+      else
+        false
+      end
+    when :Text
+      total_coords = coords.length/4
+      while coords.length >= 4
+        coord = coords.slice!(0..3)
+        heatmap_coords = HeatmapCoord.new(:startX => coord[0], :startY => coord[1], :endX => coord[2], :lineHeight => coord[3])
+        heatmap.heatmap_coords << heatmap_coords  if heatmap_coords.save
+      end
+      if heatmap.heatmap_coords.size == total_coords
+        true
+      else
+        false
+      end
     end
   end
 

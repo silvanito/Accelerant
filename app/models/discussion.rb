@@ -1,6 +1,7 @@
 class Discussion < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
+  belongs_to :heatmap_type
   has_many :heatmaps
   
   #named_scope :is_last, :conditions => {:is_published => true}
@@ -15,7 +16,7 @@ class Discussion < ActiveRecord::Base
   def self.create_xml(user, discussion, user_filters, users_assigned, answers)
     if user.participant 
        xml_data = []
-       xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => nil, :answers => nil, :w => "585", :h => "465"}
+       xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => nil, :answers => nil, :w => discussion.width, :h => discussion.height}
        xml_data
     else
       if !user_filters.empty?
@@ -30,7 +31,7 @@ class Discussion < ActiveRecord::Base
         heatmaps = discussion.heatmaps
       end
       xml_data = []
-      xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => users_assigned.size, :answers => answers.size, :w => "517", :h => "368"} 
+      xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => users_assigned.size, :answers => answers.size, :w => discussion.width, :h => discussion.height} 
       heatmaps.each do |heatmap|
         xml_data <<  heatmap.heatmap_coords
       end

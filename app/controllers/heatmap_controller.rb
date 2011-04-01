@@ -6,7 +6,7 @@ class HeatmapController < ApplicationController
   end
 
   def create
-    heatmap = Heatmap.create_heatmap(params[:image_data], params[:encodeData], params[:user_id], params[:discussion_id])
+    heatmap = Heatmap.create_heatmap(params[:image_data], params[:encodeData], params[:user_id], params[:discussion_id], params[:screen_data])
     if heatmap
       session[:discussion_id] = params[:disccusion_id] 
 #      comment = Comment.find(:last, :conditions => {:discussion_id => heatmap.discussion_id, :user_id => heatmap.user_id})
@@ -16,12 +16,12 @@ class HeatmapController < ApplicationController
 #      end
       respond_to do |format|
         format.html { render :nothing => true }
-        format.xml { render :xml => 'success'}
+        format.xml { render :xml => {:result => 'success'} } 
       end
     else
       respond_to do |format| 
         format.html { render :nothing => true }
-        format.xml { render :xml => 'error' }
+        format.xml { render :xml => {:result => 'error'} }
       end
     end
   end

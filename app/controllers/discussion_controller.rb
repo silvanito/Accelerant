@@ -131,8 +131,10 @@ class DiscussionController < ApplicationController
       end
       if heatmap && heatmap.comment_id.nil?
         comment = Comment.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
-        heatmap.comment_id = session[:comment_id] || comment.id
-        heatmap.save
+        if comment
+          heatmap.comment_id = session[:comment_id] || comment.id
+          heatmap.save
+        end
       end
     end
     session[:discussion_id] = params[:id].blank? ? @discussion.id : params[:id]
@@ -143,8 +145,8 @@ class DiscussionController < ApplicationController
     end
     users_heatmap.uniq!
     users_assigned = []
-
-    @project_members.each do |user_assigned|
+    @discussion_members = CommentAssignments.find(:all, :conditions => {:discussion_id=> @discussion.id})
+    @discussion_members.each do |user_assigned|
       users_assigned << user_assigned.user_id
     end 
     answers = users_heatmap & users_assigned

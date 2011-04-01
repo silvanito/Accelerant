@@ -8,8 +8,8 @@
             :html => {:id => "top_form", :multipart => true},
             :url => {:controller => 'discussion', :action => 'create'} do |f|%>
       <p>Discussion Title: <%= f.text_field :title %></p>
-  <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><b/>
-  Upload a photo or file:<br/>
+  <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><b>
+  Upload a photo or file:</b><br/>
 <%= f.file_field :media %>
 
  
@@ -17,8 +17,14 @@
   <br/>
   <p>
     <%= label_tag 'Respond with Heatmap:'%><br/>
-    <%= f.check_box 'has_heatmap'%>
+    <%= f.check_box 'has_heatmap', :id=>'has_heatmap'%>
   </p>
+    <% field_set_tag 'Heatmap Type', :id => 'heatmap_type',:class=>'display_none' do%>
+      <%= f.radio_button :heatmap_type_id, 1%>
+      <%= label_tag 'Image'%>
+      <%= f.radio_button :heatmap_type_id, 2%>
+      <%= label_tag 'Text:'%><br/>
+    <% end%>
 
   <p><%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):' %><br/>
 <%= f.text_field :character_minimum %>
@@ -60,6 +66,8 @@
     
   </div>
   <% end %>
-
+<% content_for :scripts do -%>
+  <%= javascript_include_tag "heatmap_type"%>
+<%end%>
 <!-- End Discussion Form -->
 
