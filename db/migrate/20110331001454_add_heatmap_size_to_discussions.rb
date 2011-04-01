@@ -1,4 +1,4 @@
-class AddHeatmapSizeToDiscussion < ActiveRecord::Migration
+class AddHeatmapSizeToDiscussions < ActiveRecord::Migration
   def self.up
     add_column :discussions, :width, :float
     add_column :discussions, :height, :float
