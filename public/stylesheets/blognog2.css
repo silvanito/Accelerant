@@ -520,9 +520,19 @@ filter: flipv fliph;
   padding: 5px;
   width: 410px;
 }
+.report_subcomment{
+  
+  margin: 10px  0 0 5px;
+  padding: 5px;
+  width: 379px;
+}
+#rightColumn .comments_divisor{
+  margin: 5px 0;
+  width: 100%;
+}
 .green{
-  background-color: green;
+  background-color: #CAE9D6;
 }
 .red{
-  background-color: red;
+  background-color: #FECDCA;
 }

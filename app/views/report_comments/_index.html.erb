@@ -1,9 +1,26 @@
-<%= link_to_remote "New comment TAG", :url => new_report_comment_path(:comment_id => comment_id),  :html => {:class => "left"}%>
+<%unless comment_id.blank?%>
+  <%= link_to_remote "New comment TAG", :url => new_report_comment_path(:comment_id => comment_id),  :html => {:class => "left"}%>
+<%else%>
+  <%= link_to_remote "New comment TAG", :url => new_report_comment_path(:subcomment_id => subcomment_id),  :html => {:class => "left"}%>
+<%end%>
 <%@report_comments.each do |report_comment|%>
-  <div class="report_comment left clear <%= user_class(report_comment.owner)%>">
+  <%unless comment_id.blank?%>
+    <div class="report_comment left clear <%= user_class(report_comment.owner)%>">
+  <%else%>
+    <div class="report_subcomment left clear <%= user_class(report_comment.owner)%>">
+  <%end%>
     <%= render_small_avatar(report_comment.owner)%>
-    <%="said #{report_comment.content}"%>
+    <%="#{report_comment.user.login} said: '#{report_comment.content}'"%>
     <%= link_to_remote "Delete", :url => report_comment_path(:id =>report_comment), :method => "DELETE",  :html => {:class => "left"}%>
+
+    <br />
+    <hr class="comments_divisor"/>
+    <%unless comment_id.blank?%>
+      <b><%= "#{report_comment.comment.comment}"%></b>
+    <%else%>
+      <b><%= "#{report_comment.replies.content}"%></b>
+    <%end%>
+    
   </div>
 <%end%>
 

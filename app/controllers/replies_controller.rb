@@ -78,16 +78,28 @@ class RepliesController < ApplicationController
   end
 
   def add_to_report
-    @reply=  Replies.find(params[:id])
-    if @reply.for_report == 1
-      @reply.for_report = 0
-      @reply.save
-      render :text => "deleted"
+    @subcomment=  Replies.find(params[:id])
+    @report_comments = ReportComment.find(:all, :conditions => {:subcomment_id => @subcomment.id})
+    @owner = self.current_user.id
+    if @report_comments.empty? 
+      @report_comment = "new"
     else
-      @reply.for_report = 1
-      @reply.save
-      render :text => "added"
+      @report_comment = "index"
     end
+
+    if @subcomment.for_report == 1
+      @subcomment.for_report = 0
+      @subcomment.save
+
+    else
+      @subcomment.for_report = 1
+      @subcomment.save
+
+    end
+    respond_to do |format|
+      format.js 
+    end
+
 
   end
 

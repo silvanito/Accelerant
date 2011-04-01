@@ -19,6 +19,15 @@ module AssignmentHelper
     end
   end
 
+  def heatmap_type(discussion)
+    case discussion.heatmap_type.heatmap_type.to_sym
+    when :Image
+      "HeatMap"
+    when :Text
+      "HeatMapMarker"
+    end
+  end
+
   def heatmap_screenshot(discussion)
    heatmap = discussion.heatmaps.find(:last, :conditions => {:user_id => self.current_user.id})
    if heatmap

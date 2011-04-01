@@ -70,6 +70,15 @@ module RepliesHelper
       404 => "alert('Not found...? Wrong URL...?')",
       :failure => "alert('HTTP Error ' + request.status + '!')",
       :complete => "if(request.responseText == 'added'){ new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 });new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#A7C8DF;', duration: 0.3 });}else{new Effect.SlideDown('reply#{replies.id}', {duration: 0.4 }); new Effect.Morph('reply#{replies.id}', {  style: 'background-color:#CDD7DE;', duration: 0.5 });}" ), :style => reply_status)
+        if replies.for_report == 0
+          output = output + "<div id='report_subcomments_#{replies.id}'> </div>"
+        else
+          output = output + "<div  id='report_subcomments_#{replies.id}'>"
+          @report_comments = ReportComment.find(:all, :conditions=>{:subcomment_id => replies.id}) 
+          
+          output = output + render(:partial => "report_comments/index", :locals => {:comment_id => nil, :subcomment_id => replies.id})
+          output = output + "</div>"
+        end
       end
     end
     if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) )

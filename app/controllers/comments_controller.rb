@@ -97,7 +97,6 @@ class CommentsController < ApplicationController
   def update_report_flag
     @comment = Comment.find(params[:comment_id])
     @report_comments = ReportComment.find(:all, :conditions => {:comment_id => @comment.id})
-    @report_comment = ReportComment.new
     @comment_id = @comment.id
     @owner = self.current_user.id
     if @report_comments.empty? 

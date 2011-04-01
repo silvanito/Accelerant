@@ -1,7 +1,8 @@
 class ReportComment < ActiveRecord::Base
 
   belongs_to :comment
-  belongs_to :user
+  belongs_to :replies, :foreign_key => :subcomment_id
+  belongs_to :user, :foreign_key => :owner
 
   has_attached_file :photo,
   :whiny => false, 

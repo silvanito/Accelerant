@@ -84,7 +84,7 @@ module CommentsHelper
             else
               status = true
             end
-            out = out + " | TAG "
+            out = out + "<label> | TAG </label>"
             out = out + check_box_tag("comment_#{comment.id}",comment.id, status, 
           :onclick => remote_function(
           :update => "comment_#{comment.id}", 

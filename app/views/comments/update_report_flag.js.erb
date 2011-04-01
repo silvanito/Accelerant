@@ -3,7 +3,7 @@
     $('<%= escape_javascript("label_#{reply.id}")%>').show()
     $('<%= escape_javascript("replies_#{reply.id}")%>').show()
   <%end%>
-  $('<%= escape_javascript("report_comments_#{@comment.id}")%>').update('<%= escape_javascript(render (:partial=>"report_comments/#{@report_comment}", :locals=>{:comment_id => @comment_id, :owner => @owner}) ) %>')
+  $('<%= escape_javascript("report_comments_#{@comment.id}")%>').update('<%= escape_javascript(render (:partial=>"report_comments/#{@report_comment}", :locals=>{:comment_id => @comment_id, :owner => @owner, :subcomment_id => nil}) ) %>')
 <%else%>
   <%@replies.each do |reply|%>
     $('<%= escape_javascript("label_#{reply.id}")%>').hide()

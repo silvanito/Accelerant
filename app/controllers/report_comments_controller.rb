@@ -11,6 +11,7 @@ class ReportCommentsController < ApplicationController
   def new
     @report_comment = ReportComment.new
     @comment_id = params[:comment_id]
+    @subcomment_id = params[:subcomment_id]
     @owner = self.current_user.id
     respond_to do |format|
       format.js 
@@ -21,14 +22,23 @@ class ReportCommentsController < ApplicationController
     
     if params[:report_comment]
       @comment_id =  params[:report_comment][:comment_id]
+      @subcomment_id = params[:report_comment][:subcomment_id]
       report_comment = ReportComment.new(params[:report_comment])
     else
       @comment_id =  params[:new][:comment_id]
+      @subcomment_id =  params[:new][:subcomment_id]  
       report_comment = ReportComment.new(params[:new])
     end
-    @comment = Comment.find(@comment_id)
+
     if report_comment.save
-      @report_comments = ReportComment.find(:all, :conditions=>{:comment_id => @comment_id})
+      unless @comment_id.blank?
+        @comment = Comment.find(@comment_id)
+        @report_comments = ReportComment.find(:all, :conditions=>{:comment_id => @comment_id})
+      else
+        @subcomment = Replies.find(@subcomment_id)
+        @report_comments = ReportComment.find(:all, :conditions=>{:subcomment_id => @subcomment_id})
+      end
+      
       respond_to do |format|
         format.js 
       end
@@ -57,11 +67,15 @@ class ReportCommentsController < ApplicationController
   def destroy
     report_comment = ReportComment.find(params[:id])
     @comment_id = report_comment.comment_id
+    @subcomment_id = report_comment.subcomment_id
     report_comment.delete
-    @comment = Comment.find(@comment_id)
-    @report_comments = ReportComment.find(:all, :conditions=>{:comment_id => @comment.id})
-
-    @comment.save
+    unless @comment_id.nil?
+      @comment = Comment.find(@comment_id)
+      @report_comments = ReportComment.find(:all, :conditions=>{:comment_id => @comment.id})
+    else
+      @subcomment = Replies.find(@subcomment_id)
+      @report_comments = ReportComment.find(:all, :conditions=>{:subcomment_id => @subcomment.id})
+    end
     respond_to do |format|
       format.js
     end

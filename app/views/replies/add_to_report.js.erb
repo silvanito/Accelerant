@@ -1,0 +1,5 @@
+<%if @subcomment.for_report == 1%>
+  $('<%= escape_javascript("report_subcomments_#{@subcomment.id}")%>').update('<%= escape_javascript(render (:partial=>"report_comments/#{@report_comment}", :locals=>{:comment_id => nil, :owner => @owner, :subcomment_id => @subcomment.id}) ) %>')
+<%else%>
+  $('<%= escape_javascript("report_subcomments_#{@subcomment.id}")%>').update(" ")
+<%end%>
