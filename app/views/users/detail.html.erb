@@ -85,6 +85,13 @@ end
 <% end %>
 
 </div>
+
+    <%image = heatmap_screen_by_comment(comment.id)%>
+    <div class='heatmap'>
+      <% unless image.blank? %>
+       <img src='<%=image%>' width = '440' height = '310'/>
+      <% end %>
+    </div>
   <hr/>
   <% end %>
 
