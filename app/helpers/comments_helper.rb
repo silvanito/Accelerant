@@ -136,8 +136,8 @@ module CommentsHelper
             end
           end
           if cookies[:report] == "true"
-            @replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
-            if @replies.empty?
+            #@replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
+            if replies.for_report == 0
               displayflag = false
             else
               displayflag = true

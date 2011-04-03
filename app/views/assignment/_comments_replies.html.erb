@@ -16,21 +16,20 @@
 
           ####### this block is TEMPORARY to filter at the COMMENT level
 
-                displayflag = true
+      displayflag = false
       if cookies[:filter] == "yes"
-        displayflag = false
         cookies.to_hash.each_pair do |k, v|
           if cookies[k.to_sym].split('_')[0] == "field"
             testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
             if testuser.nil?
-              @testusers << "nothing"
+              @testusers = "nothing"
               if !User.is_participant.find_by_id(comment.user_id)
                 displayflag = true
               else
                 displayflag = false
               end
             else
-                @testusers << testuser.id
+                @testusers = testuser.id
                 displayflag = true
             end
           end
@@ -38,18 +37,23 @@
         if cookies[:report] == "true"
           if comment.for_report == 1
             report_user = comment.user
-            if report_user
-              @testusers << comment.user_id
-              displayflag = true
+            if displayflag == true
+                unless report_user
+                  @testusers = "nothing"
+                  displayflag = false
+                end
+            elsif @testusers == ""
+              if report_user
+                @testusers = comment.user_id
+                displayflag = true
+              end
             end
           end
           #end tag for report
         end
-
+      else
+       displayflag = true
       end
-
-
-
           #######
 
 
@@ -69,8 +73,12 @@
               end
               end
             end
+          unless @testusers == ""
+            @testusers_report << @testusers
+            @testusers = ""
           end
-          session[:user_filters] = @testusers
+          end
+          session[:user_filters] = @testusers_report
           %>
     </div><!-- responses -->
     
