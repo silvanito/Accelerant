@@ -78,6 +78,12 @@ class SessionsController < ApplicationController
     self.current_user.heatmaps.each do |heatmap|
       heatmap.delete_tmp_image
     end
+    if self.current_user.admin?
+      heatmaps = Heatmap.all
+      heatmaps.each do |heatmap|
+        heatmap.delete_tmp_image
+      end
+    end
     logout_killing_session!
     flash[:notice] = "You have been logged out."
     
