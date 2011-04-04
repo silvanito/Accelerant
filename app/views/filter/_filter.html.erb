@@ -15,11 +15,11 @@ category = AttributeTags.find_last_by_project_id(@project.id)
     :url => { :controller=> 'filter', :action => "filter_set_new" } do |f| %>
     <label onclick="Effect.toggle('report', 'slide'); return false;"><strong>Report</strong></label>
     <div id='report'  "style='display:none;'" >
-      <label>Coments added to report</label>
+      <label>TAG:</label>
       <%if cookies[:report]%>
         <input  type="checkbox" value="true" name="report" checked="checked"/>
       <%else%>
-        <input  type="checkbox" value="true" name="report" checked=""/>
+        <input  type="checkbox" value="true" name="report"/>
       <%end%>
     </div>
     <br/>
