@@ -51,7 +51,10 @@
           end
           #end tag for report
           if comment.user.admin? || comment.user.moderator?
-            displayflag = true
+            replies = Replies.find(:all, :conditions => { :comment_id => comment.id, :for_report => 1}, :order => "id ASC", :include => :user)
+            if replies.size > 0
+              displayflag = true
+            end
           end
         end
       else
