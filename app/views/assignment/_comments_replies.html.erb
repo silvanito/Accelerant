@@ -50,12 +50,14 @@
             end
           end
           #end tag for report
+          if comment.user.admin? || comment.user.moderator?
+            displayflag = true
+          end
         end
       else
        displayflag = true
       end
           #######
-
 
             not_visible = CommentAssignments.find(:last, :conditions => {:user_id => self.current_user.id, :comment_id => comment.id })
             my_project = Project.find(:last, :conditions => {:id => project_id})
