@@ -80,8 +80,15 @@ class SessionsController < ApplicationController
     end
     if self.current_user.admin?
       heatmaps = Heatmap.all
+      discussions = Discussion.all
       heatmaps.each do |heatmap|
         heatmap.delete_tmp_image
+      end
+    end
+    if self.current_user.admin? || self.current_user.moderator?
+      discussions = Discussion.all
+      discussions.each do |discussion|
+        discussion.delete_admin_tmp_image(self.current_user.id)
       end
     end
     logout_killing_session!

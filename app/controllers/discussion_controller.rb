@@ -1,7 +1,7 @@
 class DiscussionController < ApplicationController
   before_filter :login_required
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show
+    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show, :heatmap_admin_result
   end
 
   def new
@@ -193,6 +193,25 @@ class DiscussionController < ApplicationController
     xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters], session[:users_assigned], session[:answers])
     respond_to do |format|
      format.xml { render :xml => xml_data.to_xml(:dasherize => false)}
+    end
+  end
+
+  def heatmap_admin_result
+    unless params[:image].blank? && params[:discussion_id]
+      heatmap_admin_result = Discussion.admin_tmp_image(params[:image], params[:discussion_id], self.current_user.id)
+    else
+      heatmap_admin_result = "something was wrong"
+    end
+    if heatmap_admin_result
+      respond_to do |format|
+        format.html { render :nothing => true }
+        format.xml { render :xml => {:path => heatmap_admin_result} }
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true }
+        format.xml { render :xml => {:path => heatmap_admin_result} } 
+      end
     end
   end
 end

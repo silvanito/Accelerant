@@ -47,4 +47,27 @@ class Discussion < ActiveRecord::Base
     end
   end
 
+  def self.admin_tmp_image(image, discussion_id, user_id)
+
+    binaryData = Base64.decode64(image)
+    #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
+    root_path = "#{RAILS_ROOT}/public"
+    path =  "/tmp/heatmap_admin_#{user_id}_image_#{discussion_id}.jpg"
+    unless File.exists?(root_path + path)
+      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
+    end
+    #f.write(binaryData)
+    #path =  file
+    return path
+
+  end
+
+  def delete_admin_tmp_image(user_id)
+    root_path = "#{RAILS_ROOT}/public"
+    path =  "/tmp/heatmap_admin_#{user_id}_image_#{self.id}.jpg"
+    if File.exists?(root_path + path)
+      File.delete(root_path + path)
+    end
+  end
+
 end
