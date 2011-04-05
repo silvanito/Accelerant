@@ -59,7 +59,7 @@
         <% end  %>
 	<% end %>
 
-<%= f.hidden_field :project_id, :value => params[:id] %>
+<%= f.hidden_field :project_id, :value => params[:project_id] %>
   <%= f.hidden_field :user_id, :value => self.current_user.id %><br/>
   <%= submit_tag "Post" %>
   <% end  %>

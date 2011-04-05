@@ -17,6 +17,7 @@ class DiscussionController < ApplicationController
   end
 
   def create
+    debugger
     @discussion = Discussion.new(params[:new_discussion])
     @discussion.save
     #new stuff
@@ -34,7 +35,7 @@ class DiscussionController < ApplicationController
       end
       end
     end
-    redirect_to "/assignment/#{@discussion.project_id}"
+    redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
   end
 
   def show
