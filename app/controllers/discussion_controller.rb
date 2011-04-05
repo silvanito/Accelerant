@@ -17,7 +17,6 @@ class DiscussionController < ApplicationController
   end
 
   def create
-    debugger
     @discussion = Discussion.new(params[:new_discussion])
     @discussion.save
     #new stuff
