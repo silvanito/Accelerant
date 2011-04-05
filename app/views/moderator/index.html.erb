@@ -7,10 +7,11 @@
 <p>&nbsp;</p>
 
 <% for project in @these_projects %>
+  <%discussion = Discussion.find(:last, :conditions=>{:project_id => project.id})%>
 <div>
     <p>
 	<strong><%=project.title %></strong><br/>
-        <%= link_to 'View', :controller => 'assignment', :action => 'show', :id => project.id %> |
+        <%= link_to 'View', :controller => 'discussion', :action => 'show', :id => discussion.id, :project_id => project.id%> |
 	<%= link_to "Edit", {:controller => "project", :action => "edit", :id => project.id} %> |
 	<%= link_to 'Delete', {:controller => 'project', :action => 'drop', :id => project.id}, :confirm => "Are you sure?" %>
 	</p>
