@@ -74,21 +74,27 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    heatmaps = []
-    self.current_user.heatmaps.each do |heatmap|
-      heatmap.delete_tmp_image
+    heatmaps = self.current_user.heatmaps
+    unless heatmaps.empty?
+      self.current_user.heatmaps.each do |heatmap|
+        heatmap.delete_tmp_image
+      end
     end
     if self.current_user.admin?
       heatmaps = Heatmap.all
       discussions = Discussion.all
-      heatmaps.each do |heatmap|
-        heatmap.delete_tmp_image
+      unless heatmaps.empty?
+        heatmaps.each do |heatmap|
+          heatmap.delete_tmp_image
+        end
       end
     end
     if self.current_user.admin? || self.current_user.moderator?
       discussions = Discussion.all
-      discussions.each do |discussion|
-        discussion.delete_admin_tmp_image(self.current_user.id)
+      unless discussions.empty?
+        discussions.each do |discussion|
+          discussion.delete_admin_tmp_image(self.current_user.id)
+        end
       end
     end
     logout_killing_session!
