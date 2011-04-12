@@ -1,6 +1,6 @@
 <!-- discussion/show -->
 <div id="rightColumn">
-  <% if self.current_user.admin%>
+  <% if self.current_user.moderator? || self.current_user.admin%>
     <% unless @project.lock %>
       <%= render :partial => '/assignment/discussion_form' %>
     <% end %>
