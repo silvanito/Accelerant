@@ -9,7 +9,11 @@
   <%discussion = Discussion.find(:last, :conditions=>{:project_id => project.id})%>
 	<% assignment_detail = Assignment.find(:last, :conditions => {:project_id => project.id}, :limit => 1) %>
 	<% if !assignment_detail %>
-          &gt;&nbsp;&nbsp;<%= link_to project.title, {:controller => 'discussion', :action => 'show', :id => discussion.id, :project_id => project.id}%><br/>
+    <%if discussion.nil?%>
+        &gt;&nbsp;&nbsp;<%= link_to project.title, :controller => 'assignment', :action => 'show', :id => project.id %>
+      <%else%>
+      	&gt;&nbsp;&nbsp;<%= link_to project.title, :controller => 'discussion', :action => 'show', :id => discussion.id, :project_id => project.id %>
+      <%end%><br/>
 	<% else %>
 	&gt;&nbsp;&nbsp;<%= link_to assignment_detail.title, {:controller => 'assignment', :action => 'show', :id => project.id }%><br/>
 	<% end %>
