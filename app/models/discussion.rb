@@ -1,8 +1,12 @@
 class Discussion < ActiveRecord::Base
+
+  #relationship
   belongs_to :project
   belongs_to :user
   belongs_to :heatmap_type
   has_many :heatmaps
+
+
   
   #named_scope :is_last, :conditions => {:is_published => true}
 

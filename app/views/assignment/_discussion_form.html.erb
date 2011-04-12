@@ -6,7 +6,7 @@
     
       <br/>
   <% form_for :new_discussion,
-            :html => {:id => "top_form", :multipart => true},
+            :html => {:id => "top_form", :multipart => true, :onsubmit => "return validateForm()"},
             :url => {:controller => 'discussion', :action => 'create'} do |f|%>
       <p>Discussion Title: <%= f.text_field :title %></p>
   <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><b>
@@ -21,9 +21,9 @@
     <%= f.check_box 'has_heatmap', :id=>'has_heatmap'%>
   </p>
     <% field_set_tag 'Heatmap Type', :id => 'heatmap_type',:class=>'display_none' do%>
-      <%= f.radio_button :heatmap_type_id, 1%>
+      <%= f.radio_button :heatmap_type_id, 1, :checked => true%>
       <%= label_tag 'Image'%>
-      <%= f.radio_button :heatmap_type_id, 2%>
+      <%= f.radio_button :heatmap_type_id, 2, :checked => false%>
       <%= label_tag 'Text:'%><br/>
     <% end%>
 
@@ -71,7 +71,7 @@
   </div>
   <% end %>
 <% content_for :scripts do -%>
-  <%= javascript_include_tag "heatmap_type"%>
+  <%= javascript_include_tag "heatmap_type", "discussionformValidator"%>
 <%end%>
 <!-- End Discussion Form -->
 
