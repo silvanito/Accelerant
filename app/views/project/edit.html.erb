@@ -26,18 +26,18 @@
 
 
 <%= f.check_box :response_box %> Show "response box"<br/>
+<%if self.current_user.admin?%>
+  <p>
+  	Moderator:<br/>
+  	<%=  select("this_project", "moderator_id", User.find(:all, :conditions => { :moderator => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+  </p>
 
-<p>
-	Moderator:<br/>
-	<%=  select("this_project", "moderator_id", User.find(:all, :conditions => { :moderator => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
-</p>
 
-
-<p>
-	Client:<br/>
-	<%=  select("this_project", "client_id", User.find(:all, :conditions => { :client => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
-</p>
-
+  <p>
+  	Client:<br/>
+  	<%=  select("this_project", "client_id", User.find(:all, :conditions => { :client => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+  </p>
+<%end%>
 <p>
 	Theme:<br/>
 	<%=  select("this_project", "theme", Themes.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
