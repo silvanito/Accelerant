@@ -49,47 +49,49 @@
 <p>
 <%= f.check_box :lock %> This project is locked
 </p>
+<%if self.current_user.admin%>
+  <fieldset>
+  <legend>Sortable Lists</legend>
+  <%= link_to "Add a new list", :controller => "sortables", :action => "new", :id => params[:id] %><br/>
+  <% unless @sortables.empty? %>
 
-<fieldset>
-<legend>Sortable Lists</legend>
-<%= link_to "Add a new list", :controller => "sortables", :action => "new", :id => params[:id] %><br/>
-<% unless @sortables.empty? %>
+  <% for sortable in @sortables %>
 
-<% for sortable in @sortables %>
+    <%= sortable.title %>
+  &nbsp;<%= link_to "Edit", :controller => "sortables", :action => "edit", :id => sortable.id %>
+  &nbsp;<%= link_to "View", :controller => "sortables", :action => "show", :id => sortable.id %>
+  &nbsp;<%= link_to "CSV Report", :controller => 'usersortables', :action => 'csv', :id => sortable.id, :format => 'csv' %>
+  <br/>
+  <% end %>
 
-  <%= sortable.title %>
-&nbsp;<%= link_to "Edit", :controller => "sortables", :action => "edit", :id => sortable.id %>
-&nbsp;<%= link_to "View", :controller => "sortables", :action => "show", :id => sortable.id %>
-&nbsp;<%= link_to "CSV Report", :controller => 'usersortables', :action => 'csv', :id => sortable.id, :format => 'csv' %>
-<br/>
-<% end %>
+  <% else %>
 
-<% else %>
+    <%= link_to "Create a sortable list", :controller => "sortables", :action => "new", :id => params[:id] %>
+  <% end %>
+  </fieldset>
 
-  <%= link_to "Create a sortable list", :controller => "sortables", :action => "new", :id => params[:id] %>
-<% end %>
-</fieldset>
+  <fieldset>
+  <legend>Perception Maps</legend>
 
-<fieldset>
-<legend>Perception Maps</legend>
+  <%= link_to "Add a new map", :controller => "groupables", :action => "new", :id => params[:id] %><br/>
+  <% unless @groupables.empty? %>
 
-<%= link_to "Add a new map", :controller => "groupables", :action => "new", :id => params[:id] %><br/>
-<% unless @groupables.empty? %>
+  <% for groupable in @groupables %>
 
-<% for groupable in @groupables %>
+    <%= groupable.title %>
+  &nbsp;<%= link_to "Edit", :controller => "groupables", :action => "edit", :id => groupable.id %>
+  &nbsp;<%= link_to "View", :controller => "groupables", :action => "show", :id => groupable.id %>
+  &nbsp;<%= link_to "Report", :controller => "groupables", :action => "export_to_csv", :id => groupable.id %>
+  <br/>
+  <% end %>
 
-  <%= groupable.title %>
-&nbsp;<%= link_to "Edit", :controller => "groupables", :action => "edit", :id => groupable.id %>
-&nbsp;<%= link_to "View", :controller => "groupables", :action => "show", :id => groupable.id %>
-&nbsp;<%= link_to "Report", :controller => "groupables", :action => "export_to_csv", :id => groupable.id %>
-<br/>
-<% end %>
+  <% else %>
 
-<% else %>
+    <%= link_to "Create a new perception map", :controller => "groupables", :action => "new", :id => params[:id] %>
+  <% end %>
+  </fieldset>
+<%end%>
 
-  <%= link_to "Create a new perception map", :controller => "groupables", :action => "new", :id => params[:id] %>
-<% end %>
-</fieldset>
 <p><%= submit_tag 'Enter' %></p>
 <% end -%>
 </div>
