@@ -28,6 +28,12 @@ class ProjectController < ApplicationController
   end
   
   def edit
+    case self.current_user.rol.to_sym
+      when :admin
+        @themes = Theme.find(:all)
+      when :moderator
+        @themes = Theme.find(:all, :conditions=>{:owner => self.current_user.id})
+    end
     @this_project = Project.find(params[:id])
     @sortables = Sortables.find_all_by_project_id(params[:id])
     @groupables = Groupables.find_all_by_project_id(params[:id])

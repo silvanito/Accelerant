@@ -40,7 +40,7 @@
 <%end%>
 <p>
 	Theme:<br/>
-	<%=  select("this_project", "theme", Themes.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+	<%=  select("this_project", "theme", @themes.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
 </p>
 
 <p>

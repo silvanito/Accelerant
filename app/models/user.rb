@@ -4,12 +4,15 @@ class User < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
+  #relatioship
   has_many :comments
   has_many :replies
   has_many :heatmaps
-  belongs_to :user_assignments
   has_many :report_comments
+  has_many :themes, :foreign_key => :owner
+  belongs_to :user_assignments
 
+  #scopes
   named_scope :is_moderator, :conditions => {:moderator => true}
   named_scope :is_admin, :conditions => {:admin => true}
   named_scope :is_participant, :conditions => {:participant => true}
@@ -72,6 +75,17 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
+  def rol
+    if self.admin
+      return "admin"
+    elsif self.moderator
+      return "moderator"
+    elsif self.client
+      return "client"
+    else
+      return "participant"
+    end
+  end
   
   protected
     

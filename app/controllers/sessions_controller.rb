@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
-    @theme = Themes.find_by_name(params["id"])
+    @theme = Theme.find_by_name(params["id"])
   end
 
   def create
@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
       if user.moderator?
         @last_ass = Project.find(:last, :conditions => {:moderator_id => self.current_user.id })
         @ass = Project.find(@last_ass.id) unless @last_ass.nil?
-        @theme = Themes.find(@ass.theme) unless @ass.nil?
+        @theme = Theme.find(@ass.theme) unless @ass.nil?
 
         unless @theme.nil?
           session[:theme] = @theme.id
@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
       if user.client?
         @last_ass = Project.find(:last, :conditions => {:client_id => self.current_user.id})
         @ass = Project.find(@last_ass.id)
-        @theme = Themes.find(@ass.theme)
+        @theme = Theme.find(@ass.theme)
 
         unless @theme.nil?
           session[:theme] = @theme.id

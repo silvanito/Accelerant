@@ -34,7 +34,7 @@
 
 
   if session[:theme]
-    styleTag = "style='background-color:##{Themes.find(session[:theme]).color};'"
+    styleTag = "style='background-color:##{Theme.find(session[:theme]).color};'"
   else
     styleTag = ""
   end
@@ -70,7 +70,7 @@
           <%if @project.theme == 1 %>
             <%= image_tag "logo2.jpg", :style => "float:right;", :class => "BlogNogLogo" %>
           <% else %>
-            <%= image_tag Themes.find(@project.theme).logo.url(:size100), :style => "float:right;", :class => "BlogNogLogo" %>
+            <%= image_tag Theme.find(@project.theme).logo.url(:size100), :style => "float:right;", :class => "BlogNogLogo" %>
           <% end %>
 	
     <h1><%= @project.title %></h1>
@@ -115,6 +115,7 @@
           <li><%= link_to 'Users', {:controller => 'users', :action => 'your_users'} %></li>
           <li><%= link_to 'Projects', {:controller => 'moderator'} %></li>
          <!--> <li class="last"><%#= link_to "Generate Report", :controller => 'comments', :action => 'report_comments', :id => discussion.id %><li><-->
+          <li class="last"><%= link_to 'Themes', {:controller => 'themes', :action => 'index'} %></li>
         <% end %>
 	<% if self.current_user.participant? %>
       <li ><%= link_to 'My Assignments', {:controller => 'myassignments', :action => 'show'}%></li>
@@ -150,7 +151,7 @@
         <% unless session[:theme] %>
         <a href='http://www.AccelerantResearch.com' target="_blank"><%= image_tag "Logo_final2.png" %></a>
         <% else %>
-        <%= image_tag Themes.find(session[:theme]).logo.url(:size100) %>
+        <%= image_tag Theme.find(session[:theme]).logo.url(:size100) %>
         <% end %>
         <br/>
         &copy; Copyright <%= Time.now.strftime("%Y") %> BlogNogResearch.com</div>

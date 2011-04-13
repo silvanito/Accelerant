@@ -1,7 +1,11 @@
 class Project < ActiveRecord::Base
+
+  #relationship
   has_many :comments
   has_many :user_assignments
   belongs_to :client
+
+  #scopes
   named_scope :exists, :conditions => [' 1 = 1 ']
   
   has_attached_file :photo,
