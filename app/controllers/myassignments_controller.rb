@@ -11,7 +11,7 @@ class MyassignmentsController < ApplicationController
     @your_assignments_group.each{|f| @your_assignments << f.last.first }
     @last_ass = UserAssignments.find(:last, :conditions => { :user_id => self.current_user.id})
     @ass = Project.find(@last_ass.project_id)
-    @theme = Themes.find(@ass.theme)
+    @theme = Theme.find(@ass.theme)
 #    if session[:notice_comment]
 #      session[:notice] = session[:notice_comment]
 #      session[:notice_comment] = nil
