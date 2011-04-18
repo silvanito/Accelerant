@@ -80,8 +80,7 @@
 	<%=@project.description %>
 		<% if @project.photo_file_name %>
 			<% if @project.photo_content_type =~ /image.*/  %>
-				<a href='<%=@project.photo.url%>' target="_blank">
-				<%= image_tag @project.photo.url(:medium), :style => "margin-right:10px;" %></a>
+        <%= link_to((image_tag @project.photo.url(:medium), :style => "margin-right:10px;"), :controller => "project", :action => "show_image", :id => @project.id)%>
 			<% else %>
 				&nbsp;&nbsp;<%= image_tag "download.png"%><a href='<%=@project.photo.url%>' target="_blank" style="color:#fff;">Multimedia file included.  Click here.</a>
 			<% end %>

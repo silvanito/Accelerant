@@ -110,4 +110,10 @@ class RepliesController < ApplicationController
     render :text => "updated"
   end
 
+  def show_image
+    @reply = Reply.find(params[:id])
+    @image = @reply.photo.url(:large)
+    render :action => "show_image", :layout => "images"
+  end
+
 end

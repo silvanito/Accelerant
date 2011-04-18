@@ -62,4 +62,9 @@ class ProjectController < ApplicationController
     end
   end
 
+  def show_image
+    @project = Project.find(params[:id])
+    @image = @project.photo.url(:large)
+    render :action => "show_image", :layout => "images"
+  end
 end

@@ -13,16 +13,19 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :report_comments
   map.update_report_flag '/comments/update_report_flag', :controller => "comments", :action => "update_report_flag", :method => :post
   map.report_coments '/comments/report_comments/:id', :controller => "comments", :action => "report_comments"
+  map.show_image '/comments/show_image', :controller => "comments", :action => "show_image/:id"
   map.resources :replies, :belongs_to => :comments
   map.update_report_flag '/replies/add_to_report', :controller => "replies", :action => "add_to_report", :method => :post
+  map.show_image '/replies/show_image', :controller => "replies", :action => "show_image/:id"
   map.resources :subcomments, :belongs_to => :comments
   map.resources :client, :has_many => :projects
   map.resources :project, :has_many => :assignments
+  map.show_image '/project/show_image', :controller => "project", :action => "show_image/:id"
   map.resources :assignment, :has_many => :participants
   map.resources :discussion, :belongs_to => :projects
   map.resources :discussion, :belongs_to => :projects
   map.discussion_show 'discussion_show', :controller => "discussion", :action => "discussion_show"
-  map.show_image '/discussion/show_image', :controller => "discussion", :action => "show_image"
+  map.show_image '/discussion/show_image', :controller => "discussion", :action => "show_image/:id"
   map.comment '/comment', :controller => 'comment', :action => 'show'
   map.comment_heatmap '/comment_heatmap', :controller=>"comments", :action => "comment_heatmap"
   map.importer '/importer', :controller => 'importer', :action => 'index'

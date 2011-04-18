@@ -29,11 +29,7 @@ module CommentsHelper
 		if comment.photo_content_type
       if comment.photo_content_type =~ /image.*/
         #out = out + "<a href='#{comment.photo.url}' class='MagicThumb' rel='buttons:hide' target='_blank' >"
-        out = out + "<a href='#{comment.photo.url}' target='_blank' >"
-        #out = out + "<a href='#{comment.photo.url}' rel='zoombox' >"
-        out = out + image_tag(comment.photo.url(:thumb), :style => 'margin-left:1px;')
-        out = out + "<span>&nbsp;</span>"
-        out = out + "</a>"
+        out = out + link_to(image_tag(comment.photo.url(:thumb), :style => 'margin-left:1px;'), :controller => "comments", :action => "show_image", :id => comment.id)
       else
         out = out + "<p><a href='#{comment.photo.url}' target='_blank'>View attached file here.</a>"
         out = out + image_tag("download.png")

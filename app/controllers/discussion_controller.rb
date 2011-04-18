@@ -1,8 +1,10 @@
 class DiscussionController < ApplicationController
   before_filter :login_required
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show, :heatmap_admin_result
+    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show, :heatmap_admin_result, :show_image
   end
+
+
 
   def new
     @discussion = Discussion.new
@@ -214,5 +216,11 @@ class DiscussionController < ApplicationController
         format.xml { render :xml => {:path => heatmap_admin_result} } 
       end
     end
+  end
+  
+  def show_image
+    @discussion = Discussion.find(params[:id])
+    @image = @discussion.media.url
+    render :action => "show_image", :layout => "images"
   end
 end

@@ -13,9 +13,7 @@
   <div class="discussionWidget"><%= discussions.content %>
   <% if discussions.media_content_type %>
 		<% if discussions.media_content_type =~ /image.*/  %>
-			<a href='<%=discussions.media.url%>' target="_blank">
-			<%= image_tag discussions.media.url(:small), :style => "margin-left:40px;" %>
-			</a>
+      <%= link_to( (image_tag discussions.media.url(:small), :style => "margin-left:40px;"), :controller => "discussion", :action => "show_image", :id => discussions.id)%>
 		<% else %>
 			<p><a href='<%=discussions.media.url%>' target="_blank">View attached file here.</a><%= image_tag "download.png"%></p>
 		<% end %>

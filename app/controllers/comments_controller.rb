@@ -117,6 +117,12 @@ class CommentsController < ApplicationController
     end
   end 
 
+
+  def show_image
+    @comment = Comment.find(params[:id])
+    @image = @comment.photo.url(:medium)
+    render :action => "show_image", :layout => "images"
+  end
 #  def report_comments
 #    @discussion = Discussion.find(params[:id])
 #    @project = Project.find(@discussion.project_id)
