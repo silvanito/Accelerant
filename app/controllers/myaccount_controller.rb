@@ -15,7 +15,7 @@ class MyaccountController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    @user.update_attributes(params[:user])
+    @user.update_attributes_as_user(params[:user], self.curret_user)
     if @user.errors.empty?
       flash[:notice] = "Updated!"
     else
