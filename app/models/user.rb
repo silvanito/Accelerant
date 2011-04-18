@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
+
   
 
   # HACK HACK HACK -- how to do attr_accessible from here?
@@ -86,9 +87,41 @@ class User < ActiveRecord::Base
       return "participant"
     end
   end
+
+  def upadate_attributes_as_user(values, user)
+    values.each do |attribute, value|
+      # Update the attribute if the user is allowed to
+      self.send("#{attribute}=", value) if  !user.can_modify?(attribute).nil?
+    end
+    save
+  end
   
+  def can_modify?(attribute)
+    case attribute.to_sym
+      when :login
+        return true if self.admin || self.moderator
+      when :name
+        return true unless self.client
+      when :password
+        return true unless self.client
+      when :password_confirmation
+        return true unless self.client
+      when :admin
+        return true unless self.client
+      when :client
+        return true unless self.client
+      when :moderator
+        return true unless self.client
+      when :participant
+        return true unless self.client
+      else
+        return true
+    end
+  end
+
   protected
-    
+
+
 
 
 end
