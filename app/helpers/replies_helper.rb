@@ -81,7 +81,7 @@ module RepliesHelper
         end
       end
     end
-    if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) )
+    if (self.current_user.admin || self.current_user.moderator || (self.current_user.id == replies.user_id) || self.current_user.client )
       @follows = FollowUps.find(:all, :conditions => {:reply_id => replies.id}, :order => "id ASC")
       @follows_last = FollowUps.find(:last, :conditions => {:reply_id => replies.id}, :order => "id ASC")
     else
