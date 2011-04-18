@@ -2,7 +2,7 @@ class ProjectController < ApplicationController
   before_filter :login_required
 
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :new, :create, :edit, :update, :drop
+    ssl_required :index, :new, :create, :edit, :update, :drop, :show_image
   end
 
   def index

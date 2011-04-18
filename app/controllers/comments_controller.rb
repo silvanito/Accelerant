@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_filter :login_required
 
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :update, :new, :create, :get, :destroy, :sort, :reorder, :comment_heatmap, :update_report_flag
+    ssl_required :index, :show, :update, :new, :create, :get, :destroy, :sort, :reorder, :comment_heatmap, :update_report_flag, :show_image
   end
 
   
