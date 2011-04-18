@@ -4,7 +4,7 @@ height: 100%;
 min-height:100%;
 width: 100%;
 }
-body,form,img,p,h1,h2,h3,ul,ol,li,input,div {
+body,form,img,p,h1,h2,h3,ul,ol,input,div {
 	margin:0px;
 	padding:0px;
 }
@@ -535,4 +535,15 @@ filter: flipv fliph;
 }
 .red{
   background-color: #FECDCA;
+}
+ol, ul{
+  margin: 0 0 0 44px;
+}
+ol{
+
+  list-style-type: decimal;
+}
+ul{
+
+  list-style-type: disc;
 }
