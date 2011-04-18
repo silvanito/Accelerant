@@ -63,7 +63,7 @@ class CommentsController < ApplicationController
       @comment.for_report = 0
       @comment.save
       session[:comment_id] = @comment.id
-      session[:notice_comment] = "Preparing your heatmap result. Please wait!."
+      session[:notice_comment] = "Preparing your response.  Please wait."
       session[:comment_heatmap] = "display_none"
       render :action => :comment_heatmap
       #redirect_to :controller => "myassignments", :action => "show"
