@@ -34,12 +34,16 @@ class ProjectController < ApplicationController
       when :moderator
         @themes = Theme.find(:all, :conditions=>{:owner => self.current_user.id})
     end
+    
     @this_project = Project.find(params[:id])
     @sortables = Sortables.find_all_by_project_id(params[:id])
     @groupables = Groupables.find_all_by_project_id(params[:id])
   end
   
   def update
+    if params[:this_project][:theme].blank?
+      params[:this_project][:theme] = 1;
+    end
     @this_project = Project.find(params[:id])
     @this_project.update_attributes(params[:project])
     @this_project.update_attributes(params[:this_project])
