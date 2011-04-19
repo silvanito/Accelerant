@@ -21,3 +21,7 @@
 <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
   
 </div>
+<% if self.current_user.admin || self.current_user.moderator %>
+<%= link_to "CSV", :controller => 'comment', :action => 'export_to_csv', :id => params[:project_id], :format => 'csv' %> 
+<%= link_to "RTF", :controller => 'comment', :action => 'export_to_rtf', :id => params[:project_id], :format => 'rtf' %>
+<%end%>
