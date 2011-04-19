@@ -48,7 +48,7 @@
 	<% if logged_in?%>
 	
 	<%if self.current_user.admin? %>
-	<%= link_to "Home", :controller => "assignment", :action => "index" %>
+	<%= link_to "Home", :controller => 'project', :action => 'index'%>
 	<%end%>
 	<%if self.current_user.moderator?%>
 		<%= link_to "Home", :controller => "moderator", :action => "index"%>

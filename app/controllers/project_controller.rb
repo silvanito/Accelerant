@@ -42,7 +42,7 @@ class ProjectController < ApplicationController
   
   def update
     if params[:this_project][:theme].blank?
-      params[:this_project][:theme] = 1;
+      params[:this_project][:theme] = 1
     end
     @this_project = Project.find(params[:id])
     @this_project.update_attributes(params[:project])
