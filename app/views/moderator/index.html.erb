@@ -1,4 +1,4 @@
-<% unless session[:theme].nil? || session[:theme].blank? %>
+<% if session[:theme].nil? || session[:theme].blank? %>
   <%= image_tag "BlogNog2.png", :style => "float:right;", :class => "BlogNogLogo" %>
 <% else %>
   <%= image_tag Theme.find(session[:theme]).logo.url(:size200), :style => "float:right;", :class => "BlogNogLogo" %>
