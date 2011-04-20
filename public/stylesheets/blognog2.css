@@ -547,3 +547,8 @@ ul{
 
   list-style-type: disc;
 }
+#notice{
+  position: fixed;
+  top: 70%;
+  left: 50%;
+}

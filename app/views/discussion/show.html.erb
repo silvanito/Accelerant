@@ -19,7 +19,10 @@
 
 
 <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
-  
+  <div id="notice" style="display:none;">
+    <%= image_tag "loader.gif"%><br/>
+    <span>Preparing your response.  Please wait.</span>
+  </div>
 </div>
 <% if self.current_user.admin || self.current_user.moderator %>
 <%= link_to "CSV", :controller => 'comment', :action => 'export_to_csv', :id => params[:project_id], :format => 'csv' %> 
