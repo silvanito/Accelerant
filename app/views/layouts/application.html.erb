@@ -85,6 +85,11 @@
 			<% else %>
 				&nbsp;&nbsp;<%= image_tag "download.png"%><a href='<%=@project.photo.url%>' target="_blank" style="color:#fff;">Multimedia file included.  Click here.</a>
 			<% end %>
+    <%elsif @project.moderator_id%>
+      <%moderator = User.find(@project.moderator_id)%>
+      <%unless moderator.nil?%>
+        <%= image_tag moderator.avatar.url(:medium) %>
+      <%end%>
 		<% end %>
 
 	</p>
