@@ -74,7 +74,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    heatmaps = self.current_user.heatmaps
+    heatmaps = self.current_user.heatmaps unless self.current_user.nil?
     unless heatmaps.empty?
       self.current_user.heatmaps.each do |heatmap|
         heatmap.delete_tmp_image
