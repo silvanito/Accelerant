@@ -18,7 +18,7 @@
 	<% end %>
 	Upload File:<br/>
 	<%= f.file_field :photo %><br/>
-  <strong>Moderator's avatar will be displayed, If you don't upload any photo.</strong>
+  <strong>Moderator's avatar will be displayed by default, If you don't upload any photo.</strong>
 </p>
 
 
@@ -41,6 +41,11 @@
 <p>
 	Theme:<br/>
 	<%=  select("this_project", "theme", @themes.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+</p>
+
+<p><%= label_tag 'Project Email Support:' %><br/>
+  <%= f.text_field :email_support %><br/>
+  by default is <b>info@accelerantresearch.com</b>
 </p>
 
 <p>
