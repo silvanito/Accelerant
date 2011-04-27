@@ -1,7 +1,11 @@
-    parent.document.getElementById('notice').style.display='none';
-    parent.document.getElementById('container').style.opacity='1';
 <%unless @comment_id.blank?%>
+  parent.document.getElementById('notice').style.display='none';
+  parent.document.getElementById('container').style.opacity='1';
+  parent.document.getElementById('container').style.opacity='1';
   $('<%= escape_javascript("report_comments_#{@comment_id}")%>').update("<%= escape_javascript(render :partial=>'index', :locals=>{:comment_id => @comment_id, :subcomment_id => @subcomment_id}) %>")
 <%else%>
+  parent.document.getElementById('notice').style.display='none';
+  parent.document.getElementById('container').style.opacity='1';
+  parent.document.getElementById('container').style.opacity='1';
   $('<%= escape_javascript("report_subcomments_#{@subcomment_id}")%>').update("<%= escape_javascript(render :partial=>'index', :locals=>{:comment_id => @comment_id, :subcomment_id => @subcomment_id}) %>")
 <%end%>
