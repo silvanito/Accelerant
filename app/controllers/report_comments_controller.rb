@@ -40,7 +40,7 @@ class ReportCommentsController < ApplicationController
       end
       
       respond_to do |format|
-        format.js 
+        format.js { render :content_type => 'text/javascript' }
       end
     else
       respond_to do |format|
