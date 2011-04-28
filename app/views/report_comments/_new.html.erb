@@ -1,5 +1,5 @@
 <%- remote_form_for @report_comment, :url => {:controller=>"report_comments", :action => 
-"create" }, :html => { :multipart => true, :target => 'iframe'}, :loading => "delay();", :loaded  => "$('container').setStyle({opacity: 1});" do |f|%>
+"create" }, :html => { :multipart => true, :target => 'iframe'}, :loading => "delay();", :loaded  => "document.getElementById('notice').style.opacity: 1;" do |f|%>
     <%= f.error_messages %>
     <%= f.hidden_field :comment_id, :value => comment_id %>
     <%= f.hidden_field :subcomment_id, :value => subcomment_id %>
