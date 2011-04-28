@@ -1,7 +1,5 @@
-$('container').setStyle({opacity: 1});
 parent.document.getElementById('notice').style.display='none';
 <%unless @comment_id.blank?%>
-  $('<%= escape_javascript("report_comments_#{@comment_id}")%>').up().up().up().up().up().setStyle({opacity: 1});
   $('<%= escape_javascript("report_comments_#{@comment_id}")%>').update("<%= escape_javascript(render :partial=>'index', :locals=>{:comment_id => @comment_id, :subcomment_id => @subcomment_id}) %>");
 <%else%>
 
