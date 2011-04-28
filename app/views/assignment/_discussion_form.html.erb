@@ -51,13 +51,24 @@
 <p>Select participants to be included in this discussion topic below.Click on ‘Select All’ to include all participants in this discussion topic. <strong> Important note: If you want your question asked among only certain groups of participants, use the ‘Set Filter’ function to the left, and the participants that have the characteristic(s) your filter is set to will automatically be checked.</strong></p>
 <br/>
 	<input id="check_all" name="check_all" type="checkbox" onclick="Form.getInputs('top_form', 'checkbox').each(function(box){if(box.id != 'has_heatmap') box.checked = $('check_all').checked})" /> <strong>Select All</strong><br/><br/>
-	<% for participant in @project_members %>
-        <% if participant.user %>
-		<div class="cellClass150"><%= check_box("comment_assignment", participant.user.id, {}, "#{participant.user.id}") %>  
-                <% if !participant.user %>
+  <%for participant in @checked_members%>
+    <% if participant %>
+		<div class="cellClass150"><%= check_box("comment_assignment", participant.id, {:checked=>true}, "#{participant.id}") %>  
+                <% if !participant %>
                   &nbsp;
                 <% else %>
-                  <%= participant.user.name %>
+                  <%= participant.name %>
+                <% end %>
+                &nbsp;&nbsp;</div>
+        <% end  %>
+  <%end%>
+	<% for participant in @project_members %>
+        <% if participant %>
+		<div class="cellClass150"><%= check_box("comment_assignment", participant.id, {}, "#{participant.id}") %>  
+                <% if !participant %>
+                  &nbsp;
+                <% else %>
+                  <%= participant.name %>
                 <% end %>
                 &nbsp;&nbsp;</div>
         <% end  %>

@@ -43,10 +43,33 @@ class DiscussionController < ApplicationController
   def show
     @testusers = ""
     @testusers_report = []
+    @project_members = []
+    @checked_members = []
     if self.current_user.admin
       @new_discussion = Discussion.new
     end
-    @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+    if cookies[:filter] == "yes"
+      users = []
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      filter_users = User.find(:all, :conditions => cookies[:sql])
+      assignments.each do |participant|
+        users << participant.user
+      end 
+      users.uniq!
+      users.each do |user|
+        if filter_users.include?(user)
+          @checked_members << user 
+        else
+          @project_members << user
+        end
+      end
+    else
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      assignments.each do |participant|
+        @project_members << participant.user
+      end 
+      @project_members.uniq!
+    end
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
     @project = Project.find(params[:project_id])
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:project_id]})
