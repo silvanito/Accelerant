@@ -46,18 +46,18 @@
 <div class="responseWidget">
   <%= f.text_area :comment, :size => "60 x 10", :class => 'rich_text_editor' %><br/>
   Upload a photo or file:<br/>
-  <%= f.file_field :photo %>
+  <%= f.file_field :photo%>
   <% if logged_in? %>
     <%= f.hidden_field :user_id, :value => self.current_user.id %>
   <% end %>
   <%= f.hidden_field :project_id, :value => project_id %>
   <%= f.hidden_field :discussion_id, :value => discussions.id %>
   <% if !@project.one_to_one && self.current_user.moderator %>
-    Hide responses until answered:
-    <%= f.check_box :hide_until_answered %>
+    <label>Hide responses until answered:</label>
+    <%= f.check_box :hide_until_answered, :class=>"left"  %>
   <% end %>
 </div>
-    <div class="postButton clear" style="margin-top:-20px;">
+    <div class="postButton clear" style="margin-top:10px;">
       <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()" %>
     </div>
       </div>
