@@ -1,8 +1,10 @@
 <div id="rightColumn">
+  <br/>
   <h2>
     Edit Category
   </h2>
   <br/>
+  <%i = 0%>
   <% form_for [@category] do |f|%>
     <p>
       <%= f.label :name%>
@@ -12,10 +14,18 @@
     <br/>
     <h2>Assign Project</h2>
      <%for project in @projects%>
-       <%= f.radio_button :project_id, project.id, :onclick => "hideDiscussions();"%>
-       <label><%= project.title%> </label>
+        <%if i%3 == 0%>
+          <%discussion_class = "clear"%>
+        <%else%>
+          <%discussion_class = ""%>
+        <%end%>
+       <p class = "discussion_element  <%=discussion_class%>">
+         <%= f.radio_button :project_id, project.id%>
+         <label><%= project.title%> </label>
+       </p>
+       <%i = i+1%>
      <%end%>
-     <%=link_to "unselect project", "#", :onclick=>"unselectRadio(#{@category.id});"%>
+     <%=link_to "unselect project", "#", :onclick=>"unselectRadio(#{@category.id});", :class => "unselect_link"%>
      <br/>
      <br/> 
      <%= f.submit 'Save Changes', :class=> "right"%>
