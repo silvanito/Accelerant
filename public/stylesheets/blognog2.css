@@ -557,6 +557,11 @@ ul{
   margin:20px 15px 0 0;
   width: 160px;
 }
+.project_element{
+  float: left;
+  margin:30px 15px 0 0;
+  width: 160px;
+}
 .discussion_list{
   list-style-type: none;
   margin: 0;

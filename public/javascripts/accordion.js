@@ -123,5 +123,5 @@ var Accordion = Class.create({
 });
 
 document.observe("dom:loaded", function(){
-    accordion = new Accordion("test-accordion", 2);
+    accordion = new Accordion("test-accordion", 1);
 })

@@ -2,6 +2,8 @@
   <br/>
   <div id="discussions">
     <h2>Assing Discussions</h2>
+    <br/>
+    <strong><%=link_to "Return to Categories", categories_path%></strong>
     <%i = 0%>
     <% form_for [@category], :url => assign_path do |f| %>
       <%unless @category.project_id.nil?%>

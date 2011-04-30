@@ -3,6 +3,7 @@
   <h2>
     Edit Category
   </h2>
+ 
   <br/>
   <%i = 0%>
   <% form_for [@category] do |f|%>
@@ -12,6 +13,7 @@
     </p>
     <br/>
     <br/>
+    <strong><%=link_to "Return to Categories", categories_path%></strong>
     <h2>Assign Project</h2>
      <%for project in @projects%>
         <%if i%3 == 0%>
@@ -19,7 +21,7 @@
         <%else%>
           <%discussion_class = ""%>
         <%end%>
-       <p class = "discussion_element  <%=discussion_class%>">
+       <p class = "project_element  <%=discussion_class%>">
          <%= f.radio_button :project_id, project.id%>
          <label><%= project.title%> </label>
        </p>

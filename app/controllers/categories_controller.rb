@@ -23,6 +23,9 @@ class CategoriesController < ApplicationController
 
   def destroy
     category = Category.find(params[:id])
+    unless category.discussions.empty?
+      category.discussions.delete_all
+    end
     category.delete
     @categories = Category.all
     @category = Category.new
@@ -58,7 +61,12 @@ class CategoriesController < ApplicationController
 
   def assigned
     @category = Category.find(params[:id])
-    @discussions = @category.project.discussions.find(:all, :conditions => {:category_id => nil}) +  @category.project.discussions.find(:all, :conditions => {:category_id => @category.id})
+    unless @category.project.nil?
+      @discussions = @category.project.discussions.find(:all, :conditions => {:category_id => nil}) +  @category.project.discussions.find(:all, :conditions => {:category_id => @category.id})
+    else
+      flash[:notice] = "Please first edit the category and assign a project"
+      redirect_to categories_path
+    end
   end
 
   def assign
