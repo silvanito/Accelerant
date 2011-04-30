@@ -566,6 +566,7 @@ ul{
 }
 div.accordion {
 	position: relative; /* required for bounding */
+  margin: 15px 0 0 0;
 }
 
 .accordion-toggle{
