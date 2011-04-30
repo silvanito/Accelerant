@@ -559,7 +559,7 @@ ul{
 }
 .project_element{
   float: left;
-  margin:30px 15px 0 0;
+  margin: 40px 15px 0 0;
   width: 160px;
 }
 .discussion_list{
@@ -578,7 +578,9 @@ div.accordion {
 	position: relative; /* required for bounding */
   margin: 15px 0 0 0;
 }
-
+.submit_button{
+  margin: 20px 0 0 0;
+}
 .accordion-toggle{
 	background: #07395A;
 	background-image:url(../img/off.jpg);
