@@ -4,6 +4,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   belongs_to :heatmap_type
+  belongs_to :category
   has_many :heatmaps
 
 

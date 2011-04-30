@@ -1,0 +1,27 @@
+<div id="rightColumn">
+  <h2>
+    Edit Category
+  </h2>
+  <br/>
+  <% form_for [@category] do |f|%>
+    <p>
+      <%= f.label :name%>
+      <%= f.text_field :name%>
+    </p>
+    <br/>
+    <br/>
+    <h2>Assign Project</h2>
+     <%for project in @projects%>
+       <%= f.radio_button :project_id, project.id, :onclick => "hideDiscussions();"%>
+       <label><%= project.title%> </label>
+     <%end%>
+     <%=link_to "unselect project", "#", :onclick=>"unselectRadio(#{@category.id});"%>
+     <br/>
+     <br/> 
+     <%= f.submit 'Save Changes', :class=> "right"%>
+  <%end%>
+
+</div>
+<% content_for :scripts do -%>
+  <%= javascript_include_tag "categories"%>
+<%end%>

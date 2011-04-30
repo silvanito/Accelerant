@@ -7,10 +7,18 @@
   <% if params[:sort] != "by_user"%>
   <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
   <% else %>
+  <br/>
   <%= link_to "Default View", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => '' %>
   <% end %>
   <% end %>
-  <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
+  <br/>
+  <%= link_to "Show Discussions by category", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :categorize => 'true' %>
+  <%if !@categories.empty?%>
+    <%= render :partial => 'assignment/discussion_links_by_category', :locals => {:categories => @categories} %>
+  <%else%>
+    <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
+  <%end%>
+  
 
   <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
 <% if !self.current_user.client && !@project.lock %>

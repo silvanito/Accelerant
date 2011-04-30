@@ -41,7 +41,8 @@ ActionController::Routing::Routes.draw do |map|
   map.your_users '/your_users', :controller => 'users', :action => 'your_users'
   map.heatmap_admin_result '/heatmap_admin_result.:format', :controller => 'discussion', :action => 'heatmap_admin_result'
   map.resources  :heatmap, :only => "create"
-
+  map.resources :categories, :member => {:unassign => :get, :assigned => :get}
+  map.assign '/category/:id/assign', :controller => "categories", :action => "assign"
   map.resource :session
   
   #map.root :controller => 'sessions', :action => 'new'

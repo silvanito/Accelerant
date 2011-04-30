@@ -56,7 +56,9 @@ class AssignmentController < ApplicationController
   def show
     @testusers = []
     @testusers_report = []
-    @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
+    @project_members = []
+    @checked_members = []
+    @categories = []
     #@project = Project.find(:all, :conditions => {:id => params[:id]})
     @project = Project.find(params[:id])
     @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
@@ -66,6 +68,28 @@ class AssignmentController < ApplicationController
 
     if self.current_user.admin || self.current_user.moderator
       @new_discussion = Discussion.new
+    end
+    if cookies[:filter] == "yes"
+      users = []
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      filter_users = User.find(:all, :conditions => cookies[:sql])
+      assignments.each do |participant|
+        users << participant.user
+      end 
+      users.uniq!
+      users.each do |user|
+        if filter_users.include?(user)
+          @checked_members << user 
+        else
+          @project_members << user
+        end
+      end
+    else
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      assignments.each do |participant|
+        @project_members << participant.user
+      end 
+      @project_members.uniq!  
     end
     unless @discussions.nil?
       @discussion = Discussion.find(:last)

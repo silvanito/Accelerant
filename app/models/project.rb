@@ -2,7 +2,9 @@ class Project < ActiveRecord::Base
 
   #relationship
   has_many :comments
+  has_many :discussions
   has_many :user_assignments
+  has_many :categories
   belongs_to :client
 
   #scopes

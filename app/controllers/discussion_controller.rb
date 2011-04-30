@@ -45,6 +45,7 @@ class DiscussionController < ApplicationController
     @testusers_report = []
     @project_members = []
     @checked_members = []
+    @categories = []
     if self.current_user.admin
       @new_discussion = Discussion.new
     end
@@ -68,7 +69,7 @@ class DiscussionController < ApplicationController
       assignments.each do |participant|
         @project_members << participant.user
       end 
-      @project_members.uniq!
+      @project_members.uniq!  
     end
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
     @project = Project.find(params[:project_id])
@@ -82,6 +83,10 @@ class DiscussionController < ApplicationController
          @discussion = Discussion.find(session[:discussion_id])
       end
     end
+    unless params[:categorize].blank?
+      @categories = @project.categories || []
+    end
+    
     unless !@discussion || @discussion.sortable.nil?
     @sortable = Sortables.find(@discussion.sortable)
     unless @sortable.nil?

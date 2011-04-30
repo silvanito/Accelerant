@@ -1,0 +1,26 @@
+<div id="rightColumn">
+  <div id="discussions">
+    <h2>Assing Discussions</h2>
+    <%i = 0%>
+    <% form_for [@category], :url => assign_path do |f| %>
+      <%unless @category.project_id.nil?%>
+          <ul class="discussion_list">
+            <%for discussion in @discussions%>
+              <%if i%3 == 0%>
+                <%discussion_class = "clear"%>
+              <%else%>
+                <%discussion_class = ""%>
+              <%end%>
+              <li class="discussion_element <%= discussion_class%>">
+                <%assigned = assigs(@category, discussion.id)%>
+                <%= check_box_tag("discussions[]", discussion.id, assigned)%>
+                <%= discussion.title%>
+              </li>
+              <%i = i+1%>
+            <%end%>
+          </ul>
+        <%= f.submit 'Assign Discussions', :class=> "clear right"%>
+      <%end%>
+    <% end %>
+  </div>
+</div>

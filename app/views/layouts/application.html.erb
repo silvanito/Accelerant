@@ -114,12 +114,14 @@
           <li><%= link_to 'Users', {:controller => 'users', :action => 'index'} %></li>
           <li ><%= link_to 'Projects', {:controller => 'project', :action => 'index'} %></li>
           <li class="last"><%= link_to 'Themes', {:controller => 'themes', :action => 'index'} %></li>
+          <li ><%= link_to 'Categories', categories_path %></li>
           <%= yield :menus%>
 	<% end %>
         <% if self.current_user.moderator? %>
           <li><%= link_to 'Users', {:controller => 'users', :action => 'your_users'} %></li>
           <li><%= link_to 'Projects', {:controller => 'moderator'} %></li>
           <li class="last"><%= link_to 'Themes', {:controller => 'themes', :action => 'index'} %></li>
+          <li ><%= link_to 'Categories', categories_path %></li>
         <% end %>
 	<% if self.current_user.participant? %>
       <li ><%= link_to 'My Assignments', {:controller => 'myassignments', :action => 'show'}%></li>
