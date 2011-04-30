@@ -3,6 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
+<% if self.current_user.participant?%>
+  <meta http-equiv="imagetoolbar" content="no" />
+<%end%>
 <title>blognog</title>
 <%= include_yui_editor_if_used %>
   <%= stylesheet_link_tag 'blognog2'%>
@@ -12,7 +15,9 @@
   <%= stylesheet_link_tag 'ie'%>
 <![endif]-->
 <%= stylesheet_link_tag 'picky_color' %>
-<%= javascript_include_tag "right_click" %>
+<% if self.current_user.participant?%>
+  <%= javascript_include_tag "right_clickie" %>
+<%end%>
 <%= stylesheet_link_tag 'zoombox'%>
 <%= javascript_include_tag "swfobject" %>
 <%= javascript_include_tag  :defaults %>
@@ -69,9 +74,9 @@
 	<div id="assignmentBox">
         
           <%if @project.theme == 1 %>
-            <%= image_tag "logo2.jpg", :style => "float:right;", :class => "BlogNogLogo" %>
+            <%= image_tag "logo2.jpg", :style => "float:right;", :class => "BlogNogLogo", :galleryimg => "no" %>
           <% else %>
-            <%= image_tag Theme.find(@project.theme).logo.url(:size100), :style => "float:right;", :class => "BlogNogLogo" %>
+            <%= image_tag Theme.find(@project.theme).logo.url(:size100), :style => "float:right;", :class => "BlogNogLogo", :galleryimg => "no" %>
           <% end %>
 	
     <h1><%= @project.title %></h1>
@@ -81,14 +86,14 @@
 	<%=@project.description %>
 		<% if @project.photo_file_name %>
 			<% if @project.photo_content_type =~ /image.*/  %>
-        <%= link_to((image_tag @project.photo.url(:medium), :style => "margin-right:10px;"), :controller => "project", :action => "show_image", :id => @project.id)%>
+        <%= link_to((image_tag @project.photo.url(:medium), :style => "margin-right:10px;", :galleryimg => "no"), :controller => "project", :action => "show_image", :id => @project.id)%>
 			<% else %>
-				&nbsp;&nbsp;<%= image_tag "download.png"%><a href='<%=@project.photo.url%>' target="_blank" style="color:#fff;">Multimedia file included.  Click here.</a>
+				&nbsp;&nbsp;<%= image_tag "download.png", :galleryimg => "no"%><a href='<%=@project.photo.url%>' target="_blank" style="color:#fff;">Multimedia file included.  Click here.</a>
 			<% end %>
     <%elsif @project.moderator_id%>
       <%moderator = User.find(@project.moderator_id)%>
       <%unless moderator.nil?%>
-        <%= image_tag moderator.avatar.url(:medium) %>
+        <%= image_tag moderator.avatar.url(:medium), :galleryimg => "no" %>
       <%end%>
 		<% end %>
 
@@ -155,9 +160,9 @@
     <div id="footer">
       <div class="copyright" >
         <% unless session[:theme] %>
-        <a href='http://www.AccelerantResearch.com' target="_blank"><%= image_tag "Logo_final2.png" %></a>
+        <a href='http://www.AccelerantResearch.com' target="_blank"><%= image_tag "Logo_final2.png", :galleryimg => "no" %></a>
         <% else %>
-        <%= image_tag Theme.find(session[:theme]).logo.url(:size100) %>
+        <%= image_tag Theme.find(session[:theme]).logo.url(:size100), :galleryimg => "no" %>
         <% end %>
         <br/>
         &copy; Copyright <%= Time.now.strftime("%Y") %> BlogNogResearch.com</div>
