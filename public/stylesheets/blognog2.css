@@ -561,6 +561,11 @@ ul{
   list-style-type: none;
   margin: 0;
 }
+.unselect_link{
+  clear: both;
+  float: left;
+  margin: 10px 0 0 0;
+}
 .clear{
   clear: both;
 }
