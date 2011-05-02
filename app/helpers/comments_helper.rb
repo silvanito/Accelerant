@@ -105,10 +105,11 @@ module CommentsHelper
     else
       @replies = Replies.find(:all, :conditions => { :comment_id => comment.id}, :order => "id ASC", :include => :user)
     end
+    displayflag = true
     for replies in @replies
-      displayflag = true
       if cookies[:filter] == "yes"
         displayflag = false
+
         cookies.to_hash.each_pair do |k, v|
           if cookies[k.to_sym].split('_')[0] == "field"
             #puts "start"
@@ -119,6 +120,7 @@ module CommentsHelper
               #displayflag = true
             #end
             testuser = User.find_by_id(replies.user.id,:conditions => cookies[:sql])
+
             if testuser.nil?
               if !User.is_participant.find_by_id(replies.user.id)
                 displayflag = true
@@ -133,15 +135,13 @@ module CommentsHelper
           end
           if cookies[:report] == "true"
             #@replies = Replies.find(:all, :conditions => {:comment_id => comment.id, :for_report => 1})
-            if replies.for_report == 0
-              displayflag = false
-            else
+            if replies.for_report == 1
               displayflag = true
+            else
+              displayflag = false
             end
-          else
-            displayflag = true
           end
-          #displayflag = filter_results(replies)
+
         end
       end
 
