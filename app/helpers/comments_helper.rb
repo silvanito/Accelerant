@@ -47,7 +47,7 @@ module CommentsHelper
           out = out + link_to_remote('Add Comment',
             :url => { :controller => 'plain', :action => 'sub_form', :id => comment.id},
             :complete => "new Effect.SlideDown('subCommentForm#{comment.id}', { duration: .5 })",
-            :update => "subCommentForm#{comment.id}")
+            :update => "subCommentForm#{comment.id}", :loading => "$('respondercomment').removeClassName('rich_text_editor')")
         end
         if (comment.user.id == self.current_user.id) || self.current_user.admin
   				out = out + " | "

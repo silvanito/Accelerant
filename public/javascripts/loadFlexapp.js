@@ -1,6 +1,7 @@
 Event.observe(window, 'load', function() {
-  
- return Event.observe('my_form', 'submit', onSubmit);
+
+  return Event.observe('my_form', 'submit', onSubmit);
+
 });
 function thisMovie(movieName) {
       if (navigator.appName.indexOf("Microsoft") != -1) {
@@ -12,6 +13,10 @@ function thisMovie(movieName) {
 }
 
 function onSubmit()
-{
-  thisMovie("HeatMap").onSubmit();
+{ 
+  movie = thisMovie("HeatMap");
+  if (movie != undefined || movie != null){
+    alert("entro");
+    thisMovie("HeatMap").onSubmit();
+  }
 }

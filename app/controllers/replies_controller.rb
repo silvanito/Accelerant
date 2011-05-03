@@ -53,6 +53,7 @@ class RepliesController < ApplicationController
           #page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'Comment posted... Thank you!';"
           page << "document.getElementById('notice').style.display='none'"
           page << "document.getElementById('container').style.opacity='1'"
+          page << "document.getElementById('container').style.filter='alpha(opacity = 100)'"
           page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'You just said #{@gunk}';"
 
           #page << "document.getElementById('subCommentForm#{@reply.comment_id}').innerHTML = '#{gunk}"
@@ -64,8 +65,9 @@ class RepliesController < ApplicationController
       #render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
       responds_to_parent do
         render :update do |page|
-          page << "document.getElementById('notice').style.display='none'"
           page << "document.getElementById('container').style.opacity='1'"
+          page << "document.getElementById('container').style.filter='alpha(opacity = 100)'"
+          page << "document.getElementById('notice').style.display='none'"
           page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'Response is too short.  Must be #{charMin} characters minimum.';"
         end
       end

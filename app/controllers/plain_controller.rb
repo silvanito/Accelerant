@@ -1,5 +1,6 @@
 class PlainController < ApplicationController
   layout 'plain'
+  uses_yui_editor
 
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :show, :showlatest, :update_count, :sub_comment_form,
@@ -25,7 +26,7 @@ class PlainController < ApplicationController
   end
 
   def sub_form
-    render :partial => "sub_form"
+    render :partial => "sub_form", :layout => "plain"
   end
   
   def show_comments
