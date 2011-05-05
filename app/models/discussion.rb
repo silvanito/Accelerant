@@ -6,6 +6,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :heatmap_type
   belongs_to :category
   has_many :heatmaps
+  has_many :comment_assignmentss
 
 
   
