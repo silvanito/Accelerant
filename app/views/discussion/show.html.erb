@@ -18,20 +18,22 @@
   <%else%>
     <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
   <%end%>
-  
+  <% @disctest =  CommentAssignments.find(:all, :conditions => {:user_id => self.current_user.id, :discussion_id => @discussion.id}) %>
 
-  <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
-<% if !self.current_user.client && !@project.lock %>
-    <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
-<% end  %>
+  <% unless @disctest.empty? & self.current_user.participant? %>
+    <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
+  <% if !self.current_user.client && !@project.lock %>
+      <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
+  <% end  %>
 
 
-<%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
-  <div id="notice" style="display:none;">
-    <%= image_tag "loader.gif"%><br/>
-    <span>Preparing your response.  Please wait.</span>
+  <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
+    <div id="notice" style="display:none;">
+      <%= image_tag "loader.gif"%><br/>
+      <span>Preparing your response.  Please wait.</span>
+    </div>
   </div>
-</div>
+<%end%>
 <% if self.current_user.admin || self.current_user.moderator %>
 <%= link_to "CSV", :controller => 'comment', :action => 'export_to_csv', :id => params[:project_id], :format => 'csv' %> 
 <%= link_to "RTF", :controller => 'comment', :action => 'export_to_rtf', :id => params[:project_id], :format => 'rtf' %>
