@@ -18,9 +18,9 @@
   <%else%>
     <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
   <%end%>
-  <% @disctest =  CommentAssignments.find(:all, :conditions => {:user_id => self.current_user.id, :discussion_id => @discussion.id}) %>
 
-  <% unless @disctest.empty? & self.current_user.participant? %>
+
+  <% unless @discussion.comment_assignmentss.find_by_user_id(self.current_user.id).nil? & self.current_user.participant? %>
     <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
   <% if !self.current_user.client && !@project.lock %>
       <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
