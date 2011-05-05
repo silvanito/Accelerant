@@ -204,15 +204,21 @@ class DiscussionController < ApplicationController
       if self.current_user.admin? || self.current_user.moderator?
       @user_assignments = params[:comment_assignment]
       if @user_assignments
-        @these_keys = @user_assignments.keys
+        @discussion.comment_assignmentss.delete_all
         @user_assignments.each do |key, value|
-          #if value=="0"
-            if value !="0"
-            @comment_assignment = CommentAssignments.new
-            @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
-            @comment_assignment.save
+          if value !="0"
+            @comment_assignment = CommentAssignments.create(:user_id => key, :discussion_id => @discussion.id)
           end
-      end
+        end
+#        @these_keys = @user_assignments.keys
+#        @user_assignments.each do |key, value|
+#          #if value=="0"
+#            if value !="0"
+#            @comment_assignment = CommentAssignments.new
+#            @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
+#            @comment_assignment.save
+#          end
+#      end
       end
     end
     redirect_to :controller => 'assignment', :action => 'show', :id => @discussion.project_id
