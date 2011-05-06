@@ -37,6 +37,8 @@ class RepliesController < ApplicationController
       #@discussion = Discussion.find(params[:reply][:discussion_id])
       #@assignment = Comment.find(:last, :conditions => {:id => params[:reply][:comment_id]})
       #redirect_to "/discussion/show/#{@discussion.id}?project_id=#{@discussion.project_id}#bottom"
+      
+      next_comment = params[:comment_number].to_i 
       responds_to_parent do
         render :update do |page|
           #page << "document.getElementById('stuff').innerHTML = '';"
@@ -51,10 +53,12 @@ class RepliesController < ApplicationController
           #@gunk = simple_format(@gunk)
           #page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = '#{@reply.content}';"
           #page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'Comment posted... Thank you!';"
+
           page << "document.getElementById('notice').style.display='none'"
           page << "document.getElementById('container').style.opacity='1'"
           page << "document.getElementById('container').style.filter='alpha(opacity = 100)'"
           page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'You just said #{@gunk}';"
+          page << "new Effect.ScrollTo($('commentSub#{next_comment}'));"
 
           #page << "document.getElementById('subCommentForm#{@reply.comment_id}').innerHTML = '#{gunk}"
           puts @gunk

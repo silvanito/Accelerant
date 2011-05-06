@@ -28,8 +28,8 @@ Upload a photo or file:<br/>
 
 <%= f.hidden_field :comment_id, :value => params[:id] %>
 <%= f.hidden_field :discussion_id, :value => comment_num.discussion_id %>
-
-<input type="hidden" name="project_id" value="<%= comment_num.project_id %>" >
+<input type="hidden" name="comment_number" value="<%= comment %>" />
+<input type="hidden" name="project_id" value="<%= comment_num.project_id %>" />
 
 <%= f.hidden_field :user_id, :value => self.current_user.id %>
 

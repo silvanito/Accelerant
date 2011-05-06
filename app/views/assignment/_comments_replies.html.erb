@@ -10,7 +10,8 @@
             #@latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => "created_at DESC", :include => :user)
             @latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => :position , :include => :user)
           end
-
+            @comment_number = 1
+            @total_comments = @latest_postings_redux.size
             for comment in @latest_postings_redux
 
 
@@ -82,6 +83,9 @@
             @testusers_report << @testusers
             @testusers = ""
           end
+
+            @comment_number += 1
+
           end
           session[:user_filters] = @testusers_report
           %>

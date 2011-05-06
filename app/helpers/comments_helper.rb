@@ -7,7 +7,7 @@ module CommentsHelper
         suppress = true
       end
     end
-    out = "<div class='clientSubComment' id='commentSub#{comment.id}'><a name='##{comment.id}'></a>"
+    out = "<div class='clientSubComment commentSub#{@comment_number}' id='commentSub#{comment.id}'><div id='commentSub#{@comment_number}'></div>"
     out = out + "<div class='subCommentAvatar'>"
     out = out + render_avatar(comment.user)
     out = out + "</div>"
@@ -42,10 +42,13 @@ module CommentsHelper
     out = out + " ago </span> <!-- #{comment.created_at}  -->"
     unless report
   		unless @project.lock 
+        unless @comment_number >= @total_comments
+          @next_comment = @comment_number + 1
+        end
         if !self.current_user.client
           out = out + " | "
           out = out + link_to_remote('Add Comment',
-            :url => { :controller => 'plain', :action => 'sub_form', :id => comment.id},
+            :url => { :controller => 'plain', :action => 'sub_form', :id => comment.id, :comment => @next_comment},
             :complete => "new Effect.SlideDown('subCommentForm#{comment.id}', { duration: .5 })",
             :update => "subCommentForm#{comment.id}", :loading => "$('respondercomment').removeClassName('rich_text_editor')")
         end

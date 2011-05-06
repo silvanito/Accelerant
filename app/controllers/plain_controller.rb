@@ -26,7 +26,7 @@ class PlainController < ApplicationController
   end
 
   def sub_form
-    render :partial => "sub_form", :layout => "plain"
+    render :partial => "sub_form", :layout => "plain", :locals => {:comment => params[:comment]}
   end
   
   def show_comments
