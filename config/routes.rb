@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.login '/login/:id', :controller => 'sessions', :action => 'new'
+  map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.add_user '/add_user', :controller => 'users', :action => 'add'
@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :discussion, :belongs_to => :projects
   map.resources :discussion, :belongs_to => :projects
   map.discussion_show 'discussion_show', :controller => "discussion", :action => "discussion_show"
+  map.discussion_show 'discussion_show.:format', :controller => "discussion", :action => "discussion_show"
   map.show_image '/discussion/show_image', :controller => "discussion", :action => "show_image/:id"
   map.comment '/comment', :controller => 'comment', :action => 'show'
   map.comment_heatmap '/comment_heatmap', :controller=>"comments", :action => "comment_heatmap"
