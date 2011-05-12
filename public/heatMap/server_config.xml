@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<environment>PRODUCTION</environment>
-	<base_url>https://67.23.9.5</base_url>
+	<base_url>*.blognogresearch.com</base_url>
 </config>
+
