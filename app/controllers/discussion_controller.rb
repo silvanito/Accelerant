@@ -72,7 +72,7 @@ class DiscussionController < ApplicationController
       @project_members.uniq!  
     end
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
-    @project = Project.find(params[:project_id])
+    @project = Project.find(params[ :project_id])
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:project_id]})
     unless params[:sort] == "by_user"
       @discussion = Discussion.find(params[:id])

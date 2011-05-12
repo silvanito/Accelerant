@@ -85,7 +85,7 @@ class AssignmentController < ApplicationController
         end
       end
     else
-      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
       assignments.each do |participant|
         @project_members << participant.user
       end 
