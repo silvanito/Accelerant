@@ -71,7 +71,7 @@ class AssignmentController < ApplicationController
     end
     if cookies[:filter] == "yes"
       users = []
-      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
       filter_users = User.find(:all, :conditions => cookies[:sql])
       assignments.each do |participant|
         users << participant.user
