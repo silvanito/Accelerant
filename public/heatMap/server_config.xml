@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<environment>PRODUCTION</environment>
-	<base_url>*.blognogresearch.com</base_url>
+	<base_url>https://www.blognogresearch.com</base_url>
+	<root_url>https://blognogresearch.com</root_url>
 </config>
 
