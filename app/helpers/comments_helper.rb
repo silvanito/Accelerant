@@ -45,6 +45,9 @@ module CommentsHelper
         unless @comment_number >= @total_comments
           @next_comment = @comment_number + 1
         end
+        if @total_comments == 0
+          @next_comment = nil
+        end
         if !self.current_user.client
           out = out + " | "
           out = out + link_to_remote('Add Comment',
