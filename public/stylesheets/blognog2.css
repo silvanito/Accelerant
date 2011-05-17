@@ -623,12 +623,10 @@ div.accordion {
 
 }
 .comment_text{
-  min-height: 200px;
   min-width: 450px;
   overflow-x: auto;
 }
 .reply_text{
-  min-height: 83px;
   min-width : 390px;
   overflow-x: auto;
 }
