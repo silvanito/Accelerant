@@ -3,5 +3,6 @@
 function delay(){
   $('container').setOpacity(0.4);
   $('notice').show();
+  return true;
 }
 
