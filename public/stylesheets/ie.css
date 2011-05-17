@@ -62,13 +62,13 @@
 .x-label    {float:right;width:640px;display:block;clear:both;margin-top:10px;text-align:center;}
 
 * html div.comment_text{
-  height: 30px;
+  height: 90px;
   width: 450px;
   overflow-x: auto;
 }
 
 * html div.reply_text{
-  height: 30px;
+  height: 50px;
   width : 390px;
   overflow-x: auto;
 }
