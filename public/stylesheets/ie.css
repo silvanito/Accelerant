@@ -47,12 +47,6 @@
 }
 
 .y-label {
-  /* rotate -90 deg, not sure if a negative number is supported so I used 270 */
-  -moz-transform: rotate(270deg);
-  -moz-transform-origin: 50% 50%;
-  -webkit-transform: rotate(270deg);
-  -webkit-transform-origin: 50% 50%;
-  /* IE support too convoluted for the time I've got on my hands... */
   display:block;
   float:right;
   margin-top:150px;
@@ -61,14 +55,17 @@
 
 .x-label    {float:right;width:640px;display:block;clear:both;margin-top:10px;text-align:center;}
 
-* html div.comment_text{
-  height: 90px;
-  width: 450px;
+.replyStyle {
+  background-color:#cdd7de;
+  margin:10px;
+  padding:8px;
+  border-top:10px solid #fff;
   overflow-x: auto;
 }
-
-* html div.reply_text{
+* html div.replyStyle{
   height: 50px;
-  width : 390px;
-  overflow-x: auto;
+  width: 410px;
+}
+.clientSubComment {
+  height: auto;
 }

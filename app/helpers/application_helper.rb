@@ -33,6 +33,8 @@ def getBrowser(bt)
     isGecko3 = (!isSafari and ua.index('rv:1.9')) ? true : false
     isIE = (!isOpera and ua.index('msie')) ? true : false
     isIE7 = (!isOpera and ua.index('msie 7')) ? true : false
+    isIE8 = (!isOpera and ua.index('msie 8')) ? true : false
+    isIE9 = (!isOpera and ua.index('msie 9')) ? true : false
     case bt
       when 0  #isKonqueror
         if ua.index('konqueror') then rs=true end
@@ -47,7 +49,7 @@ def getBrowser(bt)
       when 5  #isIE
         rs=isIE
       when 6  #isIE6
-        rs=isIE && !isIE7
+        rs=isIE && !isIE7 && !isIE8 && !isIE9
       when 7  #isIE7
         rs=isIE7
       when 8  #isGecko

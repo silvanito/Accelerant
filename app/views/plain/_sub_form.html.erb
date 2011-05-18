@@ -6,7 +6,7 @@
   
 <%  comment_num = Comment.find(params[:id])%>
 <% form_for :reply,
-:html => { :multipart => true, :target => 'iframe'},
+:html => { :multipart => true, :target => 'iframe', :id => "repliesform"},
 :url =>{:controller => 'replies', :action => 'create' } do |f| -%>
 
 <% if self.current_user.participant && safari_check != "Safari" %>
@@ -23,7 +23,11 @@ Upload a photo or file:<br/>
 <%= f.file_field :media %><br/>
 
 <div class="postButton">
-  <%= submit_tag "Post", :style => "margin-right:50px;", :onclick => "delay()"%>
+  <%if client_browser_name == "Internet Explorer"%>
+    <%= submit_tag "Post", :style => "margin-right:50px;"%>
+  <%else%>
+    <%= submit_tag "Post", :style => "margin-right:50px;", :onclick => "delay()"%>
+  <%end%>
 </div>
 
 <%= f.hidden_field :comment_id, :value => params[:id] %>

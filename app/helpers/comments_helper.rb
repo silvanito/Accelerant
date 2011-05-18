@@ -18,7 +18,9 @@ module CommentsHelper
 		out = out + "<strong><em>"
     out = out + comment.user.name
     out = out + " says:</em></strong><br />"
-    out = out + "<div class='comment_text'>"
+    unless client_browser_name == "Internet Explorer"
+      out = out + "<div class='commentText'>"
+    end
 		#out = out + Remo.new(comment.comment).to_html
     #out = out + comment.comment.gsub(/<\/?[^>]*>/,  "")
     if comment.emailed
@@ -26,7 +28,9 @@ module CommentsHelper
     else
       out = out + comment.comment
     end
-    out = out + "</div>"
+    unless client_browser_name == "Internet Explorer"
+      out = out + "</div>"
+    end
     #out = out + comment.comment
 		if comment.photo_content_type
       if comment.photo_content_type =~ /image.*/

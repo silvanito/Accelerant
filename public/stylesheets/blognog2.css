@@ -393,7 +393,13 @@ img {
     border:1px dotted #000;
 }
 
-.replyStyle {background-color:#cdd7de;margin:10px;padding:8px;border-top:10px solid #fff;}
+.replyStyle {
+  background-color:#cdd7de;
+  margin:10px;
+  padding:8px;
+  border-top:10px solid #fff;
+
+}
 
  .smiley {
        background-repeat:no-repeat;
@@ -622,11 +628,13 @@ div.accordion {
   top: 50%;
 
 }
-.comment_text{
+.commentText{
+  
   min-width: 450px;
   overflow-x: auto;
 }
-.reply_text{
+.replyText{
+
   min-width : 390px;
   overflow-x: auto;
 }

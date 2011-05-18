@@ -10,9 +10,13 @@ module RepliesHelper
     output = output + render_small_avatar(replies.user)
     output = output + "&nbsp;&nbsp;"
     #output = output + replies.content.gsub(/<\/?[^>]*>/,  "")
-    output = output + "<div class='reply_text'>"
+    unless client_browser_name == "Internet Explorer"
+      output = output + "<div class='replyText'>"
+    end
     output = output + replies.content
-    output = output + "</div>"
+    unless client_browser_name == "Internet Explorer"
+      output = output + "</div>"
+    end
     #output = output + simple_format(replies.content)
     #output = output + simple_format(Remo.new(replies.content).to_html)
 		if replies.media_file_name
