@@ -1,5 +1,6 @@
 class AssignmentController < ApplicationController
   before_filter :login_required
+
   
 
   if ENV['RAILS_ENV'] == 'production'
@@ -54,6 +55,7 @@ class AssignmentController < ApplicationController
   end
   
   def show
+    self.current_project = params[:project_id]
     @testusers = []
     @testusers_report = []
     @project_members = []

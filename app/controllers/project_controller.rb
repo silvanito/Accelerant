@@ -23,7 +23,11 @@ class ProjectController < ApplicationController
   def create
     @this_project = Project.new(params[:projects])
     @this_project.save
-    redirect_to  "/project"
+    unless @this_project.errors.empty?
+      render :action => :new
+    else
+      redirect_to  "/project"
+    end
     #render :text => "Project Created!"
   end
   
@@ -44,14 +48,26 @@ class ProjectController < ApplicationController
     if params[:this_project][:theme].blank?
       params[:this_project][:theme] = 1
     end
+    case self.current_user.rol.to_sym
+      when :admin
+        @themes = Theme.find(:all)
+      when :moderator
+        @themes = Theme.find(:all, :conditions=>{:owner => self.current_user.id})
+    end
+    @sortables = Sortables.find_all_by_project_id(params[:id])
+    @groupables = Groupables.find_all_by_project_id(params[:id])
     @this_project = Project.find(params[:id])
     @this_project.update_attributes(params[:project])
     @this_project.update_attributes(params[:this_project])
-    if self.current_user.admin
-      redirect_to "/project"
-    end
-    if self.current_user.moderator
-      redirect_to "/moderator"
+    unless @this_project.errors.empty?
+      render :action => :edit
+    else
+      if self.current_user.admin
+        redirect_to "/project"
+      end
+      if self.current_user.moderator
+        redirect_to "/moderator"
+      end
     end
   end
   

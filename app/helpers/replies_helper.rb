@@ -19,17 +19,20 @@ module RepliesHelper
     end
     #output = output + simple_format(replies.content)
     #output = output + simple_format(Remo.new(replies.content).to_html)
+
 		if replies.media_file_name
       if replies.media_content_type =~ /image.*/
         #output = output + "<a href='#{replies.media.url}' class='MagicThumb' rel='buttons:hide' target='_blank'>"
+        output = output + "<p>Image: </p><br/>"
         output = output + "<a href='#{replies.media.url}' target='_blank'>"
-        output = output + image_tag(replies.media.url(:small), :style => 'margin-left:1px;')
+        output = output + image_tag(replies.media.url(self.current_project.image_size.to_sym), :style => 'margin-left:1px;')
         output = output + "</a>"
 			else
         output = output + "<a href='#{replies.media.url}' target='_blank'>View attached file here.</a>"
         output = output + image_tag("download.png")
 			end
 		end
+    output = output + "<br/>"
 		output = output + " posted by "
     if replies.user.name == self.current_user.name
        output = output + "you "

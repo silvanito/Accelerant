@@ -41,6 +41,7 @@ class DiscussionController < ApplicationController
   end
 
   def show
+    self.current_project = Project.find(params[:project_id])
     @testusers = ""
     @testusers_report = []
     @project_members = []
