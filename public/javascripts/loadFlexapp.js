@@ -16,7 +16,6 @@ function onSubmit()
 { 
   movie = thisMovie("HeatMap");
   if (movie != undefined || movie != null){
-    alert("entro");
     thisMovie("HeatMap").onSubmit();
   }
 }
