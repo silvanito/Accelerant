@@ -638,3 +638,29 @@ div.accordion {
   min-width : 390px;
   overflow-x: auto;
 }
+.imageSizeList{
+  float: left;
+  list-style-type: none;
+  margin: 20px 0 20px 0;
+  width: 800px;
+}
+.imageSizeOptions{
+  float: left;
+  margin-right: 40px;
+}
+.imageSizeExamples{
+  float: left;
+  margin-right: 40px;
+}
+.imageSizeText{
+  font-weight: bold;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+.errorExplanation{
+  background-color: rgba(208, 43, 85, 0.1);
+  border-color: rgba(208, 43, 85, 0.15);
+  height: 50px;
+  font-size: 10px;
+  padding: 15px;
+}
