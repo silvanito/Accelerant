@@ -58,7 +58,11 @@
   <% end %>
 </div>
     <div class="postButton clear" style="margin-top:10px;">
-      <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()" %>
+      <%if getBrowser(6)%>
+        <%= submit_tag "Share", :style => "margin-right:10px;"%>
+      <%else%>
+        <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()" %>
+      <%end%>
     </div>
       </div>
     <% end %><!-- form for -->
