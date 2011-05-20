@@ -28,7 +28,7 @@
   <%end%>
 <%end%>
   <%if discussions.has_heatmap%>
-    <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id}  unless self.current_user.client%>
+    <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
   <%else%>
     <%unless self.current_user.participant || self.current_user.client%>
       <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
