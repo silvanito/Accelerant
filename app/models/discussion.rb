@@ -7,6 +7,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :category
   has_many :heatmaps
   has_many :comment_assignmentss
+  has_many :flex_modules
 
 
   
