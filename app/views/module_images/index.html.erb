@@ -1,0 +1,25 @@
+<div id="rightColumn">
+  <br/>
+  <h1>Images</h1>
+  <br/>
+  <%= render :partial => "form"%>
+  <br/>
+  <table>
+    <thead>
+      <tr>
+        <th> 
+          
+        </th>
+        <th>
+            &nbsp;
+        </th>
+        <th>
+            &nbsp;
+        </th>
+       </tr>
+    </thead>
+    <tbody>
+      <%= render :partial=>"module_image", :collection => @module_images%>
+    </tbody>
+  </table>
+</div>

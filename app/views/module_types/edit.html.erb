@@ -1,0 +1,20 @@
+<div id="rightColumn">
+  <br/>
+  <h2>
+    Edit Module Type
+  </h2>
+ 
+  <br/>
+   <% form_for [@module_type] do |f|%>
+    <p>
+      <%= f.label :name%>
+      <%= f.text_field :name%>
+    </p>
+    <br/>
+    <br/>
+    <strong><%=link_to "Return to Module types list", module_types_path%></strong>
+     <br/>
+     <br/> 
+     <%= f.submit 'Save Changes', :class=> "submit_button clear right"%>
+  <%end%>
+</div>

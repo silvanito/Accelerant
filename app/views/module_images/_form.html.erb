@@ -1,0 +1,7 @@
+<% form_for [@flex_module, @module_image], :html => { :multipart => true } do |f|%>
+  <%= f.label :name, 'Select from your computer the images to include on this module. You have limit of 20 images.'%>
+  <br/>
+  <%= f.file_field :media%>
+  <%= hidden_field(:module_image, :flex_module_id, :value => @flex_module.id)%>
+  <%= f.submit '+Add Image'%>
+<%end%>

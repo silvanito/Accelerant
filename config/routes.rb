@@ -23,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.show_image '/project/show_image', :controller => "project", :action => "show_image/:id"
   map.resources :assignment, :has_many => :participants
   map.resources :discussion, :belongs_to => :projects
-  map.resources :discussion, :belongs_to => :projects
+  map.resources :discussion, :belongs_to => :projects, :has_many => :flex_modules
   map.discussion_show 'discussion_show', :controller => "discussion", :action => "discussion_show"
   map.discussion_show 'discussion_show.:format', :controller => "discussion", :action => "discussion_show"
   map.show_image '/discussion/show_image', :controller => "discussion", :action => "show_image/:id"
@@ -45,7 +45,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :categories, :member => {:unassign => :get, :assigned => :get}
   map.assign '/category/:id/assign', :controller => "categories", :action => "assign"
   map.resource :session
-  
+  map.resources :module_types
+  map.resources :flex_modules  do |flex_module|
+    flex_module.resources :module_images
+  end
+
   #map.root :controller => 'sessions', :action => 'new'
   map.root :controller => 'start', :action => 'index'
 

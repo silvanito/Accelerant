@@ -1,0 +1,25 @@
+<div id="rightColumn">
+  <br/>
+  <h1>Module Types</h1>
+  <br/>
+  <%= render :partial => "form"%>
+  <br/>
+  <table>
+    <thead>
+      <tr>
+        <th> 
+          Name
+        </th>
+        <th>
+            &nbsp;
+        </th>
+        <th>
+            &nbsp;
+        </th>
+       </tr>
+    </thead>
+    <tbody>
+      <%= render :partial=>"module_type", :collection => @module_types%>
+    </tbody>
+  </table>
+</div>
