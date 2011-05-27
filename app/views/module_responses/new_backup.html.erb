@@ -1,0 +1,12 @@
+<% form_for [@flex_module, @module_response] do |f|%>
+  <br/>
+  <%@module_images.each do |module_image|%>
+    <%= check_box(:coords, :module_image, {:multiple => true}, module_image.id, nil)%>
+  <%end%>
+  <%= label(:comment, :commment, "Plese entry your comment")%>
+  <br/>
+  <%= text_area(:comment, :comment)%>
+  <br/>
+  <%= hidden_field(:module_response, :flex_module_id, :value => @flex_module.id)%>
+  <%= f.submit 'Comment'%>
+<%end%>

@@ -8,6 +8,10 @@ class ModuleImagesController < ApplicationController
   def index
     @module_images = ModuleImage.find(:all, :conditions =>{:flex_module_id => @flex_module})
     @module_image = ModuleImage.new
+    respond_to do |format|
+      format.html
+      format.xml
+    end
   end
 
   def create

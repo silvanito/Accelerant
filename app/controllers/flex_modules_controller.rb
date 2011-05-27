@@ -43,15 +43,11 @@ class FlexModulesController < ApplicationController
 
   def destroy
     flex_module = FlexModule.find(params[:id])
-    unless flex_module.discussion.nil?
-      flash[:notice] = "This flex module is assigned to discussions please check this before."
-      redirect_to discussion_flex_module_path(@discussion)
-    end
     flex_module.delete
     @flex_modules = FlexModule.all
     @flex_module = FlexModule.new
     flash[:notice] = "Flex module was deleted successfully"
-    redirect_to discussion_flex_modules_path(@discussion)
+    redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
   end
   protected
     def get_discussion

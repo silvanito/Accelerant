@@ -42,6 +42,7 @@ class DiscussionController < ApplicationController
 
   def show
     self.current_project = Project.find(params[:project_id])
+    @flex_modules = FlexModule.find(:all, :conditions => {:discussion_id => params[:id]})
     @testusers = ""
     @testusers_report = []
     @project_members = []
