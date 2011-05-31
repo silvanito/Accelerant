@@ -1,6 +1,7 @@
 class ModuleImagesController < ApplicationController
   before_filter :login_required
   before_filter :get_flex_module
+  before_filter :set_flex_module
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :create, :destroy, :edit, :update
   end

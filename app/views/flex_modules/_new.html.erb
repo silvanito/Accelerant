@@ -1,0 +1,6 @@
+<% form_for [@discussion,@flex_module] do |f|%>
+  <br/>
+  <%= f.select(:module_type_id, @module_types.collect {|u| [u.name, u.id]}, :prompt => 'Select a Module')%>
+  <%= hidden_field(:flex_module, :discussion_id, :value => @discussion.id)%>
+  <%= f.submit 'Add Module'%>
+<%end%>

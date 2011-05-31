@@ -50,7 +50,7 @@ ActionController::Routing::Routes.draw do |map|
     flex_module.resources :module_images
     flex_module.resources :module_responses
   end
-
+  map.get_module '/module_responses/get_module.:format', :controller => "module_responses", :action => "get_module"
   #map.root :controller => 'sessions', :action => 'new'
   map.root :controller => 'start', :action => 'index'
 

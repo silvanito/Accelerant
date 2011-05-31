@@ -30,5 +30,7 @@ class ApplicationController < ActionController::Base
   #redirect to page for handling this issue
   #redirect_to('cookies') 
 #end
-
+   def set_flex_module
+     session[:flex_module_id] = params[:flex_module_id]
+   end
 end

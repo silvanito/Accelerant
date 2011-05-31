@@ -1,8 +1,19 @@
 <% content_tag_for :tr, flex_module do -%>
-  <td>
-    <%= link_to flex_module.module_type.name, flex_module_module_images_path(flex_module)%>
-  </td>
-  <td>
-    <%= link_to "Delete", discussion_flex_module_path(:discussion_id=> @discussion.id,:id => flex_module), :method => :delete, :confirm => 'Are you sure?'%>
-  </td>
+  <%unless self.current_user.participant || self.current_user.client%>
+    <td class="moduleName">
+      <%= link_to flex_module.module_type.name, flex_module_module_images_path(flex_module), :class=>"moduleLink"%>
+    </td>
+    <td class="deleteModule">
+      <%= link_to "Delete", discussion_flex_module_path(:discussion_id=> @discussion.id,:id => flex_module), :method => :delete, :confirm => 'Are you sure?', :class=>"moduleLink"%>
+    </td>
+  <%else%>
+    <td class="moduleName">
+      <p class="moduleTitle">
+        <%=flex_module.module_type.name%>
+      </p>
+    </td>
+    <td class="launchModule">
+      <%= link_to "Click to launch the Module", new_flex_module_module_response_path(:flex_module_id=> flex_module.id), :class=>"moduleLink"%>
+    </td>
+  <%end%>
 <%end -%>

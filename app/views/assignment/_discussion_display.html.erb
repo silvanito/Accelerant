@@ -125,12 +125,12 @@
   <%= link_to "Delete", {:controller => "discussion", :id => discussions.id, :action => 'delete'}, :confirm => "Are you sure? Once deleted this action cannot be undone." %>
   <% end  %>
   <div class="x-label" style="margin-top:1px;">
-  <div class="modules_assigned">
-    <%= render :partial => "flex_modules"%>
-  </div>
 <% if @X %>
 <%= @X.description %>
 <% end %>
+  </div>
+  <div class="modules_assigned">
+    <%= render :partial => "flex_modules"%>
   </div>
   </fieldset>
 <!-- End Discussion display -->

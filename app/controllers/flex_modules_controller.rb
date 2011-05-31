@@ -1,13 +1,14 @@
 class FlexModulesController < ApplicationController
   before_filter :login_required
   before_filter :get_discussion
+  before_filter :set_flex_module
 
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :create, :destroy, :edit, :update
   end
 
   def index
-    @flex_modules = FlexModule.all
+    @flex_modules = FlexModule.find(:all, :conditions=>{:discussion_id => @discussion.id})
   end
 
   def new
@@ -21,7 +22,7 @@ class FlexModulesController < ApplicationController
       @flex_module = FlexModule.all
       render :action => :index
     else
-      redirect_to discussion_flex_modules_path(@discussion)
+      redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
     end
   end
 
