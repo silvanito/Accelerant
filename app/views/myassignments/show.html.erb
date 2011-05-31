@@ -7,7 +7,7 @@
 	<% assignment_detail = Project.find(:last, :conditions => {:id => assignment.project_id, :active => true}, :limit => 1) %>
 
  <%discussion =  Discussion.find(:last, :conditions=>{:project_id => assignment.project_id, :comment_assignments => {:user_id => self.current_user.id} }, :joins => :comment_assignmentss)%>
-	<% if !assignment_detail %>
+	<% if !assignment_detail  || discussion.nil?%>
 	<% else %>
 	<%= link_to assignment_detail.title, {:controller => 'discussion', :action => 'show', :id => discussion.id,:project_id => assignment.project_id }%><br/>
 	<% end %>
