@@ -62,10 +62,47 @@
   border-top:10px solid #fff;
   overflow-x: auto;
 }
+
 * html div.replyStyle{
   height: 50px;
   width: 410px;
 }
 .clientSubComment {
   height: auto;
+}
+.modules_assigned{
+  margin-left: 0;
+}
+.discussionTitle{
+  width: 570px;
+}
+.flex_module{
+  background-color: #ddd;
+  height: 10px;
+  margin: 10px 0 0 10px;
+  width: 600px;
+}
+.moduleName{
+  display: list-item;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 370px;
+}
+.deleteModule{
+  display: list-item;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 200px;
+}
+.launchModule{
+  display: list-item;
+  float:left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 200px;
 }
