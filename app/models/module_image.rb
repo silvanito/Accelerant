@@ -2,7 +2,6 @@ class ModuleImage < ActiveRecord::Base
   #
   #association
   #
-  has_one :module_response
   belongs_to :flex_module
   has_attached_file :media,
   :whiny => false,

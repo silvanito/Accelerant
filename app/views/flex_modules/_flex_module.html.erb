@@ -13,7 +13,13 @@
       </p>
     </td>
     <td class="launchModule">
-      <%= link_to "Click to launch the Module", new_flex_module_module_response_path(:flex_module_id=> flex_module.id), :class=>"moduleLink"%>
+      <%if self.current_user.module_response.flex_module.module_type.name == flex_module.module_type.name%>
+        <%= link_to "Click to launch the Module", flex_module_module_response_path(flex_module.id, self.current_user.module_response.id), :class=>"moduleLink"%>
+      <%else%>
+        <%= link_to "Click to launch the Module", new_flex_module_module_response_path(:flex_module_id=> flex_module.id), :class=>"moduleLink"%>
+      <%end%>
     </td>
   <%end%>
 <%end -%>
+      
+

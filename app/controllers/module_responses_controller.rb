@@ -16,15 +16,13 @@ class ModuleResponsesController < ApplicationController
   end
   
   def create
-    comment = Comment.new
-    comment.comment = params[:comment]
-    #@module_response = ModuleResponse.new(params[:module_response])
-    @module_response = ModuleResponse.new
-    @module_response.flex_module_id = params[:flex_module_id]
+    comment = Comment.new(params[:comment])
+    @module_response = ModuleResponse.new(params[:module_response])
     if comment.save
       @module_response.comment = comment
+      @module_response.module_response_image = ModuleResponseImage.find(session[:response_image_id])	
       if @module_response.save
-        if @module_response.assign_coords(params[:coords])
+          session[:response_image_id] = nil
           respond_to do |format|
             format.html { 
               flash[:notice] = "Response was save sucessfully"
@@ -34,16 +32,6 @@ class ModuleResponsesController < ApplicationController
               render :xml => {:result => 'Response was save sucessfully'}
              } 
           end
-        else
-          respond_to do |format|
-          format.html{
-            flash[:notice] = "Something was wrong with coords data"
-            @module_response = ModuleResponse.new
-            render :action => :new
-          }
-          format.xml{ render :xml => {:result => 'Something was wrong with coords data'}}
-          end
-        end
       else
         respond_to do |format|
           format.html{
@@ -66,6 +54,10 @@ class ModuleResponsesController < ApplicationController
     end
   end
   
+  def show
+    @module_response = ModuleResponse.find(params[:id])
+  end
+
   def get_module
     respond_to do |format|
       module_info = FlexModule.find(session[:flex_module_id])

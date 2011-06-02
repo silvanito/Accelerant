@@ -2,10 +2,10 @@ class ModuleResponse < ActiveRecord::Base
   #
   #associations
   #
-  has_many :module_response_coords
-  belongs_to :module
-  belongs_to :module_image
-  belongs_to :comment
+  belongs_to :flex_module
+  belongs_to :user
+  has_one :module_response_image
+  has_one :comment
 
   def assign_coords(coords)
     coords = coords.split(",")

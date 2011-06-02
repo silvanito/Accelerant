@@ -395,10 +395,10 @@ img {
 
 .replyStyle {
   background-color:#cdd7de;
-  margin:10px;
-  padding:8px;
+  margin: 10px;
+  padding: 8px;
   border-top:10px solid #fff;
-
+  z-index: 100;
 }
 
  .smiley {
@@ -710,3 +710,15 @@ div.accordion {
 .moduleLink:hover{
   text-decoration: underline;
 }
+.new_module_response{
+  float: left;
+}
+.module_response_comment{
+  background-color:#CDD7DE;
+  float: left;
+  margin: 5px 0 0 40px;
+  min-height: 40px;
+  padding: 10px;  
+  width: 400px;
+}
+
