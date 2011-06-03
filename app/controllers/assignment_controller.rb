@@ -56,9 +56,6 @@ class AssignmentController < ApplicationController
   
   def show
     self.current_project = Project.find(params[:id])
-    @module_types = ModuleType.all
-    @flex_module = FlexModule.new
-    @flex_modules = FlexModule.find(:all, :conditions => {:discussion_id => params[:id]})
     @testusers = []
     @testusers_report = []
     @project_members = []
