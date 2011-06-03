@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  xCoord: 
+  yCoord: 
+  module_image: 1
+
+two:
+  xCoord: 
+  yCoord: 
+  module_image: 1

@@ -56,19 +56,24 @@ class AssignmentController < ApplicationController
   
   def show
     self.current_project = Project.find(params[:id])
+    @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
+    @project = Project.find(params[:id])
+    @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
+    @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
+
     @module_types = ModuleType.all
     @flex_module = FlexModule.new
-    @flex_modules = FlexModule.find(:all, :conditions => {:discussion_id => params[:id]})
+    unless @discussios_desc.nil?
+      @flex_modules = FlexModule.find(:all, :conditions => {:discussion_id => @discussions_desc.id})
+    end
     @testusers = []
     @testusers_report = []
     @project_members = []
     @checked_members = []
     @categories = []
     #@project = Project.find(:all, :conditions => {:id => params[:id]})
-    @project = Project.find(params[:id])
-    @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
-    @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
-    @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
+
+
 
 
     if self.current_user.admin || self.current_user.moderator

@@ -49,6 +49,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :flex_modules  do |flex_module|
     flex_module.resources :module_images
     flex_module.resources :module_responses
+    flex_module.resources  :module_response_images, :only => :create
   end
   map.get_module '/module_responses/get_module.:format', :controller => "module_responses", :action => "get_module"
   #map.root :controller => 'sessions', :action => 'new'

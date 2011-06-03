@@ -97,6 +97,16 @@ class SessionsController < ApplicationController
         end
       end
     end
+    module_responses = self.current_user.module_responses.empty? ? [] : self.current_user.module_responses
+    module_responses.each do |module_response|
+      module_response.module_response_image.delete_tmp_image
+    end
+    if self.current_user.admin?
+      module_responses = ModuleResponse.all
+      module_responses.each do |module_response|
+        module_response.module_response_image.delete_tmp_image
+      end
+    end
     logout_killing_session!
     flash[:notice] = "You have been logged out."
     

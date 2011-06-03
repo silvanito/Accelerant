@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :replies
   has_many :heatmaps
   has_many :report_comments
-  has_one  :module_response
+  has_many  :module_responses
   has_many :themes, :foreign_key => :owner
   belongs_to :user_assignments
 

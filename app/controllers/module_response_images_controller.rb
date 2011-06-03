@@ -8,17 +8,29 @@ class ModuleResponseImagesController < ApplicationController
   def create
     @response = ModuleResponseImage.new
     @response.image = params[:image]
+    screen_size = params[:screen_data].split(',')
+    @response.width = screen_size[0]
+    @response.height = screen_size[1]
     if @response.save
-      session[:response_image_id] = @response.id
-      respond_to do |format|
-        format.xml { 
-          render :xml => {:result => true, :message => 'Image was save sucessfully'}
-          } 
+      module_image = @response.assign_coords(params[:module_image_coords])
+      if module_image == true
+        session[:response_image_id] = @response.id
+        respond_to do |format|
+          format.xml { 
+            render :xml => {:result => true, :message => 'Image was save sucessfully'}
+            } 
+        end
+      else
+        respond_to do |format|
+          format.xml { 
+            render :xml => {:result => false, :result => 'we have a error with module image coords please check'}
+            } 
+         end
       end
     else
       respond_to do |format|
         format.xml { 
-          render :xml => {:result => false, :result => 'we have a error with data please check'}
+          render :xml => {:result => false, :result => 'we have a error with image  please check'}
           } 
        end
     end

@@ -2,12 +2,18 @@ class ModuleResponsesController < ApplicationController
   before_filter :login_required
   before_filter :get_flex_module, :except => :get_module
   before_filter :set_flex_module, :except => :get_module
+  before_filter :validate_users, :only => :index
 
   if ENV['RAILS_ENV'] == 'production'
       ssl_required :new, :create
   end
 
-
+  def index
+    @responses = ModuleResponse.all
+#    respond_to do |format|
+#      format.xml { render :xml => @responses.to_xml(:dasherize => false, :layout => false, :include => {:module_response_image => { :include => [:module_image_coords => {:include => [:module_image], :only =>[:]}], :except => [:image] }})}
+#    end
+  end
 
   def new
     @module_response = ModuleResponse.new
@@ -59,9 +65,10 @@ class ModuleResponsesController < ApplicationController
   end
 
   def get_module
+    
     respond_to do |format|
       module_info = FlexModule.find(session[:flex_module_id])
-      flex_module= {:module_id => module_info.id, :module_type => module_info.module_type.name}
+      flex_module= {:module_id => module_info.id, :module_type => module_info.module_type.name, :is_admin => self.current_user.admin, :is_moderator =>  self.current_user.moderator}
       format.xml{ render :xml => flex_module.to_xml(:dasherize => false)}
     end
   end
@@ -69,5 +76,10 @@ class ModuleResponsesController < ApplicationController
   protected
     def get_flex_module
       @flex_module = FlexModule.find(params[:flex_module_id])
+    end
+    def validate_users
+      unless self.current_user.admin? || self.current_user.moderator?
+        redirect_to project_index_path, :error => "User don't have permissions to access this page"
+      end
     end
 end

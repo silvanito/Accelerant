@@ -1,10 +1,12 @@
 class Comment < ActiveRecord::Base
+
+  has_one :heatmap
+  has_one :report_comment
+  belongs_to :module_response
   belongs_to :user
   belongs_to :discussion
   belongs_to :comment_assignment
-  has_one :heatmap
-  has_one :report_comment
-  has_one :module_response
+  belongs_to :module_image_coord
 
   # for paperclip (polymorphic)
   #acts_as_polymorphic_paperclip
