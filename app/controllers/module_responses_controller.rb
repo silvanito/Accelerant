@@ -9,10 +9,7 @@ class ModuleResponsesController < ApplicationController
   end
 
   def index
-    @responses = ModuleResponse.all
-#    respond_to do |format|
-#      format.xml { render :xml => @responses.to_xml(:dasherize => false, :layout => false, :include => {:module_response_image => { :include => [:module_image_coords => {:include => [:module_image], :only =>[:]}], :except => [:image] }})}
-#    end
+    @responses = ModuleResponse.find(:all, :conditions=>{:flex_module_id =>  @flex_module.id})
   end
 
   def new

@@ -8,7 +8,7 @@ class FlexModulesController < ApplicationController
   end
 
   def index
-    @flex_modules = FlexModule.find(:all, :conditions=>{:discussion_id => @discussion.id})
+    @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
   end
 
   def new
@@ -19,7 +19,7 @@ class FlexModulesController < ApplicationController
   def create
     @flex_module = FlexModule.new(params[:flex_module])
     unless @flex_module.save
-      @flex_module = FlexModule.all
+      @flex_module =  FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
       render :action => :index
     else
       redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
@@ -36,7 +36,7 @@ class FlexModulesController < ApplicationController
       flash[:notice] = "Flex module type was changed unsuccessfully"
       redirect_to edit_discussion_flex_module_path(@discussion)
     else
-      @flex_modules = FlexModule.all
+      @flex_modules =  @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
       flash[:notice] = "Flex module type was changed successfully"
       redirect_to discussion_flex_modules_path(@discussion)
     end
@@ -44,11 +44,16 @@ class FlexModulesController < ApplicationController
 
   def destroy
     flex_module = FlexModule.find(params[:id])
-    flex_module.delete
-    @flex_modules = FlexModule.all
+    flex_module.deleted = 1
+    @flex_modules =  FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
     @flex_module = FlexModule.new
-    flash[:notice] = "Flex module was deleted successfully"
-    redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
+    if flex_module.save
+      flash[:notice] = "Flex module was deleted successfully"
+      redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
+    else
+      flash[:notice] = "Flex module wasnot deleted"
+      redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
+    end
   end
   protected
     def get_discussion

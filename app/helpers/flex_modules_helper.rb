@@ -14,4 +14,12 @@ module FlexModulesHelper
       return false
     end
   end
+
+  def admin_flex_module_responses_path(flex_module)
+    if flex_module.module_images.size > 1
+      flex_module_module_responses_path(flex_module)
+    else
+      flex_module_module_images_path(flex_module)
+    end
+  end
 end

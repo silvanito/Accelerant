@@ -42,9 +42,10 @@ class DiscussionController < ApplicationController
 
   def show
     self.current_project = Project.find(params[:project_id])
-    @module_types = ModuleType.all
+    discussion = Discussion.find(params[:id])
+    @module_types = discussion.module_types_available
     @flex_module = FlexModule.new
-    @flex_modules = FlexModule.find(:all, :conditions => {:discussion_id => params[:id]})
+    @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
     @testusers = ""
     @testusers_report = []
     @project_members = []
@@ -225,7 +226,7 @@ class DiscussionController < ApplicationController
 #      end
       end
     end
-    redirect_to :controller => 'assignment', :action => 'show', :id => @discussion.project_id
+    redirect_to :controller => 'discussion', :action => 'show', :id => @discussion.id, :project_id => @discussion.project_id
   end
 
   def discussion_show

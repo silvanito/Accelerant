@@ -6,5 +6,4 @@ class ModuleResponse < ActiveRecord::Base
   belongs_to :user
   has_one :module_response_image
   has_one :comment
-
 end

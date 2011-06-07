@@ -77,4 +77,14 @@ class Discussion < ActiveRecord::Base
     end
   end
 
+  def module_types_available
+    module_types = ModuleType.all
+    modules_assigned = []
+    self.flex_modules.each do |flex_module|
+      modules_assigned << flex_module.module_type
+    end
+    modules_available = module_types - modules_assigned
+
+  end
+
 end

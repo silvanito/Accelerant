@@ -6,4 +6,9 @@ class FlexModule < ActiveRecord::Base
   has_many :module_responses
   belongs_to :module_type
   belongs_to :discussion
+  #
+  # scopes
+  #
+  named_scope :not_deleted, :conditions => {:deleted => nil}
+
 end
