@@ -19,3 +19,17 @@ function onSubmit()
     thisMovie("HeatMap").onSubmit();
   }
 }
+
+
+function hasData(data){
+  heatmapData = data;
+  if(heatmapData == true){
+    $('share').disabled = false;
+  }else{
+    $('share').disabled = true;
+    alert("please, could you answer the heatmap");
+    new Effect.ScrollTo($('HeatMap'));
+
+  }
+}
+

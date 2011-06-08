@@ -22,7 +22,7 @@
 
   <% unless @discussion.comment_assignmentss.find_by_user_id(self.current_user.id).nil? & self.current_user.participant? %>
     <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
-  <% if !self.current_user.client && !@project.lock %>
+  <% if !@project.lock %>
       <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
   <% end  %>
 

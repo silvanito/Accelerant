@@ -25,13 +25,23 @@
           <%= f.check_box :hide_until_answered, :class=>"left"  %>
         <% end %>
       </div>
+        <%if discussions.has_heatmap%>
+          <div class="postButton clear" style="margin-top:10px;">
+            <%if getBrowser(6)%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => true%>
+            <%else%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => true %>
+            <%end%>
+          </div>
+        <%else%>
           <div class="postButton clear" style="margin-top:10px;">
             <%if getBrowser(6)%>
               <%= submit_tag "Share", :style => "margin-right:10px;"%>
             <%else%>
-              <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()" %>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()"%>
             <%end%>
           </div>
+        <%end%>
       </div>
     <% end %><!-- form for -->
 </div>
