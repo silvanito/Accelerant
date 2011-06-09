@@ -156,7 +156,7 @@ class DiscussionController < ApplicationController
     end
     end
     @action = "create"
-    if @discussion.has_heatmap
+    if @discussion.has_heatmap && self.current_user.participant
       heatmap = Heatmap.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
       if heatmap.nil? #no contestado
         @action = "comment_heatmap"

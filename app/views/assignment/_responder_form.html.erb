@@ -8,11 +8,12 @@
   <%unless self.current_user.participant%>
     <%= image_tag "heatmap_rule.jpg", :class => "heatmap_explication"%>
   <%end%>
+  <%path = "/heatMap/#{type}.swf" %>
   <%javascript_tag do -%>
     var params = {};
     params.allowfullscreen = "true";
-    swfobject.embedSWF("/heatMap/<%=type%>.swf", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf","", params);
-  <%end%>
+    swfobject.embedSWF("<%=swf_param_tag(path)%>", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf","", params);
+  <%end-%>
   <div class="heatmapContainer" id="HeatMap">
     <h1>Alternative content</h1>
   	  <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
@@ -20,6 +21,8 @@
 <%else%>
   <% size = size_helper(self.current_user)%>
  <% unless heatmap_screenshot(discussions).blank? %>
+    <br/>
+    <h3>Heatmap Response</h3>
     <img src="<%= heatmap_screenshot(discussions)%>" width = "440" height = "310"/>
  <%else%>
     <%if discussions.has_heatmap%>
@@ -28,7 +31,15 @@
   <%end%>
 <%end%>
   <%if discussions.has_heatmap%>
-    <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
+      <%comment = Comment.find(:first, :conditions =>{:user_id => self.current_user.id, :discussion_id => discussions.id} )%>
+      <%if self.current_user.participant  || self.current_user.client%>
+        <%unless comment%>
+          <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
+        <%end%>
+      <%else%>
+        <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
+
+      <%end%>
   <%else%>
     <%unless self.current_user.participant || self.current_user.client%>
       <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 

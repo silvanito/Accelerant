@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
+  include ActionView::Helpers::AssetTagHelper
   def page_title(title, options = {})
     content_tag('h1', title, {:class => 'lower'}.merge(options)) if title
     
@@ -89,5 +89,24 @@ def safari_check
       "Other"
     end
 end
-  
+
+  def swf_param_tag(path)
+    asset_id = send(:rails_asset_id, path)
+    "#{path}?#{asset_id}"
+  end
+
+  private
+    def rails_asset_id(source)
+      if asset_id = ENV["RAILS_ASSET_ID"]
+        asset_id
+      else
+        path = File.join(ASSETS_DIR, source)
+
+        if File.exist?(path)
+          File.mtime(path).to_i.to_s
+        else
+          ''
+        end
+      end
+    end  
 end
