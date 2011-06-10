@@ -6,17 +6,16 @@
   </div>
   <%=link_to "discussion",{:controller => 'discussion', :action => 'show', :id => @comment.discussion_id,:project_id => @comment.project_id }, :id=>"link", :class=>"visibility_hidden"%>
   <script type="text/javascript">
-    function redirect(){
-       link = $("link").href;
-       location.href = link;
-     }
+     function redirect(){
+         link = $("link").href;
+         location.href = link;
+       }
 
-     setTimeout("redirect()", 15000);
-     setTimeout("new Effect.Fade('notice');", 15000);
-     $('topNavLeft').addClassName('visibility_hidden');
-     $('topNavRight').addClassName('visibility_hidden');
-     $('leftColumn').addClassName('visibility_hidden');
-     $('container').setStyle({opacity: 0.4});
-     
+       setTimeout("redirect()", 16000);
+       setTimeout("new Effect.Fade('notice');", 16000);
+       $('topNavLeft').addClassName('visibility_hidden');
+       $('topNavRight').addClassName('visibility_hidden');
+       $('leftColumn').addClassName('visibility_hidden');
+       $('container').setStyle({opacity: 0.4});
   </script>
 <% end %> 

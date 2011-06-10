@@ -1,6 +1,11 @@
 <div style="padding-top:15px;clear:both;" id="responder_form" >
-
-    <% form_for :comments,:html => {:id => "my_form", :multipart => true}, :url =>{:controller => 'comments', :action => @action} do |f| -%>
+    <%if discussions.has_heatmap && self.current_user.participant %>
+      <%status = true%>
+      <%display = "none;"%>
+    <%else%>
+      <%status = false%>
+    <%end%>
+    <% form_for :comments, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => 'comments', :action => @action} do |f| -%>
 
       <div class="avatar">
         <%= render_avatar(self.current_user) %>
@@ -25,17 +30,12 @@
           <%= f.check_box :hide_until_answered, :class=>"left"  %>
         <% end %>
       </div>
-        <%if self.current_user.participant %>
-          <%status = true%>
-        <%else%>
-          <%status = false%>
-        <%end%>
         <%if discussions.has_heatmap && self.current_user.participant%>
           <div class="postButton clear" style="margin-top:10px;">
             <%if getBrowser(6)%>
               <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status%>
             <%else%>
-              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :onclick => "blockButton()", :disabled => status %>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status %>
             <%end%>
           </div>
         <%else%>
@@ -49,4 +49,5 @@
         <%end%>
       </div>
     <% end %><!-- form for -->
+    <!--<input type="button" id="share" value="Share" class="shareButton" disabled="<%=status%>" onclick="onSubmit();"/>-->
 </div>

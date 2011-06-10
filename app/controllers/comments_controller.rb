@@ -65,7 +65,6 @@ class CommentsController < ApplicationController
       session[:comment_id] = @comment.id
       session[:notice_comment] = "Preparing your response.  Please wait."
       session[:comment_heatmap] = "display_none"
-      render :action => :comment_heatmap
       #redirect_to :controller => "myassignments", :action => "show"
       #redirect_to :controller => "heatmap", :action => "loading"
       #redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"

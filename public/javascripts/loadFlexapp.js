@@ -1,32 +1,34 @@
-Event.observe(window, 'load', function() {
+document.observe("dom:loaded", function(){
 
-  return Event.observe('my_form', 'submit', onSubmit);
+  $('my_form').hide();
 
 });
 function thisMovie(movieName) {
-      if (navigator.appName.indexOf("Microsoft") != -1) {
-          return window[movieName];
-
-      } else {
-          return document[movieName];
-      }
+  if (navigator.appName.indexOf("Microsoft") != -1) {
+    return window[movieName];
+  } else {
+    return document[movieName];
+   }
 }
 
-function onSubmit()
-{ 
+function onSubmit(){ 
+  var result = false;
   movie = thisMovie("HeatMap");
   if (movie != undefined || movie != null){
-    thisMovie("HeatMap").onSubmit();
+    var status = movie.onSubmit();
   }
-}
-
+  return result;
+  }
 
 function hasData(data){
   heatmapData = data;
   if(heatmapData == true){
+    $('my_form').show();
     $('share').disabled = false;
+
   }else{
     $('share').disabled = true;
+    $('container').hide();
     alert("please, could you answer the heatmap");
     new Effect.ScrollTo($('HeatMap'));
 
