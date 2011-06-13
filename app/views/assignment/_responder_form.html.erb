@@ -45,6 +45,8 @@
       <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
     <%end%>
   <%end%>
-<% content_for :scripts do -%>
-  <%= javascript_include_tag "loadFlexapp"%>
+<%if discussions.has_heatmap && self.current_user.participant %>
+  <% content_for :scripts do -%>
+    <%= javascript_include_tag "loadFlexapp"%>
+  <%end%>
 <%end%>
