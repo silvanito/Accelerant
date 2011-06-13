@@ -80,7 +80,7 @@ class SessionsController < ApplicationController
         heatmap.delete_tmp_image
       end
     end
-    if self.current_user.admin?
+    if self.current_user.admin? || self.current_user.moderator?
       heatmaps = Heatmap.all
       discussions = Discussion.all
       unless heatmaps.empty?

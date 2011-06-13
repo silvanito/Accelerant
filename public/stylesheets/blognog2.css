@@ -190,6 +190,7 @@ img {
 }
 .responseWidget {
 	margin:0 0 0 10px;
+  
 }
 
 .discussionWidget {
@@ -722,3 +723,7 @@ div.accordion {
   width: 400px;
 }
 
+.shareButton{
+  float: right;
+  margin: -30px 10px 0 0;
+}
