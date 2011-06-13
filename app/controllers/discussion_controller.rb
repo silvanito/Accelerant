@@ -228,6 +228,7 @@ class DiscussionController < ApplicationController
   def discussion_show
     discussion =  Discussion.find(session[:discussion_id])
     size = Hash.new
+    debugger
     xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters], session[:users_assigned], session[:answers])
     respond_to do |format|
      format.xml { render :xml => xml_data.to_xml(:dasherize => false)}

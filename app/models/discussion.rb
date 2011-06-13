@@ -25,7 +25,7 @@ class Discussion < ActiveRecord::Base
        xml_data << {:user_name => user.name, :user_id => user.id, :admin => user_criteria(user), :image_path => discussion.media.url, :discussion_id => discussion.id, :discussion_users => nil, :answers => nil, :w => discussion.width, :h => discussion.height}
        xml_data
     else
-      if !user_filters.empty?
+      if !user_filters.empty? && user_filters != "nothing"
         user_heatmaps = []
         user_filters.each do |user_filter|
           user_heatmaps << discussion.heatmaps.find(:last, :conditions => {:user_id => user_filter} )
