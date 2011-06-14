@@ -26,6 +26,17 @@
       <%= f.radio_button :heatmap_type_id, 2, :checked => false%>
       <%= label_tag 'Text:'%><br/>
     <% end%>
+  <p>
+    <%= link_to "See more modules...", "#", :id=>"more_modules"%>
+  </p>
+  </p>
+    <% field_set_tag 'Module Types', :id => 'module_types',:class=>'display_none' do%>
+      <%@module_types.each do |module_type|%>
+        <%= radio_button :module_type, :module_type_id, module_type.id, :checked => true%>
+        <%= label_tag "#{module_type.name}"%><br/>
+      <%end%>
+    <% end%>
+  <p>
 
   <p><%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):' %><br/>
 <%= f.text_field :character_minimum %>
