@@ -18,7 +18,7 @@
           ####### this block is TEMPORARY to filter at the COMMENT level
 
       displayflag = false
-      if cookies[:filter] == "yes"
+      if cookies[:filter] == "yes" && !self.current_user.participant
         cookies.to_hash.each_pair do |k, v|
           if cookies[k.to_sym].split('_')[0] == "field"
             testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
@@ -35,7 +35,7 @@
             end
           end
         end
-        if cookies[:report] == "true"
+        if cookies[:report] == "true" && !self.current_user.participant
           if comment.for_report == 1
             report_user = comment.user
             if displayflag == true
@@ -50,7 +50,7 @@
               end
             end
           end
-          #end tag for report
+          #end tag for_report
           if comment.user.admin? || comment.user.moderator?
             replies = Replies.find(:all, :conditions => { :comment_id => comment.id, :for_report => 1}, :order => "id ASC", :include => :user)
             if replies.size > 0

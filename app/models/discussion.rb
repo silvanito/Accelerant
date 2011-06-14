@@ -29,11 +29,9 @@ class Discussion < ActiveRecord::Base
       if !user_filters.empty?
         user_heatmaps = []
         user_filters.each do |user_filter|
-          user_heatmaps << discussion.heatmaps.find(:last, :conditions => {:user_id => user_filter} )
+          user_heatmaps << discussion.heatmaps.find(:last, :conditions => {:user_id => user_filter} ) unless user_filter == "nothing"
         end
         heatmaps = user_heatmaps.flatten
-      elsif user_filters == "nothing"
-        heatmaps = nil
       else
         heatmaps = discussion.heatmaps
       end
