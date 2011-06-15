@@ -1,6 +1,6 @@
 <div id="rightColumn">
   <br/>
-  <h1>Images</h1>
+  <h1>Add Images to your new <%=@flex_module.module_type.name%> module</h1>
   <br/>
   <%= render :partial => "form"%>
   <br/>
@@ -8,13 +8,13 @@
     <thead>
       <tr>
         <th> 
-          
+          Image
         </th>
         <th>
-            &nbsp;
+           Name
         </th>
         <th>
-            &nbsp;
+           Options
         </th>
        </tr>
     </thead>
@@ -22,4 +22,6 @@
       <%= render :partial=>"module_image", :collection => @module_images%>
     </tbody>
   </table>
+  <br/>
+  <%= link_to "Go to my new discussion",  {:controller => 'discussion', :action => 'show', :id => @flex_module.discussion.id, :project_id => @flex_module.discussion.project.id}, :class => "goDiscussionLink" %>
 </div>

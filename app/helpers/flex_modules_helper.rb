@@ -22,4 +22,14 @@ module FlexModulesHelper
       flex_module_module_images_path(flex_module)
     end
   end
+
+
+  def flex_module_new_status(flex_module)
+    case flex_module.status.to_sym
+    when :drafted
+      return "published"
+    when :published
+      return "drafted"
+    end
+  end
 end

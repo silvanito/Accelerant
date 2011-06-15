@@ -690,11 +690,11 @@ div.accordion {
   list-style-type: none;
   width: 400px;
 }
-.deleteModule{
+.deleteModule, .setupModule, .flexModuleStatus{
   display: list-item;
   float:left;
   list-style-type: none;
-  width: 200px;
+  width: 90px;
 }
 .launchModule{
   display: list-item;
@@ -726,4 +726,7 @@ div.accordion {
 .shareButton{
   float: right;
   margin: -30px 10px 0 0;
+}
+.goDiscussionLink{
+  float: right;
 }

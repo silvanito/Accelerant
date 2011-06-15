@@ -14,11 +14,22 @@ function heatmap_type(){
 }
 function module_type(){
    if ($('module_types').hasClassName('display_none')){
+     $('more_modules').innerHTML = "Hide modules...";
      $('module_types').removeClassName('display_none');
      $('has_heatmap').hide();
    }else{
+    $('more_modules').innerHTML = "See more modules...";
     $('module_types').addClassName('display_none');
+    clearRadios();
     $('has_heatmap').show();
    }
+   return false;
 }
-
+function clearRadios(){
+  $$('.module_types').each(function(ele){
+     if( $(ele).checked )
+     {
+         $(ele).checked = false;
+     }
+  });
+}
