@@ -26,7 +26,14 @@
       <%= f.radio_button :heatmap_type_id, 2, :checked => false%>
       <%= label_tag 'Text:'%><br/>
     <% end%>
-
+  <%= label_tag 'Enter label name for:'%>
+  <%=text_field_tag 'label_top', 'Top position'%><br/>
+  <%= label_tag 'Enter label name for:'%>
+  <%=text_field_tag 'label_right', 'Right position'%><br/>
+  <%= label_tag 'Enter label name for:'%>
+  <%=text_field_tag 'label_bottom', 'Bottom position'%><br/>
+  <%= label_tag 'Enter label name for:'%>
+  <%=text_field_tag 'label_left', 'Left position'%><br/>
   <p><%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):' %><br/>
 <%= f.text_field :character_minimum %>
 </p>
