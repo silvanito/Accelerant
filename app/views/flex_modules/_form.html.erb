@@ -1,0 +1,16 @@
+<% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('label_form').hide();", :loaded => "$('loading').hide();$('label_form').show();", :update => {:success => "label_content", :failure => "errors"} do |f| %>
+  <div id="errors">
+  </div>
+  <% field_set_tag 'Labels', :id => 'label_form' do%>
+    <%= f.label :top_label, 'Top Label'%><br/>
+    <%=f.text_field :top_label%><br/>
+    <%= f.label :right_label, 'Right Label'%><br/>
+    <%=f.text_field :right_label%><br/>
+    <%= f.label :bottom_label, 'Bottom Label'%><br/>
+    <%=f.text_field :bottom_label%><br/>
+    <%= f.label :left_label, 'Left Label'%><br/>
+    <%=f.text_field :left_label%>
+  <%end%>
+  <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
+  <%= submit_tag ' Save', :class=> "submit_button clear right" %>
+<%end%>

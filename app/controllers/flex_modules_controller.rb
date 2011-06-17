@@ -32,14 +32,8 @@ class FlexModulesController < ApplicationController
 
   def update
     @flex_module = FlexModule.find(params[:id])
-    unless @flex_module.update_attributes(params[:module_type])
-      flash[:notice] = "Flex module type was changed unsuccessfully"
-      redirect_to edit_discussion_flex_module_path(@discussion)
-    else
-      @flex_modules =  @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
-      flash[:notice] = "Flex module type was changed successfully"
-      redirect_to discussion_flex_modules_path(@discussion)
-    end
+    @flex_module.update_attributes(params[:flex_module])
+    render :action => :edit, :layout => false
   end
 
   def destroy
@@ -55,6 +49,7 @@ class FlexModulesController < ApplicationController
       redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
     end
   end
+
   protected
     def get_discussion
       @discussion = Discussion.find(params[:discussion_id])
