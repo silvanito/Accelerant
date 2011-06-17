@@ -6,7 +6,7 @@
     
       <br/>
   <% form_for :new_discussion,
-            :html => {:id => "top_form", :multipart => true, :onsubmit => "return validateForm()"},
+            :html => {:id => "top_form", :multipart => true},
             :url => {:controller => 'discussion', :action => 'create'} do |f|%>
       <p>Discussion Title: <%= f.text_field :title %></p>
   <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><br/><b>
@@ -34,6 +34,18 @@
   <%=text_field_tag 'label_bottom', 'Bottom position'%><br/>
   <%= label_tag 'Enter label name for:'%>
   <%=text_field_tag 'label_left', 'Left position'%><br/>
+
+  <p>
+    <%= link_to "See more modules...", "#", :id=>"more_modules"%>
+  </p>
+  </p>
+    <% field_set_tag 'Module Types', :id => 'module_types',:class=>'display_none' do%>
+      <%@module_types.each do |module_type|%>
+        <%= radio_button :module_type, :module_type_id, module_type.id, :class => "module_types"%>
+        <%= label_tag "#{module_type.name}"%><br/>
+      <%end%>
+    <% end%>
+  <p>
   <p><%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):' %><br/>
 <%= f.text_field :character_minimum %>
 </p>
@@ -87,7 +99,7 @@
     <%= f.hidden_field :project_id, :value => params[:project_id] %>
   <%end%>
   <%= f.hidden_field :user_id, :value => self.current_user.id %><br/>
-  <%= submit_tag "Post" %>
+  <%= submit_tag "Post", :onclick => "return validateForm()" %>
   <% end  %>
     
   </div>

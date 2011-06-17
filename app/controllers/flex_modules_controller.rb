@@ -1,6 +1,6 @@
 class FlexModulesController < ApplicationController
   before_filter :login_required
-  before_filter :get_discussion
+  before_filter :get_discussion, :except => :change_status
   before_filter :set_flex_module
 
   if ENV['RAILS_ENV'] == 'production'
@@ -48,6 +48,13 @@ class FlexModulesController < ApplicationController
       flash[:notice] = "Flex module wasnot deleted"
       redirect_to discussion_path(:id => @discussion, :project_id =>@discussion.project.id)
     end
+  end
+
+  def change_status
+     @flex_module = FlexModule.find(params[:id])
+     @flex_module.status = params[:status]
+     @flex_module.save
+     redirect_to discussion_path(:id => @flex_module.discussion, :project_id =>@flex_module.discussion.project.id)
   end
 
   protected

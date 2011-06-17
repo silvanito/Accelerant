@@ -21,8 +21,16 @@ class DiscussionController < ApplicationController
   def create
     @discussion = Discussion.new(params[:new_discussion])
     #new stuff
+    @discussion.has_heatmap = nil if params[:module_type].present?
+    @discussion.heatmap_type_id = nil if params[:module_type].present?
+    module_type = ModuleType.find(params[:module_type][:module_type_id])
     @discussion.save
-
+    unless module_type.nil?
+      @flex_module = FlexModule.new
+      @flex_module.module_type = module_type
+      @flex_module.discussion = @discussion
+      @flex_module.save
+    end
     if self.current_user.admin? || self.current_user.moderator?
     @user_assignments = params[:comment_assignment]
       if @user_assignments
@@ -37,13 +45,17 @@ class DiscussionController < ApplicationController
         end
       end
     end
-    redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
+    if @discussion.flex_modules.empty?
+      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
+    else
+      redirect_to :controller => "module_images", :action => "index", :flex_module_id => @flex_module.id
+    end
   end
 
   def show
     self.current_project = Project.find(params[:project_id])
     discussion = Discussion.find(params[:id])
-    @module_types = discussion.module_types_available
+    @module_types = ModuleType.all#discussion.module_types_available
     @flex_module = FlexModule.new
     @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
     @testusers = ""
