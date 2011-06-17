@@ -1,20 +1,8 @@
 <div id="rightColumn">
-  <br/>
-  <h2>
-    Upload Images
-  </h2>
- 
-  <br/>
-  <% form_for [@module_type] do |f|%>
-    <p>
-      <%= f.label :name%>
-      <%= f.text_field :name%>
-    </p>
-    <br/>
-    <br/>
-    <strong><%=link_to "Return to Module types list", module_types_path%></strong>
-     <br/>
-     <br/> 
-     <%= f.submit 'Save Changes', :class=> "submit_button clear right"%>
-  <%end%>
+  <div class="label_content">
+    <h4>
+      Edit <%=@flex_module.module_type.name%> of discussion: "<%=@flex_module.discussion.title%>"
+    </h4>
+    <%= render :partial => "form"%>
+  </div>
 </div>
