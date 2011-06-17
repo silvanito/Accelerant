@@ -9,6 +9,13 @@
     <p>
       <%= f.label :name%>
       <%= f.text_field :name%>
+      <br/>
+      <% field_set_tag 'Show labels' do%>
+        <%= f.label :has_label, 'Yes'%>
+        <%= f.radio_button :has_label, true%>
+        <%= f.label :has_label, 'No' %>
+        <%= f.radio_button :has_label, false%>
+      <%end%>
     </p>
     <br/>
     <br/>
