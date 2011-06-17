@@ -20,10 +20,12 @@
     </thead>
     <tbody>
       <%= render :partial=>"module_image", :collection => @module_images%>
+
     </tbody>
   </table>
-
-  <%= render :partial => "flex_modules/form"%>
   <br/>
   <%= link_to "Go to my new discussion",  {:controller => 'discussion', :action => 'show', :id => @flex_module.discussion.id, :project_id => @flex_module.discussion.project.id}, :class => "goDiscussionLink" %>
+  <br/>
+  <%= render :partial => "flex_modules/form"%>
+ 
 </div>
