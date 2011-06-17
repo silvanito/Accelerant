@@ -19,7 +19,6 @@ class DiscussionController < ApplicationController
   end
 
   def create
-    debugger
     @discussion = Discussion.new(params[:new_discussion])
     #new stuff
     @discussion.has_heatmap = nil if params[:module_type].present?
