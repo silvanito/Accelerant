@@ -8,10 +8,6 @@ class FlexModule < ActiveRecord::Base
   #
   before_save :default_values
   #
-  #validations
-  #
-  validates_inclusion_of :status, :in => STATES
-  #
   #associations
   #
   has_many :module_images

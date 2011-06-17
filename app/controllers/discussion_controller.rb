@@ -19,15 +19,15 @@ class DiscussionController < ApplicationController
   end
 
   def create
+    debugger
     @discussion = Discussion.new(params[:new_discussion])
     #new stuff
     @discussion.has_heatmap = nil if params[:module_type].present?
     @discussion.heatmap_type_id = nil if params[:module_type].present?
-    module_type = ModuleType.find(params[:module_type][:module_type_id])
+    module_type = ModuleType.find(params[:flex_module][:module_type_id])
     @discussion.save
     unless module_type.nil?
-      @flex_module = FlexModule.new
-      @flex_module.module_type = module_type
+      @flex_module = FlexModule.new(params[:flex_module])
       @flex_module.discussion = @discussion
       @flex_module.save
     end

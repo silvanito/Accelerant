@@ -27,21 +27,21 @@
       <%= label_tag 'Text:'%><br/>
     <% end%>
   <%= label_tag 'Enter label name for:'%>
-  <%=text_field_tag 'label_top', 'Top position'%><br/>
+  <%=text_field_tag "flex_module[top_label]", 'Top position'%><br/>
   <%= label_tag 'Enter label name for:'%>
-  <%=text_field_tag 'label_right', 'Right position'%><br/>
+  <%=text_field_tag "flex_module[right_label]", 'Right position'%><br/>
   <%= label_tag 'Enter label name for:'%>
-  <%=text_field_tag 'label_bottom', 'Bottom position'%><br/>
+  <%=text_field_tag "flex_module[bottom_label]", 'Bottom position'%><br/>
   <%= label_tag 'Enter label name for:'%>
-  <%=text_field_tag 'label_left', 'Left position'%><br/>
-
+  <%=text_field_tag "flex_module[left_label]", 'Left position'%><br/>
+top_label: string, rig
   <p>
     <%= link_to "See more modules...", "#", :id=>"more_modules"%>
   </p>
   </p>
     <% field_set_tag 'Module Types', :id => 'module_types',:class=>'display_none' do%>
       <%@module_types.each do |module_type|%>
-        <%= radio_button :module_type, :module_type_id, module_type.id, :class => "module_types"%>
+        <%= radio_button :flex_module, :module_type_id, module_type.id, :class => "module_types"%>
         <%= label_tag "#{module_type.name}"%><br/>
       <%end%>
     <% end%>
