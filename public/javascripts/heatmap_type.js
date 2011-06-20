@@ -25,6 +25,16 @@ function module_type(){
    }
    return false;
 }
+
+function show_labels(has_labels){
+
+  if (has_labels == "true"){
+    $("labels").show();
+  }else{
+    $("labels").hide();
+  }
+}
+
 function clearRadios(){
   $$('.module_types').each(function(ele){
      if( $(ele).checked )

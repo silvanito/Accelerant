@@ -2,7 +2,7 @@ class FlexModule < ActiveRecord::Base
   #
   # constants
   #
-  STATES = [ 'drafted', 'published']
+  STATES = [ 'draft', 'published']
   #
   # filters
   #
@@ -21,11 +21,11 @@ class FlexModule < ActiveRecord::Base
   STATES.each { |s| named_scope s, :conditions => { :status => s } }
   named_scope :not_deleted, :conditions => {:deleted => nil}
   def default_values
-    self.status = 'drafted' unless self.status
+    self.status = 'draft' unless self.status
   end
 
   def drafted?
-   self.status == 'drafted' ? true : false
+   self.status == 'draft' ? true : false
   end
 
   def published?

@@ -7,7 +7,7 @@
       <%= link_to "Setup", flex_module_module_images_path(flex_module), :class=>"moduleLink"%>
     </td>
     <td class="flexModuleStatus">
-      <%= link_to flex_module.status, {:controller => "flex_modules", :action => "change_status", :id => flex_module.id, :status => flex_module_new_status(flex_module)}, :class=>"moduleLink"%>
+      <%= link_to flex_module.status, {:controller => "flex_modules", :action => "change_status", :id => flex_module.id, :status => flex_module_new_status(flex_module)}, :class=>"moduleLink", :title => "Change to:#{flex_module_new_status(flex_module)}"%>
     </td>
   <%elsif flex_module.published?%>
     <td class="moduleName">

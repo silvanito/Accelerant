@@ -26,10 +26,10 @@ module FlexModulesHelper
 
   def flex_module_new_status(flex_module)
     case flex_module.status.to_sym
-    when :drafted
+    when :draft
       return "published"
     when :published
-      return "drafted"
+      return "draft"
     end
   end
 end

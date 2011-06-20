@@ -20,8 +20,8 @@ class ModuleImage < ActiveRecord::Base
       x_avr = x_avr + coord.xCoord
       y_avr = y_avr + coord.yCoord
     end
-    average_coords[:x] = x_avr / size
-    average_coords[:y] = y_avr / size
+    average_coords[:x] = size > 0 ? x_avr / size : nil
+    average_coords[:y] = size > 0 ? y_avr / size : nil
     return average_coords
   end
 
