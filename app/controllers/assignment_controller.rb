@@ -64,6 +64,9 @@ class AssignmentController < ApplicationController
     unless @discussios_desc.nil?
       @module_types = @discussions_desc.module_types_available
       @flex_modules =  FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
+    else
+      @module_types = []
+      @flex_modules = []
     end
 
     @testusers = []
