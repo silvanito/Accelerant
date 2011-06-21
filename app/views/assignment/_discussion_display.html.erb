@@ -129,7 +129,7 @@
 <%= @X.description %>
 <% end %>
   </div>
-  <%unless (self.current_user.participant || self.current_user.client) && discussions.flex_modules.published.empty?%>
+  <%if modules_show(discussions)%>
     <div class="modules_assigned">
       <%= render :partial => "flex_modules"%>
     </div>
