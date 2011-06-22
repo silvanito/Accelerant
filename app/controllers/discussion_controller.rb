@@ -23,7 +23,7 @@ class DiscussionController < ApplicationController
     #new stuff
     @discussion.has_heatmap = nil if params[:module_type].present?
     @discussion.heatmap_type_id = nil if params[:module_type].present?
-    module_type = ModuleType.find(params[:flex_module][:module_type_id])
+    module_type = ModuleType.find(params[:flex_module][:module_type_id]) if params[:flex_module].present?
     @discussion.save
     unless module_type.nil?
       @flex_module = FlexModule.new(params[:flex_module])
