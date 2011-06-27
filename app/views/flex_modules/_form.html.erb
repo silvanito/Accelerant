@@ -1,16 +1,35 @@
-<% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('label_form').hide();", :loaded => "$('loading').hide();$('label_form').show();", :update => {:success => "label_content", :failure => "errors"} do |f| %>
-  <div id="errors">
-  </div>
-  <% field_set_tag 'Labels', :id => 'label_form' do%>
-    <%= f.label :top_label, 'Top Label'%><br/>
-    <%=f.text_field :top_label%><br/>
-    <%= f.label :right_label, 'Right Label'%><br/>
-    <%=f.text_field :right_label%><br/>
-    <%= f.label :bottom_label, 'Bottom Label'%><br/>
-    <%=f.text_field :bottom_label%><br/>
-    <%= f.label :left_label, 'Left Label'%><br/>
-    <%=f.text_field :left_label%>
+<div id ="label_content">
+  <% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('label_form').hide();", :loaded => "$('loading').hide();$('label_form').show();", :update => {:success => "label_content", :failure => "errors"} do |f| %>
+    <div id="errors">
+    </div>
+    <% field_set_tag 'Module Options', :id => 'label_form' do%>
+      <div id = "labels_wrapper" class="labels_wrapper <%=show_labels(@flex_module)%>">
+        <%1.upto(@flex_module.divisions) do |number|%>
+          <%= f.label  print_number_label(number), print_number_label(number).to_s.humanize%><br/>
+          <%= f.text_field print_number_label(number)%><br/>
+        <%end%>
+      </div>
+      
+      <ul class="divisions <%=show_divisions(@flex_module)%>">
+        <h3><%= title_of_divisions(@flex_module)%>:</h3>
+        <%division_separate = ""%>
+        <%1.upto(20) do |number| %>
+          <li class = "division_quantity <%division_separate%>">
+          <%= f.label :divisions, "#{number}", :class => "division_label"%>
+          <%=f.radio_button :divisions, "#{number}", :class => "division_option"%>
+          <%division_separate =  print_divisions(number)%>
+          </li>
+
+        <%end%>
+        <br/>
+        <%= link_to "Would you like to edit the labels", "#", :onclick => "show_labels();", :id => "edit_labels"%>
+      </ul>
+    <br class="clear_both"/>
+    <%end%>
+    <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
+    <%= submit_tag ' Update..', :class=> "submit_button clear right" %>
   <%end%>
-  <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
-  <%= submit_tag ' Update Labels', :class=> "submit_button clear right" %>
-<%end%>
+</div>
+  <% content_for :scripts do -%>
+    <%= javascript_include_tag "module_images"%>
+  <%end%>

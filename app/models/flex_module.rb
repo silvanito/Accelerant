@@ -7,6 +7,7 @@ class FlexModule < ActiveRecord::Base
   # filters
   #
   before_save :default_values
+  before_save :default_divisions
   #
   #associations
   #
@@ -30,5 +31,9 @@ class FlexModule < ActiveRecord::Base
 
   def published?
      self.status == 'published' ? true : false
+  end
+
+  def default_divisions
+    self.divisions = ModuleType.find(self.module_type_id).divisions unless self.divisions
   end
 end

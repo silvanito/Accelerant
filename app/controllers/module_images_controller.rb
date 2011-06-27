@@ -17,11 +17,12 @@ class ModuleImagesController < ApplicationController
 
   def create
     @module_image = ModuleImage.new(params[:module_image])
-    unless @module_image.save
+    if @module_image.save
+      flash[:notice] = "Photo was added successfully."
+      redirect_to flex_module_module_images_path
+    else
       @module_images = ModuleImage.find(:all, :conditions =>{:flex_module_id => @flex_module})
       render :action => :index
-    else
-      redirect_to flex_module_module_images_path
     end
   end
 

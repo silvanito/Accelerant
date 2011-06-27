@@ -4,10 +4,21 @@ class ModuleImage < ActiveRecord::Base
   #
   belongs_to :flex_module
   has_many :module_image_coords
+  #
+  #paperclip
+  #
   has_attached_file :media,
   :whiny => false,
   :whiny_thumbnails => false,
   :styles => { :large => "300x300>", :medium => "100x100>", :small => "50x50>", :tiny => "20x20>" }
+  #
+  #filter
+  #
+  before_save :max_images
+  #
+  #validations
+  #
+  validates_attachment_presence :media, :message => "Photo must be set."
 
   def coords_average
     coords = self.module_image_coords
@@ -31,5 +42,15 @@ class ModuleImage < ActiveRecord::Base
 
   def coord_minimum(field)
     self.module_image_coords.minimum(field.to_sym)
+  end
+
+  def max_images
+    flex_module = FlexModule.find(self.flex_module_id)
+    if flex_module.module_images.size < 20
+      true 
+    else
+      errors.add(:Limit_reached, "You reached the flex module limit of photos")
+      false
+    end
   end
 end
