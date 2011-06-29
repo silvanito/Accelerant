@@ -21,9 +21,12 @@ class ModuleResponsesController < ApplicationController
   def create
     comment = Comment.new(params[:comment])
     @module_response = ModuleResponse.new(params[:module_response])
-    if comment.save
+    comment.discussion_id = @flex_module.discussion.id
+    comment.project_id = @flex_module.discussion.project.id
+    comment.user_id = self.current_user.id
+    if comment.save 
       @module_response.comment = comment
-      @module_response.module_response_image = ModuleResponseImage.find(session[:response_image_id])	
+      @module_response.module_response_image = ModuleResponseImage.find(session[:response_image_id])
       if @module_response.save
           session[:response_image_id] = nil
           respond_to do |format|
