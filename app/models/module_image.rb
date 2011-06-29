@@ -1,5 +1,9 @@
 class ModuleImage < ActiveRecord::Base
   #
+  # constants
+  #
+  POSITIONS = ["first_place", "second_place", "third_place", "fourth_place", "fifth_place", "sixth_place", "seventh_place", "eight_place", "ninth_place", "tenth_place", "eleventh_place", "twelfth", "thirteenth_place", "fourteenth_place", "fifteenth_place", "sixteenth_place", "seventeenth_place", "eighteenth_place", "nineteenth_place", "twentieth_place"]
+  #
   #association
   #
   belongs_to :flex_module
@@ -19,6 +23,16 @@ class ModuleImage < ActiveRecord::Base
   #validations
   #
   validates_attachment_presence :media, :message => "Photo must be set."
+  #
+  #Scopes
+  #
+  #POSITIONS.each_with_index { |position, index| named_scope position, :joins => :module_image_coords, :conditions => { :module_image_coords =>  {:position_rank => index+1} } }
+
+  POSITIONS.each_with_index do |position, index| 
+    define_method "#{position}" do
+      self.module_image_coords.find(:all, :conditions => {:position_rank => index+1}).size
+    end
+  end
 
   def coords_average
     coords = self.module_image_coords
@@ -53,4 +67,10 @@ class ModuleImage < ActiveRecord::Base
       false
     end
   end
+  
+  def self.order_by_first_position(images)
+    images_ordered = images.sort_by {|quantity| quantity.first_place}
+    images_ordered.reverse!
+  end
+
 end

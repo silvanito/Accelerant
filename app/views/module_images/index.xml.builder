@@ -1,6 +1,7 @@
 xml.instruct! :xml, :version => "1.1", :encoding => "US-ASCII"
 xml.module_images do
   xml.divisions @flex_module.divisions
+  xml.participants @participants
   xml.labels do
     xml.top_label @flex_module.top_label
     xml.right_label @flex_module.right_label
@@ -16,6 +17,7 @@ xml.module_images do
       xml.x_min      module_image.coord_minimum(:xCoord)
       xml.y_max      module_image.coord_maximum(:yCoord)
       xml.y_min      module_image.coord_minimum(:yCoord)
+      xml.first_position  module_image.first_place
     end
   end
 end

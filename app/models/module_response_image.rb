@@ -28,10 +28,10 @@ class ModuleResponseImage < ActiveRecord::Base
 
   def assign_coords(coords)
     coords = coords.split(",")
-    total_coords = coords.length/3
-    while coords.length >= 3
-      coord = coords.slice!(0..2)
-      image_coord = ModuleImageCoord.new(:module_image_id => coord[0], :xCoord => coord[1], :yCoord => coord[2])
+    total_coords = coords.length/4
+    while coords.length >= 4
+      coord = coords.slice!(0..3)
+      image_coord = ModuleImageCoord.new(:module_image_id => coord[0], :xCoord => coord[1], :yCoord => coord[2], :position_rank => coord[3])
       self.module_image_coords << image_coord if image_coord.save
     end
     if self.module_image_coords.size == total_coords

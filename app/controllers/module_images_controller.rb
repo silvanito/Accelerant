@@ -7,7 +7,9 @@ class ModuleImagesController < ApplicationController
   end
 
   def index
+    @participants = @flex_module.discussion.comment_assignmentss.size
     @module_images = ModuleImage.find(:all, :conditions =>{:flex_module_id => @flex_module})
+    @module_images= ModuleImage.order_by_first_position(@module_images)
     @module_image = ModuleImage.new
     respond_to do |format|
       format.html
