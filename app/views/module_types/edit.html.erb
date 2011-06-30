@@ -17,7 +17,18 @@
         <%= f.radio_button :has_label, false%>
       <%end%>
     </p>
-    <br/>
+    <ul class="divisions">
+      <h3>Divisions or Image to rank:</h3>
+      <%division_separate = ""%>
+      <%1.upto(20) do |number| %>
+        <li class = "division_quantity <%division_separate%>">
+        <%= f.label :divisions, "#{number}", :class => "division_label"%>
+        <%= f.radio_button :divisions, "#{number}", :class => "division_option"%>
+        <%division_separate =  print_divisions(number)%>
+        </li>
+      <%end%>
+    </ul>
+    <br class="clear_both"/>
     <br/>
     <strong><%=link_to "Return to Module types list", module_types_path%></strong>
      <br/>

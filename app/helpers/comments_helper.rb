@@ -93,9 +93,7 @@ module CommentsHelper
               status = true
             end
             out = out + "<label> | TAG </label>"
-            out = out + check_box_tag("comment_#{comment.id}",comment.id, status, 
-          :onclick => remote_function(
-          :update => "comment_#{comment.id}", 
+            out = out + check_box_tag("comment_#{comment.id}",comment.id, status, :onclick => remote_function(
           :url => {:controller => :comments, :action => :update_report_flag }, 
           :with => "'comment_id='+$('comment_#{comment.id}').value", 
           :complete => "new Effect.SlideDown('report_comments_#{comment.id}', { duration: .5 })" ))
@@ -172,6 +170,14 @@ module CommentsHelper
     out = out + "<div class='heatmap'>"
     unless image.blank?
       out = out + "<img src='#{image}' width = '440' height = '310'/>"
+    end
+    out = out + "</div>"
+		out = out + "<hr noshade='noshade'/>"
+    out = out + "</div>"
+    out = out + "<div class='flex_modules'>"
+    module_image = module_response_by_comment(comment)
+    unless module_image.blank?
+      out = out + "<img src='#{module_image}' width = '600' height = '510'/>"
     end
     out = out + "</div>"
 		out = out + "<hr noshade='noshade'/>"

@@ -7,7 +7,9 @@ class ModuleImagesController < ApplicationController
   end
 
   def index
+    @participants = @flex_module.discussion.comment_assignmentss.size
     @module_images = ModuleImage.find(:all, :conditions =>{:flex_module_id => @flex_module})
+    @module_images= ModuleImage.order_by_first_position(@module_images)
     @module_image = ModuleImage.new
     respond_to do |format|
       format.html
@@ -17,11 +19,12 @@ class ModuleImagesController < ApplicationController
 
   def create
     @module_image = ModuleImage.new(params[:module_image])
-    unless @module_image.save
+    if @module_image.save
+      flash[:notice] = "Photo was added successfully."
+      redirect_to flex_module_module_images_path
+    else
       @module_images = ModuleImage.find(:all, :conditions =>{:flex_module_id => @flex_module})
       render :action => :index
-    else
-      redirect_to flex_module_module_images_path
     end
   end
 

@@ -730,3 +730,40 @@ div.accordion {
 .goDiscussionLink{
   float: right;
 }
+.labels_wrapper{
+  float: left;
+}
+.divisions{
+  background-color: #CCC;
+  height: 150px;
+  float: left;
+  list-style-type : none;
+  width: 200px;
+}
+.division_quantity{
+  display: inline;
+  float: left;
+  margin: 5px 0 0 10px;
+  width: 40px;
+}
+.division_label{
+  display: table;
+  float: left;
+  margin-right: 5px;
+  width : 20px;
+}
+.division_option{
+  width: 15px;
+}
+.division_quantity_separate{
+  clear: both;
+}
+.hide_divisions, .hide_labels{
+  display: none;
+}
+.show_divisions{
+  display: default;
+}
+.clear_both{
+  clear: both;
+}
