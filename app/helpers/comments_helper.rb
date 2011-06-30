@@ -93,9 +93,7 @@ module CommentsHelper
               status = true
             end
             out = out + "<label> | TAG </label>"
-            out = out + check_box_tag("comment_#{comment.id}",comment.id, status, 
-          :onclick => remote_function(
-          :update => "comment_#{comment.id}", 
+            out = out + check_box_tag("comment_#{comment.id}",comment.id, status, :onclick => remote_function(
           :url => {:controller => :comments, :action => :update_report_flag }, 
           :with => "'comment_id='+$('comment_#{comment.id}').value", 
           :complete => "new Effect.SlideDown('report_comments_#{comment.id}', { duration: .5 })" ))
