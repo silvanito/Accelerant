@@ -15,7 +15,9 @@ class DiscussionController < ApplicationController
     @discussion = Discussion.find(params[:id])
     project = @discussion.project_id
     @discussion.destroy
-    redirect_to :controller => 'assignment', :action => 'show', :id => project
+    @discussion = Discussion.find(:last, :conditions => {:has_heatmap => true})
+    session[:discussion_id] = @discussion.id
+    redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project
   end
 
   def create
@@ -24,30 +26,36 @@ class DiscussionController < ApplicationController
     @discussion.has_heatmap = nil if params[:module_type].present?
     @discussion.heatmap_type_id = nil if params[:module_type].present?
     module_type = ModuleType.find(params[:flex_module][:module_type_id]) if params[:flex_module][:module_type_id].present?
-    @discussion.save
-    unless module_type.nil?
-      @flex_module = FlexModule.new(params[:flex_module])
-      @flex_module.discussion = @discussion
-      @flex_module.save
-    end
-    if self.current_user.admin? || self.current_user.moderator?
-    @user_assignments = params[:comment_assignment]
-      if @user_assignments
-        @these_keys = @user_assignments.keys
-        @user_assignments.each do |key, value|
-          #if value=="0"
-            if value !="0"
-              @comment_assignment = CommentAssignments.new
-              @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
-              @comment_assignment.save
-            end
+    if @discussion.save
+      unless module_type.nil?
+        @flex_module = FlexModule.new(params[:flex_module])
+        @flex_module.discussion = @discussion
+        @flex_module.save
+      end
+      if self.current_user.admin? || self.current_user.moderator?
+      @user_assignments = params[:comment_assignment]
+        if @user_assignments
+          @these_keys = @user_assignments.keys
+          @user_assignments.each do |key, value|
+            #if value=="0"
+              if value !="0"
+                @comment_assignment = CommentAssignments.new
+                @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
+                @comment_assignment.save
+              end
+          end
         end
       end
-    end
-    if @discussion.flex_modules.empty?
-      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
+      if @discussion.flex_modules.empty?
+        redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
+      else
+        redirect_to :controller => "module_images", :action => "index", :flex_module_id => @flex_module.id
+      end
     else
-      redirect_to :controller => "module_images", :action => "index", :flex_module_id => @flex_module.id
+      flash[:notice] = "something was wrong #{@discussion.errors.full_messages}"
+      @project = Project.find(params[:new_discussion][:project_id])
+      @discussion = @project.discussions.last
+      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @project.id
     end
   end
 

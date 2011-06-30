@@ -12,7 +12,16 @@
   <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><br/><b>
   Upload a photo or file:</b><br/>
 <%= f.file_field :media %>
-
+  </p>
+    <% field_set_tag 'Discussion Comment Type' do%>
+      <%= f.radio_button :comment_type, "public", :checked => true%>
+      <%= label_tag 'Public'%><br/>
+      <%= f.radio_button :comment_type, "private", :checked => false%>
+      <%= label_tag 'Private'%><br/>
+      <%= f.radio_button :comment_type, "private_then_public", :checked => false%>
+      <%= label_tag 'Private Then Public'%>
+    <% end%>
+  <p>
  
 
   <br/>

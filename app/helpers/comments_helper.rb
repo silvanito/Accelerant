@@ -158,7 +158,7 @@ module CommentsHelper
       end
 
       if displayflag && User.exists?(replies.user_id)
-        if !@project.one_to_one || ((replies.user.id == self.current_user.id || replies.user.admin? || replies.user.moderator?) || self.current_user.admin? || self.current_user.moderator? || self.current_user.client? )
+        if (!@project.one_to_one && discussion_subcomment_type(replies) ) || ((replies.user.id == self.current_user.id || replies.user.admin? || replies.user.moderator?) || self.current_user.admin? || self.current_user.moderator? || self.current_user.client? )
           out = out + render_reply(replies)
         end
       end
@@ -186,6 +186,60 @@ module CommentsHelper
       heatmap.create_tmp_image
     else
       ""
+    end
+  end
+
+  def discussion_comment_type(comment)
+    discussion = comment.discussion
+    if !discussion.flex_modules.empty? || discussion.has_heatmap
+      case discussion.comment_type.to_sym
+        when :public
+         true
+        when :private
+         if self.current_user.participant 
+          if comment.user_id == self.current_user.id
+            true
+          else
+            false
+          end
+         else
+          true
+         end
+        when :private_then_public
+          comment = Commment.find(:last, :conditions => {:discussion_id => discussion, :user_id => self.current_user.id})
+          if comment
+            true
+          else
+            false
+          end
+        end
+    else
+      true
+    end
+  end
+
+  def discussion_subcomment_type(subcomment)
+    discussion = subcomment.discussion
+    case discussion.comment_type.to_sym
+      when :public
+       true
+      when :private
+       if self.current_user.participant 
+          if subcomment.user_id == self.current_user.id
+            true
+          else
+            false
+          end
+       else
+        true
+       end
+      when :private_then_public
+        comment = Replies.find(:last, :conditions => {:discussion_id => discussion, :user_id => self.current_user.id})
+        if comment
+          true
+        else
+          false
+        end
     end
   end
 

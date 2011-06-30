@@ -1,4 +1,8 @@
 class Discussion < ActiveRecord::Base
+  #
+  # Constants
+  #
+  COMMENT_TYPES = [ 'public', 'private', 'private_then_public' ]
 
   #relationship
   belongs_to :project
@@ -13,6 +17,8 @@ class Discussion < ActiveRecord::Base
   
   #named_scope :is_last, :conditions => {:is_published => true}
 
+
+  validates_inclusion_of :comment_type, :in => COMMENT_TYPES
 
   has_attached_file :media,
   :whiny => false,
