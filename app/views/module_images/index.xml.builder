@@ -18,6 +18,7 @@ xml.module_images do
       xml.y_max      module_image.coord_maximum(:yCoord)
       xml.y_min      module_image.coord_minimum(:yCoord)
       xml.first_position  module_image.first_place
+      xml.percent    module_image.percent_by_first_place
     end
   end
 end

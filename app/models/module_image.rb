@@ -73,4 +73,9 @@ class ModuleImage < ActiveRecord::Base
     images_ordered.reverse!
   end
 
+   def percent_by_first_place
+      percent_by_response = 100 / self.flex_module.module_responses.size
+      self.first_place * percent_by_response
+   end
+
 end
