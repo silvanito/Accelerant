@@ -10,10 +10,12 @@ module ModuleResponsesHelper
 
   def module_response_by_comment(comment)
     user = comment.user
-    unless user.module_responses.last.module_response_image.nil?
-      user.module_responses.last.module_response_image.create_tmp_image
-    else
-      ""
+    unless user.module_responses.empty?
+      unless user.module_responses.last.module_response_image.nil?
+        user.module_responses.last.module_response_image.create_tmp_image
+      else
+        nil
+      end
     end
   end
 end

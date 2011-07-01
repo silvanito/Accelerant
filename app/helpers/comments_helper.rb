@@ -173,15 +173,17 @@ module CommentsHelper
     end
     out = out + "</div>"
 		out = out + "<hr noshade='noshade'/>"
-    out = out + "</div>"
-    out = out + "<div class='flex_modules'>"
-    module_image = module_response_by_comment(comment)
-    unless module_image.blank?
-      out = out + "<img src='#{module_image}' width = '600' height = '510'/>"
+
+    unless comment.discussion.flex_modules.empty?
+      out = out + "<div class='flex_modules'>"
+      module_image = module_response_by_comment(comment)
+      unless module_image.nil? 
+        out = out + "<img src='#{module_image}' width = '600' height = '510'/>"
+      end
+      out = out + "</div>"
+  		out = out + "<hr noshade='noshade'/>"
     end
-    out = out + "</div>"
-		out = out + "<hr noshade='noshade'/>"
-    out = out + "</div>"
+
     return out
   end
 
@@ -196,8 +198,8 @@ module CommentsHelper
   end
 
   def discussion_comment_type(comment)
-    discussion = comment.discussion
-    if !discussion.flex_modules.empty? || discussion.has_heatmap
+    discussion = comment.discussion unless comment.nil?
+    if !discussion.flex_modules.empty? || discussion.has_heatmap || comment.nil?
       case discussion.comment_type.to_sym
         when :public
          true
@@ -225,27 +227,31 @@ module CommentsHelper
   end
 
   def discussion_subcomment_type(subcomment)
-    discussion = subcomment.discussion
-    case discussion.comment_type.to_sym
-      when :public
-       true
-      when :private
-       if self.current_user.participant 
-          if subcomment.user_id == self.current_user.id
+    discussion = subcomment.discussion unless subcomment.nil?
+    unless subcomment.nil?
+      case discussion.comment_type.to_sym
+        when :public
+         true
+        when :private
+         if self.current_user.participant 
+            if subcomment.user_id == self.current_user.id
+              true
+            else
+              false
+            end
+         else
+          true
+         end
+        when :private_then_public
+          comment = Replies.find(:last, :conditions => {:discussion_id => discussion, :user_id => self.current_user.id})
+          if comment
             true
           else
             false
           end
-       else
-        true
-       end
-      when :private_then_public
-        comment = Replies.find(:last, :conditions => {:discussion_id => discussion, :user_id => self.current_user.id})
-        if comment
-          true
-        else
-          false
-        end
+      end
+    else
+      false
     end
   end
 
