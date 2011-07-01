@@ -767,3 +767,11 @@ div.accordion {
 .clear_both{
   clear: both;
 }
+.export_data_formats{
+  float: right;
+  list-style-type: none;
+}
+.export_data_formats li{
+  display: inline;
+
+}
