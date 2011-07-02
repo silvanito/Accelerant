@@ -179,6 +179,15 @@ class DiscussionController < ApplicationController
     end
     end
     @action = "create"
+    @place = :comments
+    if !@discussion.flex_modules.empty?
+       @flex_module = @discussion.flex_modules.first
+       @module_response = ModuleResponse.new
+       @module_images = ModuleImage.find(:all, :conditions => {:flex_module_id => @flex_module})
+       @comment = Comment.new
+       @place = :module_responses
+    end
+    session[:flex_module_id] = @discussion.flex_modules.last.id unless @discussion.flex_modules.empty?
     if @discussion.has_heatmap && self.current_user.participant
       heatmap = Heatmap.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
       if heatmap.nil? #no contestado

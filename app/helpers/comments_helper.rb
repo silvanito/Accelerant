@@ -17,7 +17,8 @@ module CommentsHelper
 
 		out = out + "<strong><em>"
     out = out + comment.user.name
-    out = out + " says:</em></strong><br />"
+    out = out + " says:</em></strong>"
+    out = out + "</div><br />"
     unless client_browser_name == "Internet Explorer"
       out = out + "<div class='commentText'>"
     end
@@ -166,24 +167,24 @@ module CommentsHelper
 		out = out + "</div>"
     out = out + "<a name='subCommentForm#{comment.id}' ></a>"
     #out = out + "<div id='subCommentForm#{comment.id}' class='replyStyle' style='display:none;'></div>"
-		out = out + "</div>"
+
     out = out + "<div class='heatmap'>"
     unless image.blank?
-      out = out + "<img src='#{image}' width = '440' height = '310'/>"
+      out = out + "<img src='#{image}' width =440 height =310/>"
     end
     out = out + "</div>"
 		out = out + "<hr noshade='noshade'/>"
-
+    out = out + "<br/>"
     unless comment.discussion.flex_modules.empty?
       out = out + "<div class='flex_modules'>"
       module_image = module_response_by_comment(comment)
       unless module_image.nil? 
-        out = out + "<img src='#{module_image}' width = '600' height = '510'/>"
+        out = out + "<img src='#{module_image}' width =600 height =510/>"
       end
       out = out + "</div>"
   		out = out + "<hr noshade='noshade'/>"
     end
-
+    out = out +  "</div>"
     return out
   end
 

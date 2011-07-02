@@ -1,4 +1,5 @@
 class ModuleResponsesController < ApplicationController
+
   before_filter :login_required
   before_filter :get_flex_module, :except => :get_module
   before_filter :set_flex_module, :except => :get_module
@@ -19,14 +20,13 @@ class ModuleResponsesController < ApplicationController
   end
   
   def create
-    comment = Comment.new(params[:comment])
-    @module_response = ModuleResponse.new(params[:module_response])
-    comment.discussion_id = @flex_module.discussion.id
-    comment.project_id = @flex_module.discussion.project.id
-    comment.user_id = self.current_user.id
+    comment = Comment.new(params[:comments])
+    @module_response = ModuleResponse.new
     if comment.save 
       @module_response.comment = comment
       @module_response.module_response_image = ModuleResponseImage.find(session[:response_image_id])
+      @module_response.flex_module_id = @flex_module.id
+      @module_response.user_id = self.current_user.id
       if @module_response.save
           session[:response_image_id] = nil
           respond_to do |format|

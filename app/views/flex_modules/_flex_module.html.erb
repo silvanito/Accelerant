@@ -18,7 +18,7 @@
     <td class="launchModule">
 
         <%if user_response_module_type(flex_module)%>
-          <%= link_to "Click to launch the Module", flex_module_module_response_path(flex_module.id, user_response(flex_module)), :class=>"moduleLink"%>
+          <%= link_to "Click to see your answer", flex_module_module_response_path(flex_module.id, user_response(flex_module)), :class=>"moduleLink"%>
         <%else%>
           <%= link_to "Click to launch the Module", new_flex_module_module_response_path(:flex_module_id=> flex_module.id), :class=>"moduleLink"%>
         <%end%>

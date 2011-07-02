@@ -24,13 +24,18 @@ function hasData(data){
   heatmapData = data;
   if(heatmapData == true){
     $('my_form').show();
-    $('share').disabled = false;
+    $('share_comment').disabled = false;
 
   }else{
-    $('share').disabled = true;
+    $('share_comment').disabled = true;
     $('container').hide();
     alert("please, could you answer the heatmap");
     new Effect.ScrollTo($('HeatMap'));
 
   }
 }
+function enableSubmit() {
+  $('my_form').show();
+  $('share_comment').disabled = false;
+}
+

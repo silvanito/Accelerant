@@ -1,2 +1,3 @@
 <img src="<%= modules_response_screenshot(@module_response)%>" width = "600" height = "510"/> 
-
+<br/>
+  <%= link_to "Return to my new discussion",  {:controller => 'discussion', :action => 'show', :id => @flex_module.discussion.id, :project_id => @flex_module.discussion.project.id}, :class => "goDiscussionLink" %>

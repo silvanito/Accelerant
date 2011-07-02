@@ -22,15 +22,25 @@
   <% size = size_helper(self.current_user)%>
  <% unless heatmap_screenshot(discussions).blank? %>
     <br/>
+  <div class="heatmapContainer" id="HeatMap">
     <h3>Heatmap Response</h3>
-    <img src="<%= heatmap_screenshot(discussions)%>" width = "440" height = "310"/>
+    <img src="<%= heatmap_screenshot(discussions)%>" width= "440" height= "310"/>
+  </div>
  <%else%>
     <%if discussions.has_heatmap%>
       <p>Preparing your heatmap result, please refresh your browser!</p>
     <%end%>
   <%end%>
 <%end%>
-  <%if discussions.has_heatmap%>
+
+  <%if  !discussions.flex_modules.empty?%>
+    <%if user_response_module_type(discussions.flex_modules.last) && (self.current_user.admin || self.current_user.moderator)%>
+      <%= render :partial => "module_responses/new"%>
+    <%end%>
+  <%end%>
+
+  <%if discussions.has_heatmap || !discussions.flex_modules.empty?%>
+      
       <%comment = Comment.find(:first, :conditions =>{:user_id => self.current_user.id, :discussion_id => discussions.id} )%>
       <%if self.current_user.participant  || self.current_user.client%>
         <%unless comment%>
@@ -41,9 +51,9 @@
 
       <%end%>
   <%else%>
-    <%unless self.current_user.participant || self.current_user.client%>
-      <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
-    <%end%>
+      <%unless self.current_user.participant || self.current_user.client%>
+        <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
+      <%end%>
   <%end%>
 <%if discussions.has_heatmap && self.current_user.participant %>
   <% content_for :scripts do -%>

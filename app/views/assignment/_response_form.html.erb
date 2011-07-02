@@ -5,7 +5,7 @@
     <%else%>
       <%status = false%>
     <%end%>
-    <% form_for :comments, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => 'comments', :action => @action} do |f| -%>
+    <% form_for :comments, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => @place, :action => @action, :flex_module_id => @flex_module} do |f| -%>
 
       <div class="avatar">
         <%= render_avatar(self.current_user) %>
@@ -25,17 +25,18 @@
         <% end %>
         <%= f.hidden_field :project_id, :value => project_id %>
         <%= f.hidden_field :discussion_id, :value => discussions.id %>
+ 
         <% if !@project.one_to_one && self.current_user.moderator %>
           <label>Hide responses until answered:</label>
           <%= f.check_box :hide_until_answered, :class=>"left"  %>
         <% end %>
       </div>
-        <%if discussions.has_heatmap && self.current_user.participant%>
+        <%if discussions.has_heatmap  && self.current_user.participant%>
           <div class="postButton clear" style="margin-top:10px;">
             <%if getBrowser(6)%>
-              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status, :id => "share_comment"%>
             <%else%>
-              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status %>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status, :id => "share_comment" %>
             <%end%>
           </div>
         <%else%>

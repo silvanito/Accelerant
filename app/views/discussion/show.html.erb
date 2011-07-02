@@ -10,12 +10,12 @@
     <% unless @project.lock %>
       <%= render :partial => '/assignment/discussion_form' %>
     <% end %>
-  <% if params[:sort] != "by_user"%>
-  <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
-  <% else %>
-  <br/>
-  <%= link_to "Default View", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => '' %>
-  <% end %>
+    <% if params[:sort] != "by_user"%>
+      <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
+    <% else %>
+      <br/>
+      <%= link_to "Default View", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => '' %>
+    <% end %>
   <% end %>
   <br/>
   <%= link_to "Show Discussions by category", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :categorize => 'true' %>
@@ -25,19 +25,17 @@
     <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
   <%end%>
 
-
   <% unless @discussion.comment_assignmentss.find_by_user_id(self.current_user.id).nil? & self.current_user.participant? %>
     <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
 
-  <% if !@project.lock %>
+    <% if !@project.lock %>
       <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
-  <% end  %>
+    <% end  %>
 
-
-  <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
+    <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
     <div id="notice" style="display:none;">
       <%= image_tag "loader.gif"%><br/>
       <span>Preparing your response.  Please wait.</span>
     </div>
-  </div>
-<%end%>
+  <%end%>
+</div>
