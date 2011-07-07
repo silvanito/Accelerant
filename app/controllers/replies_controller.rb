@@ -55,11 +55,10 @@ class RepliesController < ApplicationController
           #page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'Comment posted... Thank you!';"
           unless client_browser_name == "Internet Explorer"
             page << "document.getElementById('notice').style.display='none'"
-            page << "document.getElementById('container').style.filter='alpha(opacity = 100)'"
             page << "document.getElementById('container').style.opacity='1'"
           end
           page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'You just said #{@gunk}';"
-          page << "new Effect.ScrollTo($('commentSub#{next_comment}'));" if next_comment == 0
+          page << "new Effect.ScrollTo($('commentSub#{next_comment}'));" unless next_comment == 0
 
           #page << "document.getElementById('subCommentForm#{@reply.comment_id}').innerHTML = '#{gunk}"
           puts @gunk
@@ -72,7 +71,6 @@ class RepliesController < ApplicationController
         render :update do |page|
           unless client_browser_name == "Internet Explorer"
             page << "document.getElementById('notice').style.display='none';"
-            page << "document.getElementById('container').style.filter='alpha(opacity = 100)';"
             page << "document.getElementById('container').style.opacity='1';"
           end
           page << "document.getElementById('subCommentForm#{params[:reply][:comment_id]}').innerHTML = 'Response is too short.  Must be #{charMin} characters minimum.'"
