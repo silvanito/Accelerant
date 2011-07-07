@@ -37,5 +37,24 @@ module AssignmentHelper
    end
   end
 
+  def module_has_comment(discussion)
+    if discussion.has_heatmap
+       heatmap = self.current_user.heatmaps.find(:last, :conditions => {:discussion_id => discussion.id})
+       comment = heatmap.comment unless heatmap.nil?
+       if comment
+        true
+       else
+        false
+       end
+    else
+      module_response =  self.current_user.module_responses.find(:last, :conditions => {:flex_module_id => discussion.flex_modules.last.id})
+      comment = module_response.comment unless module_response.nil?
+      if comment
+       true
+      else
+       false
+      end
+    end
+  end
     #Heatmap.create_tmp_image(discussion.id, self.current_user.id)
 end
