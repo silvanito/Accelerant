@@ -790,3 +790,11 @@ div.accordion {
   display: inline;
 
 }
+.add_image_title{
+  line-height: 1;
+}
+.edit_labels{
+  clear: both;
+  float: left;
+  width: 100px;
+}
