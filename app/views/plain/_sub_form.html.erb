@@ -10,9 +10,9 @@
   :url =>{:controller => 'replies', :action => 'create' } do |f| -%>
 
   <% if self.current_user.participant && safari_check != "Safari" %>
-    <%= f.text_area :content, :size => "50 x 10", :class => 'rich_text_editor', :id => 'repliesResponse' %><br/>
+    <%= f.text_area :content, :size => "50 x 40", :class => 'rich_text_editor', :id => 'repliesResponse' %><br/>
   <% else %>
-    <%= f.text_area :content, :size => "50 x 100", :class => 'rich_text_editor', :id => 'repliesResponse' %><br/>
+    <%= f.text_area :content, :size => "50 x 20", :class => 'rich_text_editor', :id => 'repliesResponse' %><br/>
   <% end %>
 
   <% #if self.current_user.admin || self.current_user.moderator %>
