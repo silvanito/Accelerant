@@ -1,12 +1,12 @@
 <div style="padding-top:15px;clear:both;" id="responder_form" >
-    <%if discussions.has_heatmap && self.current_user.participant %>
+    <%if (discussions.has_heatmap || !discussions.flex_modules.empty?) && self.current_user.participant %>
       <%status = true%>
       <%display = "none;"%>
     <%else%>
       <%status = false%>
     <%end%>
-    <% form_for :comments, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => @place, :action => @action, :flex_module_id => @flex_module} do |f| -%>
 
+    <% form_for :comment, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => @place, :action => @action, :flex_module_id => @flex_module} do |f| -%>
       <div class="avatar">
         <%= render_avatar(self.current_user) %>
 	    </div>
@@ -31,7 +31,7 @@
           <%= f.check_box :hide_until_answered, :class=>"left"  %>
         <% end %>
       </div>
-        <%if discussions.has_heatmap  && self.current_user.participant%>
+        <%if (discussions.has_heatmap || !discussions.flex_modules.empty?)  && self.current_user.participant%>
           <div class="postButton clear" style="margin-top:10px;">
             <%if getBrowser(6)%>
               <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status, :id => "share_comment"%>

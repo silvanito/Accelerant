@@ -34,7 +34,12 @@
 <%end%>
 
   <%if  !discussions.flex_modules.empty?%>
-    <%if user_response_module_type(discussions.flex_modules.last) && (self.current_user.admin || self.current_user.moderator)%>
+    <%if self.current_user.admin || self.current_user.moderator %>
+      <%= render :partial => "module_responses/index"%>
+    <%elsif user_response_module_type(discussions.flex_modules.last)%>
+      <%@module_response = user_module_response(discussions.flex_modules.last)%>
+      <%= render :partial => "module_responses/show"%>
+    <%else%>
       <%= render :partial => "module_responses/new"%>
     <%end%>
   <%end%>
@@ -42,20 +47,15 @@
   <%if discussions.has_heatmap || !discussions.flex_modules.empty?%>
       
       <%comment = Comment.find(:first, :conditions =>{:user_id => self.current_user.id, :discussion_id => discussions.id} )%>
-      <%if self.current_user.participant  || self.current_user.client%>
-        <%unless comment%>
+      <%unless self.current_user.client || module_has_comment(discussions) %>
           <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
-        <%end%>
-      <%else%>
-        <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
-
       <%end%>
   <%else%>
       <%unless self.current_user.participant || self.current_user.client%>
         <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
       <%end%>
   <%end%>
-<%if discussions.has_heatmap && self.current_user.participant %>
+<%if (discussions.has_heatmap || !discussions.flex_modules.empty?) && self.current_user.participant %>
   <% content_for :scripts do -%>
     <%= javascript_include_tag "loadFlexapp"%>
   <%end%>
