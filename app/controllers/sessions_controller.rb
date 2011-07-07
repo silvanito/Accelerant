@@ -74,12 +74,6 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    heatmaps = self.current_user.heatmaps.empty? ? [] : self.current_user.heatmaps
-    unless heatmaps.empty?
-      self.current_user.heatmaps.each do |heatmap|
-        heatmap.delete_tmp_image
-      end
-    end
     if self.current_user.admin? || self.current_user.moderator?
       heatmaps = Heatmap.all
       discussions = Discussion.all
@@ -88,21 +82,24 @@ class SessionsController < ApplicationController
           heatmap.delete_tmp_image
         end
       end
-    end
-    if self.current_user.admin? || self.current_user.moderator?
       discussions = Discussion.all
       unless discussions.empty?
         discussions.each do |discussion|
           discussion.delete_admin_tmp_image(self.current_user.id)
         end
       end
-    end
-    module_responses = self.current_user.module_responses.empty? ? [] : self.current_user.module_responses
-    module_responses.each do |module_response|
-      module_response.module_response_image.delete_tmp_image
-    end
-    if self.current_user.admin?
       module_responses = ModuleResponse.all
+      module_responses.each do |module_response|
+        module_response.module_response_image.delete_tmp_image
+      end
+    elsif self.current_user.participant?
+      heatmaps = self.current_user.heatmaps.empty? ? [] : self.current_user.heatmaps
+      unless heatmaps.empty?
+        self.current_user.heatmaps.each do |heatmap|
+          heatmap.delete_tmp_image
+        end
+      end
+      module_responses = self.current_user.module_responses.empty? ? [] : self.current_user.module_responses
       module_responses.each do |module_response|
         module_response.module_response_image.delete_tmp_image
       end
