@@ -201,7 +201,7 @@ module CommentsHelper
 
   def discussion_comment_type(comment)
     discussion = comment.discussion unless comment.nil?
-    if !discussion.flex_modules.empty? || discussion.has_heatmap || comment.nil?
+    if !discussion.flex_modules.empty? || discussion.has_heatmap || !comment.nil?
       case discussion.comment_type.to_sym
         when :public
          true
@@ -216,7 +216,7 @@ module CommentsHelper
           true
          end
         when :private_then_public
-          comment = Commment.find(:last, :conditions => {:discussion_id => discussion, :user_id => self.current_user.id})
+          comment = Comment.find(:last, :conditions => {:discussion_id => discussion.id, :user_id => self.current_user.id})
           if comment
             true
           else
@@ -224,7 +224,7 @@ module CommentsHelper
           end
         end
     else
-      true
+      false
     end
   end
 
