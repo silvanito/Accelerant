@@ -181,11 +181,17 @@ class DiscussionController < ApplicationController
     @action = "create"
     @place = :comments
     if !@discussion.flex_modules.empty?
+       if session[:response_image_id]
+         module_response_image = ModuleResponseImage.find(session[:response_image_id]) 
+         if module_response_image.module_response.nil?
+           module_response_image.destroy
+         end
+       end
        @flex_module = @discussion.flex_modules.first
        @module_response = ModuleResponse.new
        @module_images = ModuleImage.find(:all, :conditions => {:flex_module_id => @flex_module})
        @comment = Comment.new
-       @place = :module_responses
+       @place = :module_responses if self.current_user.participant
     end
     session[:flex_module_id] = @discussion.flex_modules.last.id unless @discussion.flex_modules.empty?
     if @discussion.has_heatmap && self.current_user.participant
@@ -198,6 +204,8 @@ class DiscussionController < ApplicationController
         if comment
           heatmap.comment_id = session[:comment_id] || comment.id
           heatmap.save
+        else
+          heatmap.destroy
         end
       end
     end
