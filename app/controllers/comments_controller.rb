@@ -28,40 +28,21 @@ class CommentsController < ApplicationController
   end
 
   def create
-    if params[:comments]
-      @discussion = Discussion.find(params[:comments][:discussion_id])
-    end
-    if @discussion.character_minimum.nil?
-      @discussion.character_minimum = 0
-      @discussion.save
-    end
-    if (@discussion.character_minimum == 0 || (@discussion.character_minimum != 0) && (params[:comments][:comment].length >= @discussion.character_minimum))
-      @comment = Comment.new(params[:comments])
-      @comment.for_report = 0
-      @comment.save
+    @comment = Comment.new(params[:comment])
+
+    if @comment.save
       session[:comment_id] = @comment.id
-
-       redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
-
-
+      redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
     else
-      render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
+      flash[:notice] = "#{@comment.errors.full_messages}"
+      redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
+      #render :text => "Response is too short.  Must be #{@comment.discussion.character_minimum} characters minimum."
     end
   end
 
   def comment_heatmap
-     if params[:comments]
-      @discussion = Discussion.find(params[:comments][:discussion_id])
-    end
-
-    if @discussion.character_minimum.nil?
-    @discussion.character_minimum = 0
-    @discussion.save
-    end
-    if (@discussion.character_minimum == 0 || (@discussion.character_minimum != 0) && (params[:comments][:comment].length >= @discussion.character_minimum))
-      @comment = Comment.new(params[:comments])
-      @comment.for_report = 0
-      @comment.save
+    @comment = Comment.new(params[:comment])
+    if @comment.save
       session[:comment_id] = @comment.id
       session[:notice_comment] = "Preparing your response.  Please wait."
       session[:comment_heatmap] = "display_none"
@@ -69,7 +50,8 @@ class CommentsController < ApplicationController
       #redirect_to :controller => "heatmap", :action => "loading"
       #redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
     else
-      render :text => "Response is too short.  Must be #{@discussion.character_minimum} characters minimum."
+      flash[:notice] = "#{@comment.errors.full_messages}"
+      redirect_to "/discussion/show/#{@comment.discussion_id}?project_id=#{@comment.project_id}"
     end
   end
   
