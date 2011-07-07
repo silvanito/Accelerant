@@ -17,20 +17,20 @@ class ModuleResponseImagesController < ApplicationController
         session[:response_image_id] = @response.id
         respond_to do |format|
           format.xml { 
-            render :xml => {:result => true, :message => 'Image was save sucessfully'}
+            render :xml => {:result => true, :message => 'Image was saved successfully. Please share your response, you could add a comment in the box below.'}
             } 
         end
       else
         respond_to do |format|
           format.xml { 
-            render :xml => {:result => false, :result => 'we have a error with module image coords please check'}
+            render :xml => {:result => false, :message => 'we have a error with module image coords please check'}
             } 
          end
       end
     else
       respond_to do |format|
         format.xml { 
-          render :xml => {:result => false, :result => 'we have a error with image  please check'}
+          render :xml => {:result => false, :message => 'we have a error with image  please check'}
           } 
        end
     end
