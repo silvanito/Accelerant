@@ -168,13 +168,13 @@ module CommentsHelper
     out = out + "<a name='subCommentForm#{comment.id}' ></a>"
     #out = out + "<div id='subCommentForm#{comment.id}' class='replyStyle' style='display:none;'></div>"
 
-    out = out + "<div class='heatmap'>"
+    
     unless image.blank?
+      out = out + "<div class='heatmap'>"
       out = out + "<img src='#{image}' width =440 height =310/>"
+      out = out + "</div>"
     end
-    out = out + "</div>"
-		out = out + "<hr noshade='noshade'/>"
-    out = out + "<br/>"
+
     unless comment.discussion.flex_modules.empty?
       out = out + "<div class='flex_modules'>"
       module_image = module_response_by_comment(comment)
@@ -182,8 +182,9 @@ module CommentsHelper
         out = out + "<img src='#{module_image}' width =600 height =510/>"
       end
       out = out + "</div>"
-  		out = out + "<hr noshade='noshade'/>"
     end
+		out = out + "<hr noshade='noshade'/>"
+    out = out + "<br/>"
     out = out +  "</div>"
     return out
   end

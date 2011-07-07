@@ -15,6 +15,10 @@ module FlexModulesHelper
     end
   end
 
+  def user_module_response(flex_module)
+    response = self.current_user.module_responses.find(:first, :conditions => {:flex_module_id => flex_module.id})
+  end
+
   def admin_flex_module_responses_path(flex_module)
     if flex_module.module_images.size > 1
       flex_module_module_responses_path(flex_module)
