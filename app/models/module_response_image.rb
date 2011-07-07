@@ -1,7 +1,13 @@
 class ModuleResponseImage < ActiveRecord::Base
+  #
+  #relatioships
+  #
   belongs_to :module_response
-  has_many :module_image_coords
-
+  has_many :module_image_coords, :dependent => :destroy
+  #
+  #callbacks
+  #
+  before_destroy :destroy_module_image_coords
   def create_tmp_image
     binaryData = Base64.decode64(self.image)
     #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
@@ -40,4 +46,9 @@ class ModuleResponseImage < ActiveRecord::Base
       false
     end
   end
+
+  private
+    def destroy_module_image_coords
+      self.module_image_coords.destroy_all
+    end
 end

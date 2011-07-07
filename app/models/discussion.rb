@@ -17,8 +17,16 @@ class Discussion < ActiveRecord::Base
   
   #named_scope :is_last, :conditions => {:is_published => true}
 
-
+  #
+  # validations
+  #
   validates_inclusion_of :comment_type, :in => COMMENT_TYPES
+  validates_presence_of :character_minimum
+
+  #
+  # callbacks
+  #
+  before_validation :ensure_character_minimum
 
   has_attached_file :media,
   :whiny => false,
@@ -90,5 +98,10 @@ class Discussion < ActiveRecord::Base
     modules_available = module_types - modules_assigned
 
   end
-
+  protected
+    def ensure_character_minimum
+      if character_minimum.nil?
+        self.character_minimum = 0
+      end
+    end
 end

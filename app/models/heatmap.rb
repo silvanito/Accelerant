@@ -1,11 +1,17 @@
 class Heatmap < ActiveRecord::Base
   require 'tmpdir'
   require 'base64'
+  #
+  #relationships
+  #
   belongs_to :user
   belongs_to :discussion
   belongs_to :comment
-  has_many :heatmap_coords
-
+  has_many :heatmap_coords, :dependent => :destroy
+  #
+  #callbacks
+  #
+  before_destroy :destroy_heatmap_coords
 
   def self.create_heatmap(image, coords, user_id, discussion_id, screen_size)
     discussion = Discussion.find(discussion_id)
@@ -20,10 +26,12 @@ class Heatmap < ActiveRecord::Base
       coords_saved = Heatmap.heatmap_criteria(heatmap, discussion.heatmap_type.heatmap_type, coords)
       if coords_saved
         discussion.heatmaps << heatmap
-        true
+        result = {:status => true, :errors => heatmap.errors}
       else
-        false
+        result = {:status => false, :errors => "the coords was wrong!"}
       end
+    else
+      result = {:status => false, :errors => heatmap.errors.full_messages}
     end
   end
 
@@ -79,4 +87,8 @@ class Heatmap < ActiveRecord::Base
       File.delete(root_path + path)
     end
   end
+  private
+    def destroy_heatmap_coords
+      self.heatmap_coords.destroy_all
+    end
 end

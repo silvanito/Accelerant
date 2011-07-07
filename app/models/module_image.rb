@@ -7,7 +7,7 @@ class ModuleImage < ActiveRecord::Base
   #association
   #
   belongs_to :flex_module
-  has_many :module_image_coords
+  has_many :module_image_coords, :dependent => :destroy
   #
   #paperclip
   #
@@ -16,9 +16,10 @@ class ModuleImage < ActiveRecord::Base
   :whiny_thumbnails => false,
   :styles => { :large => "300x300>", :medium => "100x100>", :small => "50x50>", :tiny => "20x20>" }
   #
-  #filter
+  #callbacks
   #
   before_save :max_images
+  before_destroy :destroy_module_image_coords
   #
   #validations
   #
@@ -74,8 +75,12 @@ class ModuleImage < ActiveRecord::Base
   end
 
    def percent_by_first_place
-      percent_by_response = 100 / self.flex_module.module_responses.size
+      percent_by_response = self.flex_module.module_responses.nil? ? 100 / self.flex_module.module_responses.size : 0
       self.first_place * percent_by_response
    end
 
+  protected
+    def destroy_module_image_coords
+      self.module_image_coords.destroy_all
+    end
 end
