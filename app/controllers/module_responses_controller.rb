@@ -3,6 +3,7 @@ class ModuleResponsesController < ApplicationController
   before_filter :login_required
   before_filter :get_flex_module, :except => :get_module
   before_filter :set_flex_module, :except => :get_module
+  before_filter :get_module_response_image, :only => :create
   before_filter :validate_users, :only => :index
 
   if ENV['RAILS_ENV'] == 'production'
@@ -20,11 +21,11 @@ class ModuleResponsesController < ApplicationController
   end
   
   def create
-    comment = Comment.new(params[:comments])
+    comment = Comment.new(params[:comment])
     @module_response = ModuleResponse.new
     if comment.save 
       @module_response.comment = comment
-      @module_response.module_response_image = ModuleResponseImage.find(session[:response_image_id])
+      @module_response.module_response_image = @module_response_image
       @module_response.flex_module_id = @flex_module.id
       @module_response.user_id = self.current_user.id
       if @module_response.save
@@ -39,6 +40,7 @@ class ModuleResponsesController < ApplicationController
              } 
           end
       else
+        @module_response_image.destroy
         respond_to do |format|
           format.html{
             flash[:notice] = "Something was wrong with response data"
@@ -49,6 +51,7 @@ class ModuleResponsesController < ApplicationController
         end
       end 
     else
+      @module_response_image.destroy
       respond_to do |format|
           format.html{
             flash[:notice] = "Something was wrong with comment data"
@@ -77,6 +80,10 @@ class ModuleResponsesController < ApplicationController
     def get_flex_module
       @flex_module = FlexModule.find(params[:flex_module_id])
     end
+    def get_module_response_image
+      @module_response_image = ModuleResponseImage.find(session[:response_image_id])
+    end
+
     def validate_users
       unless self.current_user.admin? || self.current_user.moderator?
         redirect_to project_index_path, :error => "User don't have permissions to access this page"
