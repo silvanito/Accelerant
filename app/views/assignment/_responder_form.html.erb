@@ -36,10 +36,10 @@
   <%if  !discussions.flex_modules.empty?%>
     <%if self.current_user.admin || self.current_user.moderator %>
       <%= render :partial => "module_responses/index"%>
-    <%elsif user_response_module_type(discussions.flex_modules.last)%>
+    <%elsif user_response_module_type(discussions.flex_modules.last) && discussions.flex_modules.last.published?%>
       <%@module_response = user_module_response(discussions.flex_modules.last)%>
       <%= render :partial => "module_responses/show"%>
-    <%else%>
+    <%elsif discussions.flex_modules.last.published?%>
       <%= render :partial => "module_responses/new"%>
     <%end%>
   <%end%>
