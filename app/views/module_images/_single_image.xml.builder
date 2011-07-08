@@ -2,10 +2,9 @@ xml.module_images do
   xml.divisions @flex_module.divisions
   xml.participants @participants
   xml.labels do
-    xml.top_label @flex_module.top_label
-    xml.right_label @flex_module.right_label
-    xml.bottom_label @flex_module.bottom_label
-    xml.left_label @flex_module.left_label
+    (1..@flex_module.divisions).each do |i|
+      xml.tag!(method_name(i), @flex_module.method(method_name(i)).call)
+    end
   end
   @module_images.each do |module_image|
     xml.module_image do
