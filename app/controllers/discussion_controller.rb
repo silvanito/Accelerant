@@ -15,9 +15,18 @@ class DiscussionController < ApplicationController
     @discussion = Discussion.find(params[:id])
     project = @discussion.project_id
     @discussion.destroy
-    @discussion = Discussion.find(:last, :conditions => {:has_heatmap => true})
-    session[:discussion_id] = @discussion.id
-    redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project
+    @discussion = Discussion.find(:last, :conditions => {:project_id => project})
+    if @discussion.nil?
+      session[:discussion_id] = nil
+      if self.current_user.moderator?
+        redirect_to "/moderator"
+      elsif self.current_user.admin?
+        redirect_to "/project"
+      end
+    else
+      session[:discussion_id] = @discussion.id
+      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project
+    end
   end
 
   def create
