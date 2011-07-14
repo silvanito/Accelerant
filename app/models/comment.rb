@@ -72,6 +72,7 @@ class Comment < ActiveRecord::Base
         self.for_report = 0
       end
     end
+
   private
     def destroy_heatmap
       self.heatmap.destroy unless heatmap.nil?

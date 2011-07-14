@@ -19,4 +19,13 @@ namespace :discussions do
       discussion.save
     end
   end
+
+  desc 'add heatmap type image to discussion with heatmaps'
+  task :heatmaptypes => :environment do 
+    discussions = Discussion.find(:all, :conditions => {:has_heatmap => true})
+    discussions.each do |discussion|
+      discussion.heatmap_type_id = 1
+      discussion.save
+    end
+  end
 end
