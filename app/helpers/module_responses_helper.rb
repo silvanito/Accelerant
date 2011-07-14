@@ -12,7 +12,7 @@ module ModuleResponsesHelper
     user = comment.user
     unless user.module_responses.empty?
       unless user.module_responses.last.module_response_image.nil?
-        user.module_responses.last.module_response_image.create_tmp_image
+        user.module_responses.last.module_response_image.media.url(:medium)
       else
         nil
       end

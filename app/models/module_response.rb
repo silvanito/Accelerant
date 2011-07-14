@@ -10,14 +10,13 @@ class ModuleResponse < ActiveRecord::Base
   # callbacks
   #
   before_destroy :destroy_module_response_image
-  before_destroy :destroy_comment
 
   protected
     def destroy_module_response_image
-      self.module_responses.destroy_all
+      self.module_response_image.destroy unless self.module_response_image.nil?
     end
 
     def destroy_comment
-      self.comment.destroy_all
+      self.comment.destroy unless self.comment.nil?
     end
 end

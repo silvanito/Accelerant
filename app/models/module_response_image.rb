@@ -1,5 +1,9 @@
 class ModuleResponseImage < ActiveRecord::Base
   #
+  #includes
+  #
+  include TempFile::TemporalImages
+  #
   #relatioships
   #
   belongs_to :module_response
@@ -8,6 +12,15 @@ class ModuleResponseImage < ActiveRecord::Base
   #callbacks
   #
   before_destroy :destroy_module_image_coords
+  before_save  :create_temporal_image
+  #
+  #paperclip
+  #
+  has_attached_file :media,
+  :whiny => false,
+  :whiny_thumbnails => false,
+  :styles => { :large => "550x510>", :medium => "500x410>", :small => "350x300>", :tiny => "200x200>" }
+
   def create_tmp_image
     binaryData = Base64.decode64(self.image)
     #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
@@ -18,17 +31,21 @@ class ModuleResponseImage < ActiveRecord::Base
     end
     #f.write(binaryData)
     #path =  file
-    return path
+    path
 #    File.open("#{RAILS_ROOT}/public/tmp/#{discussion.id}_heatmap_image#{heatmap.id}.jpg", "wb") { |f| f.write(binaryData) }
 #    render :text => "success"
   end
 
   def delete_tmp_image
-    binaryData = Base64.decode64(self.image)
-    root_path = "#{RAILS_ROOT}/public"
-    path =  "/tmp/#{self.module_response.id}_module_image#{self.id}.jpg"
-    if File.exists?(root_path + path)
-      File.delete(root_path + path)
+    unless self.image.nil?
+      binaryData = Base64.decode64(self.image)
+      root_path = "#{RAILS_ROOT}/public/tmp/"
+      name = self.media.original_filename
+      if File.exists?(root_path + name)
+        File.delete(root_path + name)
+      end
+      self.image = nil
+      self.save
     end
   end
 
@@ -47,8 +64,18 @@ class ModuleResponseImage < ActiveRecord::Base
     end
   end
 
+
   private
     def destroy_module_image_coords
       self.module_image_coords.destroy_all
+    end
+
+    def create_temporal_image
+      if self.media.url.blank?
+        binaryData = Base64.decode64(self.image)
+        temporal_file = TemporalFile.new 
+        temp_file_path = temporal_file.create_file(binaryData)
+        self.media = RemoteFile.new(temp_file_path)
+      end
     end
 end

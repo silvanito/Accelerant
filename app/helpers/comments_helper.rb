@@ -179,7 +179,7 @@ module CommentsHelper
       out = out + "<div class='flex_modules'>"
       module_image = module_response_by_comment(comment)
       unless module_image.nil? 
-        out = out + "<img src='#{module_image}' width =600 height =510/>"
+        out = out + "<img src='#{module_image}'/>"
       end
       out = out + "</div>"
     end
@@ -216,11 +216,15 @@ module CommentsHelper
           true
          end
         when :private_then_public
-          comment = Comment.find(:last, :conditions => {:discussion_id => discussion.id, :user_id => self.current_user.id})
-          if comment
-            true
+          if self.current_user.participant 
+            comment = Comment.find(:last, :conditions => {:discussion_id => discussion.id, :user_id => self.current_user.id})
+            if comment
+              true
+            else
+              false
+            end
           else
-            false
+            true
           end
         end
     else
