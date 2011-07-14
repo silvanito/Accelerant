@@ -40,7 +40,7 @@ class ModuleResponseImage < ActiveRecord::Base
     unless self.image.nil?
       binaryData = Base64.decode64(self.image)
       root_path = "#{RAILS_ROOT}/public/tmp/"
-      name = self.media.original_filename
+      name = self.media.original_filename || " "
       if File.exists?(root_path + name)
         File.delete(root_path + name)
       end
