@@ -7,11 +7,7 @@ module DiscussionHelper
         return true
       end
     else
-      if discussion.flex_modules.published.empty?
-        return false
-      else
-        return true
-      end
+      return false
     end
   end
 end
