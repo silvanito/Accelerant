@@ -61,13 +61,8 @@ class AssignmentController < ApplicationController
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
     @flex_module = FlexModule.new
-    unless @discussios_desc.nil?
-      @module_types = @discussions_desc.module_types_available
-      @flex_modules =  FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
-    else
-      @module_types = []
-      @flex_modules = []
-    end
+    @module_types = ModuleType.all
+    @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
 
     @testusers = []
     @testusers_report = []
@@ -104,7 +99,7 @@ class AssignmentController < ApplicationController
       end 
       @project_members.uniq!  
     end
-    unless @discussions.nil?
+    unless @discussions.empty?
       @discussion = Discussion.find(:last)
       session[:discussion_id] = @discussions_desc
       heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
