@@ -57,7 +57,11 @@ class CommentsController < ApplicationController
   
   def destroy
     @comment = Comment.find(params[:id])
-    @comment.destroy
+    unless @comment.module_response.nil?
+      ModuleResponse.find(@comment.module_response).destroy
+    else
+      @comment.destroy
+    end
     #render :text => "Removed"
   end
 
