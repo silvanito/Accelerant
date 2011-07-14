@@ -11,7 +11,7 @@ class Discussion < ActiveRecord::Base
   belongs_to :category
   has_many :heatmaps
   has_many :comment_assignmentss
-  has_many :flex_modules
+  has_many :flex_modules,  :dependent => :destroy
 
 
   
@@ -27,6 +27,8 @@ class Discussion < ActiveRecord::Base
   # callbacks
   #
   before_validation :ensure_character_minimum
+  before_destroy :destroy_flex_modules
+
 
   has_attached_file :media,
   :whiny => false,
@@ -103,5 +105,9 @@ class Discussion < ActiveRecord::Base
       if character_minimum.nil?
         self.character_minimum = 0
       end
+    end
+
+    def destroy_flex_modules
+      self.flex_modules.destroy_all
     end
 end
