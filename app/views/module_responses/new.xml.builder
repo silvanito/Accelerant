@@ -1,5 +1,6 @@
 xml.instruct! :xml, :version => "1.1", :encoding => "US-ASCII"
 xml.response do
+  xml.instructions @flex_module.instructions
   xml.divisions @flex_module.divisions
   xml.labels do
     xml.top_label @flex_module.top_label

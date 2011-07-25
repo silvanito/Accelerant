@@ -1,4 +1,12 @@
-<div id ="label_content">
+<div id="module_content">
+  <% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('instructions').hide();", :loaded => "$('loading').hide();$('instructions').show();", :update => {:success => "label_content", :failure => "errors_instructions"} do |f| %>
+    <div id="errors_instructions"></div>
+    <% field_set_tag 'Module Instructions', :id => 'instructions' do%>
+      <%= f.text_area :instructions, :size => "50x05"%><br/>
+    <%end%>
+    <%= submit_tag 'Change Instructions..', :class=> "submit_button right" %>
+  <%end%>
+  <br class="clear"/>
   <% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('label_form').hide();", :loaded => "$('loading').hide();$('label_form').show();", :update => {:success => "label_content", :failure => "errors"} do |f| %>
     <div id="errors">
     </div>
@@ -25,10 +33,10 @@
       <%= link_to "Would you like to edit the labels", "#", :onclick => "show_labels();", :id => "edit_labels"%>
     <br class="clear_both"/>
     <%end%>
-    <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
-    <%= submit_tag ' Update..', :class=> "submit_button clear right" %>
+    <%= submit_tag ' Update Options..', :class=> "submit_button clear right" %>
   <%end%>
 </div>
+  <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
   <% content_for :scripts do -%>
     <%= javascript_include_tag "module_images"%>
   <%end%>
