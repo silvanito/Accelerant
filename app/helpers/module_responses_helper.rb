@@ -9,13 +9,10 @@ module ModuleResponsesHelper
   end
 
   def module_response_by_comment(comment)
-    user = comment.user
-    unless user.module_responses.empty?
-      unless user.module_responses.last.module_response_image.nil?
-        user.module_responses.last.module_response_image.media.url(:medium)
-      else
-        nil
-      end
+    unless comment.module_response.nil?
+      comment.module_response.module_response_image.media.url(:medium)
+    else
+      nil
     end
   end
 end
