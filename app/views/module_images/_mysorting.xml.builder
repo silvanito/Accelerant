@@ -6,4 +6,9 @@ xml.module_images do
       xml.tag!(method_name(i), @flex_module.method(method_name(i)).call)
     end
   end
+  @module_images.each do |module_image|
+    xml.module_image do
+      xml.image_path module_image.media.url
+    end
+  end
 end
