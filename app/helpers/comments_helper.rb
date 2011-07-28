@@ -209,6 +209,8 @@ module CommentsHelper
          if self.current_user.participant 
           if comment.user_id == self.current_user.id
             true
+          elsif comment.user.admin? || comment.user.moderator?
+            true
           else
             false
           end
@@ -217,8 +219,10 @@ module CommentsHelper
          end
         when :private_then_public
           if self.current_user.participant 
-            comment = Comment.find(:last, :conditions => {:discussion_id => discussion.id, :user_id => self.current_user.id})
-            if comment
+            last_comment = Comment.find(:last, :conditions => {:discussion_id => discussion.id, :user_id => self.current_user.id}) 
+            if last_comment
+              true
+            elsif comment.user.admin? || comment.user.moderator?
               true
             else
               false
