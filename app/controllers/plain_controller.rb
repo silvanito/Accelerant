@@ -77,7 +77,7 @@ class PlainController < ApplicationController
     #end
     @discussion = Discussion.find(@comm.discussion_id)
     @project = Project.find(@discussion.project_id)
-    redirect_to "/assignment/#{@project.id}"
+    redirect_to "/discussion/show/#{@discussion.id}?project_id=#{@project.id}"
   end
 
   def delete_probe
