@@ -798,3 +798,11 @@ div.accordion {
   float: left;
   width: 100px;
 }
+#label_content, #instructions_content{
+  background-color: #CDD7DE;
+  height: 165px;
+  width: 500px;
+}
+#label_content{
+  height: 205px;
+}
