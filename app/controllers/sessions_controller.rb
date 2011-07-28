@@ -85,7 +85,7 @@ class SessionsController < ApplicationController
       discussions = Discussion.all
       unless discussions.empty?
         discussions.each do |discussion|
-          discussion.delete_admin_tmp_image(self.current_user.id)
+          discussion.delete_admin_tmp_image
         end
       end
       module_responses = ModuleResponse.all
