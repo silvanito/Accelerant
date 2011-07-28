@@ -283,11 +283,12 @@ class DiscussionController < ApplicationController
     end
   end
 
-  def heatmap_admin_result
+  def admin_report
     unless params[:image].blank? && params[:discussion_id]
-      heatmap_admin_result = Discussion.admin_tmp_image(params[:image], params[:discussion_id], self.current_user.id)
+      discussion = Discussion.find(params[:discussion_id])
+      heatmap_admin_result = discussion.admin_tmp_image(params[:image])
     else
-      heatmap_admin_result = "something was wrong"
+      heatmap_admin_result = "Error. Params are empty or nil please check"
     end
     if heatmap_admin_result
       respond_to do |format|

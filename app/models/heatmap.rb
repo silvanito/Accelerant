@@ -2,6 +2,10 @@ class Heatmap < ActiveRecord::Base
   require 'tmpdir'
   require 'base64'
   #
+  #includes
+  #
+  include TempFile::TemporalImages
+  #
   #relationships
   #
   belongs_to :user
@@ -65,27 +69,34 @@ class Heatmap < ActiveRecord::Base
   end
 
   def create_tmp_image
-    binaryData = Base64.decode64(self.image_result)
-    #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
-    root_path = "#{RAILS_ROOT}/public"
-    path =  "/tmp/#{self.discussion_id}_heatmap_image#{self.id}.jpg"
-    unless File.exists?(root_path + path)
-      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
-    end
-    #f.write(binaryData)
-    #path =  file
-    return path
+#    binaryData = Base64.decode64(self.image_result)
+#    #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
+#    root_path = "#{RAILS_ROOT}/public"
+     name =  "#{self.discussion_id}_heatmap_image#{self.id}.jpg"
+#    unless File.exists?(root_path + path)
+#      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
+#    end
+#    #f.write(binaryData)
+#    #path =  file
+#    return path
+    temporal_file = TemporalFile.new 
+    temp_file_path = temporal_file.create_file(self.image_result, name)
+    temporal_file.path_name(temp_file_path)
+#    path = "/tmp/#{self.discussion_id}_heatmap_image#{self.id}.jpg"
 #    File.open("#{RAILS_ROOT}/public/tmp/#{discussion.id}_heatmap_image#{heatmap.id}.jpg", "wb") { |f| f.write(binaryData) }
 #    render :text => "success"
   end
 
   def delete_tmp_image
-    binaryData = Base64.decode64(self.image_result)
-    root_path = "#{RAILS_ROOT}/public"
-    path =  "/tmp/#{self.discussion_id}_heatmap_image#{self.id}.jpg"
-    if File.exists?(root_path + path)
-      File.delete(root_path + path)
-    end
+#    binaryData = Base64.decode64(self.image_result)
+    root_path = "#{RAILS_ROOT}/public/tmp/"
+#    path =  "/tmp/#{self.discussion_id}_heatmap_image#{self.id}.jpg"
+#    if File.exists?(root_path + path)
+#      File.delete(root_path + path)
+#    end
+    name = root_path + "#{self.discussion_id}_heatmap_image#{self.id}.jpg"
+    temporal_file = TemporalFile.new 
+    temp_file_path = temporal_file.delete_file(name)
   end
   private
     def destroy_heatmap_coords

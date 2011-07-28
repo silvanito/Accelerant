@@ -71,7 +71,7 @@ class ModuleResponsesController < ApplicationController
     
     respond_to do |format|
       module_info = FlexModule.find(session[:flex_module_id])
-      flex_module= {:module_id => module_info.id, :module_type => module_info.module_type.name, :is_admin => self.current_user.admin, :is_moderator =>  self.current_user.moderator}
+      flex_module= {:module_id => module_info.id, :module_type => module_info.module_type.name, :is_admin => self.current_user.admin, :is_moderator =>  self.current_user.moderator, :discussion_id => module_info.discussion.id}
       format.xml{ render :xml => flex_module.to_xml(:dasherize => false)}
     end
   end

@@ -2,6 +2,13 @@ module TempFile
   module TemporalImages
     class TemporalFile
       def create_file(binaryData, name =  "module_response_#{Time.now.getutc.to_i.to_s}.jpg")
+        binaryData = Base64.decode64(binaryData)
+        root_path = "#{RAILS_ROOT}/public/tmp/"
+        binary_file(binaryData, root_path+name)
+      end
+
+      def create_admin_report(binaryData, name="admin_report_#{Time.now.getutc.to_i.to_s}.jpg")
+        binaryData = Base64.decode64(binaryData)
         root_path = "#{RAILS_ROOT}/public/tmp/"
         binary_file(binaryData, root_path+name)
       end
@@ -12,6 +19,18 @@ module TempFile
         end
         path
       end
+
+      def delete_file(name)
+        if File.exists?(name)
+          File.delete(name)
+        end
+      end
+
+     def path_name(root_path)
+      public_path = "#{RAILS_ROOT}/public"
+      root_path.slice!(public_path)
+      root_path
+     end
     end
     #Thanks to Cory O'Daniel code take of -->http://coryodaniel.com/index.php/2010/03/05/attaching-local-or-remote-files-to-paperclip-and-milton-models-in-rails-mocking-content_type-and-original_filename-in-a-tempfile/
     require 'open-uri'

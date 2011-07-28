@@ -4,6 +4,11 @@ class Discussion < ActiveRecord::Base
   #
   COMMENT_TYPES = [ 'public', 'private', 'private_then_public' ]
 
+  #
+  #includes
+  #
+  include TempFile::TemporalImages
+
   #relationship
   belongs_to :project
   belongs_to :user
@@ -68,27 +73,37 @@ class Discussion < ActiveRecord::Base
     end
   end
 
-  def self.admin_tmp_image(image, discussion_id, user_id)
-
-    binaryData = Base64.decode64(image)
-    #f = Tempfile.new("#{self.discussion_id}_heatmap_image#{self.id}_id")
-    root_path = "#{RAILS_ROOT}/public"
-    path =  "/tmp/heatmap_admin_#{user_id}_image_#{discussion_id}.jpg"
-    unless File.exists?(root_path + path)
-      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
-    end
-    #f.write(binaryData)
-    #path =  file
-    return path
-
+  def admin_tmp_image(image)
+    type = self.has_heatmap ? "heatmap" : "modules"
+    data = self.heatmaps.first || self.flex_modules.first
+    
+    data = data.nil? ? "zero_answers" : data.id
+#    binaryData = Base64.decode64(image)
+#    root_path = "#{RAILS_ROOT}/public"
+    name = "#{type}_admin_report_#{data}_image.jpg"
+    #path =  "/tmp/heatmap_admin_#{user_id}_image_#{discussion_id}.jpg"
+#    unless File.exists?(root_path + path)
+#      File.open(root_path + path, "wb") { |f| f.write(binaryData) }
+#    end
+#    return path
+    temporal_file = TemporalFile.new 
+    temp_file_path = temporal_file.create_file(image, name)
+    temporal_file.path_name(temp_file_path)
   end
 
-  def delete_admin_tmp_image(user_id)
-    root_path = "#{RAILS_ROOT}/public"
-    path =  "/tmp/heatmap_admin_#{user_id}_image_#{self.id}.jpg"
-    if File.exists?(root_path + path)
-      File.delete(root_path + path)
-    end
+  def delete_admin_tmp_image
+    root_path = "#{RAILS_ROOT}/public/tmp/"
+    type = self.has_heatmap ? "heatmap" : "modules"
+    data = self.heatmaps.first || self.flex_modules.first
+    data = data.nil? ? "zero_answers" : data.id
+#    path =  "/tmp/heatmap_admin_#{user_id}_image_#{self.id}.jpg"
+#    if File.exists?(root_path + path)
+#      File.delete(root_path + path)
+#    end
+    
+    name = root_path + "#{type}_admin_report_#{data}_image.jpg"
+    temporal_file = TemporalFile.new 
+    temporal_file.delete_file(name)
   end
 
   def module_types_available
