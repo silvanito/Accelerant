@@ -10,4 +10,17 @@ module DiscussionHelper
       return false
     end
   end
+
+  def flex_module_display(discussion)
+    case discussion.flex_modules.first.module_type.name
+      when "Single Image"
+        true
+      when "Perception map"
+        true
+      when "Image ranking"
+        true
+      else
+        false
+    end
+  end
 end

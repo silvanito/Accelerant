@@ -57,7 +57,7 @@ class ModuleResponseImage < ActiveRecord::Base
       if self.media.url.blank?
 #        binaryData = Base64.decode64(self.image)
         temporal_file = TemporalFile.new 
-        temp_file_path = temporal_file.create_file(binaryData)
+        temp_file_path = temporal_file.create_file(self.image)
         self.media = RemoteFile.new(temp_file_path)
       end
     end
