@@ -284,11 +284,11 @@ class DiscussionController < ApplicationController
   end
 
   def admin_report
-    unless params[:image].blank? && params[:discussion_id]
+    unless params[:image].blank? && params[:discussion_id].blank?
       discussion = Discussion.find(params[:discussion_id])
       heatmap_admin_result = discussion.admin_tmp_image(params[:image])
     else
-      heatmap_admin_result = "Error. Params are empty or nil please check"
+      heatmap_admin_result = nil
     end
     if heatmap_admin_result
       respond_to do |format|
@@ -298,7 +298,7 @@ class DiscussionController < ApplicationController
     else
       respond_to do |format|
         format.html { render :nothing => true }
-        format.xml { render :xml => {:path => heatmap_admin_result} } 
+        format.xml { render :xml => {:path => "Error. Params are empty or nil please check"} } 
       end
     end
   end
