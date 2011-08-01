@@ -290,7 +290,7 @@ class DiscussionController < ApplicationController
     else
       heatmap_admin_result = nil
     end
-    if heatmap_admin_result
+    unless heatmap_admin_result.nil?
       respond_to do |format|
         format.html { render :nothing => true }
         format.xml { render :xml => {:path => heatmap_admin_result} }
