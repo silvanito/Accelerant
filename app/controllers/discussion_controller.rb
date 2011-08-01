@@ -284,7 +284,7 @@ class DiscussionController < ApplicationController
   end
 
   def admin_report
-    unless params[:image].blank? && params[:discussion_id].blank?
+    if !params[:image].blank? && !params[:discussion_id].blank?
       discussion = Discussion.find(params[:discussion_id])
       heatmap_admin_result = discussion.admin_tmp_image(params[:image])
     else
