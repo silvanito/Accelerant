@@ -40,7 +40,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :sortables, :collection => {:sort => :post}
   map.online '/online', :controller => 'users', :action => 'showsessions'
   map.your_users '/your_users', :controller => 'users', :action => 'your_users'
-  map.admin_report '/admin_report.:format', :controller => 'discussion', :action => 'admin_report'
+  map.admin_report '/admin_report.:format', :controller => 'discussion', :action => 'admin_report',  :conditions => { :method => :post }
   map.resources  :heatmap, :only => "create"
   map.resources :categories, :member => {:unassign => :get, :assigned => :get}
   map.assign '/category/:id/assign', :controller => "categories", :action => "assign"
