@@ -21,7 +21,8 @@
       if cookies[:filter] == "yes" && !self.current_user.participant
         cookies.to_hash.each_pair do |k, v|
           if cookies[k.to_sym].split('_')[0] == "field"
-            testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
+            cookie_filter=User.sanitize(cookies[:sql])
+            testuser = User.find_by_id(comment.user.id,:conditions => cookie_filter)
             if testuser.nil?
               @testusers = "nothing"
               if !User.is_participant.find_by_id(comment.user_id)
