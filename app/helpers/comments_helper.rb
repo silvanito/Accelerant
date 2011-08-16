@@ -130,7 +130,8 @@ module CommentsHelper
             #if replies.user.send(cookies[k.to_sym]) == k  #e.g. if user.field_10 == "male"
               #displayflag = true
             #end
-            testuser = User.find_by_id(replies.user.id,:conditions => cookies[:sql])
+            cookie_filter=User.sanitize(cookies[:sql])
+            testuser = User.find_by_id(replies.user.id,:conditions => cookie_filter)
 
             if testuser.nil?
               if !User.is_participant.find_by_id(replies.user.id)
