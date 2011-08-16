@@ -85,7 +85,8 @@ class DiscussionController < ApplicationController
     if cookies[:filter] == "yes"
       users = []
       assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
-      filter_users = User.find(:all, :conditions => cookies[:sql])
+      cookie_filter=User.sanitize(cookies[:sql])
+      filter_users = User.find(:all, :conditions => cookie_filter)
       assignments.each do |participant|
         users << participant.user
       end 
