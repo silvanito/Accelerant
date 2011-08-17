@@ -116,13 +116,13 @@ class FilterController < ApplicationController
     1.upto(i) { |n|
       if field_array[n].length > 0
         if field_array[n].length == 1
-          value=User.sanitize(field_array[n])
+          #value=User.sanitize(field_array[n])
           #this is a single category element so we just wrap it in parenthesis
           if sql == ""
             #if it's the very first condition we don't want the AND
-            sql = sql + "( field_#{n} = '#{value}' )"
+            sql = sql + "( field_#{n} = '#{field_array[n]}' )"
           else
-            sql = sql + " AND ( field_#{n} = '#{value}' )"
+            sql = sql + " AND ( field_#{n} = '#{field_array[n]}' )"
           end
         else 
           #this will be an OR block
@@ -134,12 +134,12 @@ class FilterController < ApplicationController
           end
           0.upto(field_array[n].length-1) { |z|
             #cycle thru the array and build all the comparisons
-            valuez=User.sanitize(field_array[n][z])
+            #valuez=User.sanitize(field_array[n][z])
             if z == 0
               #if it's the first element we don't want the OR
-              sql = sql + " field_#{n} = '#{valuez}' "
+              sql = sql + " field_#{n} = '#{field_array[n][z]}' "
             else
-              sql = sql + " OR field_#{n} = '#{valuez}' "
+              sql = sql + " OR field_#{n} = '#{field_array[n][z]}' "
             end
           }
           #...and close the OR statement with closing parenthesis
