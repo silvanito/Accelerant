@@ -3,7 +3,12 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+  before_filter :redirect_to_https, :only => :index
   after_filter OutputCompressionFilter
+  
+  def redirect_to_https
+    redirect_to "https://www.blognogresearch.com" if request.path == '/' and Rails.env == 'production' 
+  end
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
