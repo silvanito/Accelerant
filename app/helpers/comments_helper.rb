@@ -176,12 +176,12 @@ module CommentsHelper
     end
 
     unless comment.discussion.flex_modules.empty?
-      out = out + "<div class='flex_modules'>"
-      module_image = module_response_by_comment(comment)
+      #out = out + "<div class='flex_modules'>"
+      #module_image = module_response_by_comment(comment)
       #unless module_image.nil? 
        # out = out + "<img src='#{module_image}'/>"
       #end
-      out = out + "</div>"
+      #out = out + "</div>"
     end
 		out = out + "<hr noshade='noshade'/>"
     out = out + "<br/>"
