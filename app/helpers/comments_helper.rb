@@ -175,14 +175,16 @@ module CommentsHelper
       out = out + "</div>"
     end
 
-    #unless comment.discussion.flex_modules.empty?
-      #out = out + "<div class='flex_modules'>"
-      #module_image = module_response_by_comment(comment)
-      #unless module_image.nil? 
-       # out = out + "<img src='#{module_image}'/>"
-      #end
-      #out = out + "</div>"
-    #end
+    unless comment.discussion.flex_modules.empty?
+      if current_user.admin? or current_user.moderator? or current_user.client? 
+        out = out + "<div class='flex_modules'>"
+        module_image = module_response_by_comment(comment)
+        unless module_image.nil? 
+          out = out + "<img src='#{module_image}'/>"
+        end
+        out = out + "</div>"
+      end 
+    end
 		out = out + "<hr noshade='noshade'/>"
     #out = out + "<br/>"
     out = out +  "</div>"
