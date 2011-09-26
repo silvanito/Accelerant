@@ -1,4 +1,6 @@
 <br/>
-<%= image_tag @module_response.module_response_image.media.url(:large) if @module_response.module_response_image.media %>
+<% if @module_response.module_response_image %>
+ <%= image_tag @module_response.module_response_image.media.url(:large) %>
+<%end%>
 <br/>
 
