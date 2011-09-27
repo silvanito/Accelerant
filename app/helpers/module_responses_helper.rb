@@ -10,11 +10,7 @@ module ModuleResponsesHelper
 
   def module_response_by_comment(comment)
     unless comment.module_response.nil?
-        if comment.module_response_imamge
-          comment.module_response.module_response_image.media.url(:medium)
-        else
-          nil
-        end
+      comment.module_response.module_response_image.media.url(:medium)
     else
       nil
     end
