@@ -90,7 +90,7 @@ class SessionsController < ApplicationController
       end
       module_responses = ModuleResponse.all
       module_responses.each do |module_response|
-        module_response.module_response_image.delete_tmp_image
+        module_response.module_response_image.delete_tmp_image if module_response.module_response_image
       end
     elsif self.current_user.participant?
       heatmaps = self.current_user.heatmaps.empty? ? [] : self.current_user.heatmaps
