@@ -41,7 +41,8 @@ editor_config_javascript: "
         { group: 'indentlist', label: '',
             buttons: [
                 { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' },
-                { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' }
+                { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' },
+                { type: 'push', label: 'HTML Link CTRL + SHIFT + L', value: 'createlink', disabled: true }
             ]
         }  
     ]
