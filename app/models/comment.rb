@@ -84,11 +84,31 @@ class Comment < ActiveRecord::Base
     end
     
     def check_video
-      return unless self.comment.match("http://www.youtube.com/watch?")
+      
+      if  self.comment.match("http://www.youtube.com/watch?")
+      add_youtube_video
+      elsif self.comment.match("http://vzaar.com/videos/")
+        add_vzaar_video
+      end
+    end
+    
+    def add_youtube_video
       video_code = self.comment.gsub("/",'').scan(/v=(\S*)&/)
       if video_code.empty?
         video_code = self.comment.gsub("/",'').scan(/v=(\S*)/)
       end
-      self.comment << "<iframe width='560' height='315' src='http://www.youtube.com/embed/#{video_code[0][0]}?rel=0 frameborder='0' allowfullscreen></iframe>"
+      self.comment.gsub!(/http:\/\/[^\s]*/, '') 
+      self.comment << "<iframe width='560' height='315' src='http://www.youtube.com/embed/#{video_code[0][0]}?rel=0 frameborder='0' allowfullscreen></iframe>"  
+    end
+    
+    def add_vzaar_video
+      video_code = self.comment.scan(/\/videos\/(\d*)/)[0][0]
+      self.comment.gsub!(/http:\/\/[^\s]*/, '') 
+      self.comment << "<div class='vzaar_media_player'><object data='http://view.vzaar.com/#{video_code}/flashplayer' 
+      height='252' id='video' type='application/x-shockwave-flash' width='448'><param name='allowFullScreen' value='true' />
+      <param name='allowScriptAccess' value='always' /><param name='wmode' value='transparent' /><param name='movie' 
+      value='http://view.vzaar.com/#{video_code}/flashplayer' /><param name='flashvars' value='border=none' />
+      <video controls height='252' id='vzvid' onclick='this.play();' poster='http://view.vzaar.com/#{video_code}/image' 
+      preload='none' src='http://view.vzaar.com/#{video_code}/video' width='448'></video></object></div>"
     end
 end
