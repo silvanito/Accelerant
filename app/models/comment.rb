@@ -30,6 +30,7 @@ class Comment < ActiveRecord::Base
   before_validation :ensure_for_report
   before_destroy :destroy_heatmap
   before_destroy :destroy_report_comment
+  before_create :check_video
 
   #has_many :attachings, :dependent => :destroy
   #has_many :attachments
@@ -81,5 +82,13 @@ class Comment < ActiveRecord::Base
     def destroy_report_comment
       self.report_comment.destroy unless report_comment.nil?
     end
-
+    
+    def check_video
+      return unless self.comment.match("http://www.youtube.com/watch?")
+      video_code = self.comment.gsub("/",'').scan(/v=(\S*)&/)
+      if video_code.empty?
+        video_code = self.comment.gsub("/",'').scan(/v=(\S*)/)
+      end
+      self.comment << "<iframe width='560' height='315' src='http://www.youtube.com/embed/#{video_code[0][0]}?rel=0 frameborder='0' allowfullscreen></iframe>"
+    end
 end
