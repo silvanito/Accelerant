@@ -103,12 +103,9 @@ class Comment < ActiveRecord::Base
     
     def add_vzaar_video
       video_code = self.comment.scan(/\/videos\/(\d*)/)[0][0]
-      self.comment.gsub!(/http:\/\/[^\s]*/, '') 
-      self.comment << "<div class='vzaar_media_player'><object data='http://view.vzaar.com/#{video_code}/flashplayer' 
-      height='252' id='video' type='application/x-shockwave-flash' width='448'><param name='allowFullScreen' value='true' />
-      <param name='allowScriptAccess' value='always' /><param name='wmode' value='transparent' /><param name='movie' 
-      value='http://view.vzaar.com/#{video_code}/flashplayer' /><param name='flashvars' value='border=none' />
-      <video controls height='252' id='vzvid' onclick='this.play();' poster='http://view.vzaar.com/#{video_code}/image' 
-      preload='none' src='http://view.vzaar.com/#{video_code}/video' width='448'></video></object></div>"
+      self.comment.gsub!(/http:\/\/[^\s]*/, '')
+      self.comment.gsub!("<A href=\"", '')
+      #TODO I know that is realy bad :s
+      self.comment << "<div class='vzaar_media_player'><object data='http://view.vzaar.com/#{video_code}/flashplayer' height='252' id='video' type='application/x-shockwave-flash' width='448'><param name='allowFullScreen' value='true' /> <param name='allowScriptAccess' value='always' /><param name='wmode' value='transparent' /><param name='movie' value='http://view.vzaar.com/#{video_code}/flashplayer' /><param name='flashvars' value='border=none' /><video controls height='252' id='vzvid' onclick='this.play();' poster='http://view.vzaar.com/#{video_code}/image' preload='none' src='http://view.vzaar.com/#{video_code}/video' width='448'></video></object></div>"
     end
 end
