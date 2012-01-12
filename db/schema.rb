@@ -9,8 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110224160804) do
-
+ActiveRecord::Schema.define(:version => 20110725194932) do
 
   create_table "admins", :force => true do |t|
     t.integer  "user_id"
@@ -61,6 +60,13 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.datetime "updated_at"
   end
 
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "project_id"
+  end
+
   create_table "clients", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
@@ -84,16 +90,19 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_id"
-    t.binary   "data",                :limit => 1048576
+    t.binary   "data",                  :limit => 16777215
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.integer  "project_id"
     t.integer  "discussion_id"
-    t.boolean  "hide_until_answered",                    :default => false
-    t.boolean  "emailed",                                :default => false
+    t.boolean  "hide_until_answered",                       :default => false
+    t.boolean  "emailed",                                   :default => false
     t.integer  "position"
+    t.integer  "for_report"
+    t.integer  "module_response_id"
+    t.integer  "module_image_coord_id"
   end
 
   create_table "companies", :force => true do |t|
@@ -123,11 +132,49 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.integer  "character_minimum",  :default => 0
     t.integer  "sortable"
     t.integer  "groupable"
+    t.boolean  "has_heatmap"
+    t.integer  "heatmap_type_id"
+    t.float    "width"
+    t.float    "height"
+    t.integer  "category_id"
+    t.string   "comment_type"
   end
 
   create_table "email_parsers", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "flex_modules", :force => true do |t|
+    t.integer  "module_type_id"
+    t.integer  "discussion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "deleted"
+    t.string   "top_label"
+    t.string   "right_label"
+    t.string   "bottom_label"
+    t.string   "left_label"
+    t.string   "status"
+    t.integer  "divisions"
+    t.string   "five_label"
+    t.string   "six_label"
+    t.string   "seven_label"
+    t.string   "eight_label"
+    t.string   "nine_label"
+    t.string   "ten_label"
+    t.string   "eleven_label"
+    t.string   "twelve_label"
+    t.string   "thirteen_label"
+    t.string   "fourteen_label"
+    t.string   "fifteen_label"
+    t.string   "sixteen_label"
+    t.string   "seventeen_label"
+    t.string   "eighteen_label"
+    t.string   "nineteen_label"
+    t.string   "twenty_label"
+    t.string   "twenty_one_label"
+    t.string   "instructions"
   end
 
   create_table "follow_ups", :force => true do |t|
@@ -179,29 +226,85 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
   end
 
   create_table "heatmap_coords", :force => true do |t|
+    t.integer  "heatmap_id"
     t.float    "coord_x"
     t.float    "coord_y"
     t.float    "coord_radio"
-    t.integer  "heatmap_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "startX"
+    t.float    "startY"
+    t.float    "endX"
+    t.float    "lineHeight"
+  end
+
+  create_table "heatmap_types", :force => true do |t|
+    t.string   "heatmap_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "heatmaps", :force => true do |t|
-    t.string   "title"
-    t.string   "url"
-    t.text     "comment"
-    t.string   "image_result"
+    t.binary   "image_result",  :limit => 16777215
     t.integer  "user_id"
     t.integer  "discussion_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comment_id"
   end
 
   create_table "moderators", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "module_image_coords", :force => true do |t|
+    t.float    "xCoord"
+    t.float    "yCoord"
+    t.integer  "module_image_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "module_response_image_id"
+    t.integer  "position_rank"
+  end
+
+  create_table "module_images", :force => true do |t|
+    t.integer  "flex_module_id"
+    t.string   "media_file_name"
+    t.string   "media_content_type"
+    t.integer  "media_file_size"
+    t.datetime "media_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "module_response_images", :force => true do |t|
+    t.binary   "image",              :limit => 2147483647
+    t.integer  "module_response_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "width"
+    t.string   "height"
+    t.string   "media_file_name"
+    t.string   "media_content_type"
+    t.integer  "media_file_size"
+    t.datetime "media_updated_at"
+  end
+
+  create_table "module_responses", :force => true do |t|
+    t.integer  "flex_module_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "module_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "has_label"
+    t.integer  "divisions"
   end
 
   create_table "participants", :force => true do |t|
@@ -226,6 +329,8 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.integer  "theme",              :default => 1
     t.boolean  "lock",               :default => false
     t.boolean  "active",             :default => true
+    t.string   "email_support"
+    t.string   "image_size"
   end
 
   create_table "replies", :force => true do |t|
@@ -240,6 +345,7 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.datetime "media_updated_at"
     t.boolean  "private",            :default => false
     t.integer  "discussion_id"
+    t.integer  "for_report"
   end
 
   create_table "reponses", :force => true do |t|
@@ -248,6 +354,18 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "report_comments", :force => true do |t|
+    t.string   "title"
+    t.string   "url"
+    t.text     "content"
+    t.string   "upload"
+    t.integer  "comment_id"
+    t.integer  "owner"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "subcomment_id"
   end
 
   create_table "responses", :force => true do |t|
@@ -284,14 +402,6 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.datetime "updated_at"
   end
 
-  create_table "sub_comments", :force => true do |t|
-    t.text     "content"
-    t.integer  "comment_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "subcomments", :force => true do |t|
     t.text     "content"
     t.integer  "comment_id"
@@ -310,6 +420,7 @@ ActiveRecord::Schema.define(:version => 20110224160804) do
     t.datetime "logo_updated_at"
     t.string   "color",             :default => "07395a"
     t.integer  "user"
+    t.integer  "owner"
   end
 
   create_table "user_assignments", :force => true do |t|

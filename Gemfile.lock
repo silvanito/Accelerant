@@ -28,6 +28,7 @@ GEM
     mime-types (1.17.2)
     mysql (2.8.1)
     paperclip (2.3.1.1)
+    pg (0.12.2)
     rails (2.3.2)
       actionmailer (= 2.3.2)
       actionpack (= 2.3.2)
@@ -59,6 +60,7 @@ DEPENDENCIES
   json
   mysql
   paperclip (~> 2.3.1.1)
+  pg
   rails (= 2.3.2)
   rtf
   ruby-debug

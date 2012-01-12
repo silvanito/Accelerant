@@ -10,7 +10,7 @@ group :production do
  # gem "capistrano"
  # gem "passenger", "2.2.2"
   gem "tmail", "1.2.7.1"
-  
+  gem 'pg'
 end
 group :development do
 	gem "ruby-debug"
