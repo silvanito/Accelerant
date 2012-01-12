@@ -6,7 +6,7 @@ group :production do
   gem "rtf"
   gem "json"
   gem "comma"
-  gem "paperclip", "~>2.3.1.1"
+  gem "paperclip",:git => "git://github.com/thoughtbot/paperclip.git"
  # gem "capistrano"
  # gem "passenger", "2.2.2"
   gem "tmail", "1.2.7.1"
@@ -17,4 +17,4 @@ group :development do
 	gem "mysql"
 	gem 'heroku'
 end
-
+gem 'aws-sdk'
