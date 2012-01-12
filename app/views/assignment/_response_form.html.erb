@@ -1,31 +1,54 @@
-      	<% last_discussion = Discussion.find(:last, :conditions => {:project_id => params[:id]}) %>
-        <% form_for :comments,
-		#:update => "latestresponse",
-		#:complete => "new Effect.Highlight('latestresponse', { duration: .5 })",
-		:html => {:id => "my_form", :multipart => true},
-		:url =>{:controller => 'comments', :action => 'create' } do |f| -%>
-        <div class="avatar">
-			<% if self.current_user.avatar_file_name %>
-			<%= image_tag self.current_user.avatar.url(:small) %>
-			<% end %>
-	</div>
-        <div class="topResponseBox">
-          <h1>Post Your Response:</h1>
-          <div class="responseWidget">
-          	<%= f.text_area :comment, :size => "60 x 5" %><br/>
-				Upload a photo or file:<br/>
-			<%= f.file_field :photo %>
-			<% if logged_in? %>
-			<%= f.hidden_field :user_id, :value => self.current_user.id %>
-			<% end %>
-			<%= f.hidden_field :project_id, :value => params[:id] %>
-                        <%= f.hidden_field :discussion_id, :value => last_discussion.id %>
-			<div class="postButton" style="margin-top:-20px;">
-            <!-- <input type="image" src="../images/btn_post.gif" /> -->
-			<%= submit_tag "Post Your Comment", :style => "margin-right:50px;" %>
-                        </div>
+<div style="padding-top:15px;clear:both;" id="responder_form" >
+    <%if (discussions.has_heatmap || !discussions.flex_modules.empty?) && self.current_user.participant %>
+      <%status = true%>
+      <%display = "none;"%>
+    <%else%>
+      <%status = false%>
+    <%end%>
+
+    <% form_for :comment, :html => {:id => "my_form", :multipart => true}, :url =>{:controller => @place, :action => @action, :flex_module_id => @flex_module} do |f| -%>
+      <div class="avatar">
+        <%= render_avatar(self.current_user) %>
+	    </div>
+
+      <div class="topResponseBox">
+        <h1>Post Your Response:</h1>
+      <% if !discussions.character_minimum.nil? && discussions.character_minimum > 0 %>
+        <p><%=discussions.character_minimum%> characters MINIMUM</p>
+      <% end %>
+      <div class="responseWidget">
+        <%= f.text_area :comment, :size => "60 x 10", :class => 'rich_text_editor', :id => "respondercomment" %><br/>
+        Upload a photo or file:<br/>
+        <%= f.file_field :photo%>
+        <% if logged_in? %>
+          <%= f.hidden_field :user_id, :value => self.current_user.id %>
+        <% end %>
+        <%= f.hidden_field :project_id, :value => project_id %>
+        <%= f.hidden_field :discussion_id, :value => discussions.id %>
+ 
+        <% if !@project.one_to_one && self.current_user.moderator %>
+          <label>Hide responses until answered:</label>
+          <%= f.check_box :hide_until_answered, :class=>"left"  %>
+        <% end %>
+      </div>
+        <%if (discussions.has_heatmap || !discussions.flex_modules.empty?)  && self.current_user.participant%>
+          <div class="postButton clear" style="margin-top:10px;">
+            <%if getBrowser(6)%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status, :id => "share_comment"%>
+            <%else%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :id => "share", :disabled => status, :id => "share_comment" %>
+            <%end%>
           </div>
-
-
-        </div>
-      <% end -%><!-- form for -->
+        <%else%>
+          <div class="postButton clear" style="margin-top:10px;">
+            <%if getBrowser(6)%>
+              <%= submit_tag "Share", :style => "margin-right:10px;"%>
+            <%else%>
+              <%= submit_tag "Share", :style => "margin-right:10px;", :onclick => "delay()"%>
+            <%end%>
+          </div>
+        <%end%>
+      </div>
+    <% end %><!-- form for -->
+    <!--<input type="button" id="share" value="Share" class="shareButton" disabled="<%=status%>" onclick="onSubmit();"/>-->
+</div>

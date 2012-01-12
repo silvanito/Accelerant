@@ -1,44 +1,64 @@
 <!-- Response form starts here -->
-<% if !self.current_user.participant && !self.current_user.client %>
-<%
-@discussion_dis = Discussion.find(discussions.id)
-%>
-          <div style="padding-top:15px;clear:both;" id="responder_form" >
-              <% form_for :comments,
-		:html => {:id => "my_form", :multipart => true},
-		:url =>{:controller => 'comments', :action => 'create' } do |f| -%>
-        <div class="avatar">
-          <%= render_avatar(self.current_user) %>
-	</div>
-        <div class="topResponseBox">
-          <h1>Post Your Response:</h1>
-          <% if !@discussion_dis.character_minimum.nil? && @discussion_dis.character_minimum > 0 %>
-          <p><%=@discussion_dis.character_minimum%> characters MINIMUM</p>
-          <% end %>
-          <div class="responseWidget">
-          	<%= f.text_area :comment, :size => "60 x 10", :class => 'rich_text_editor' %><br/>
-				Upload a photo or file:<br/>
-			<%= f.file_field :photo %>
-                                
-			<% if logged_in? %>
-			<%= f.hidden_field :user_id, :value => self.current_user.id %>
-			<% end %>
-			<%= f.hidden_field :project_id, :value => project_id %>
-                        <%= f.hidden_field :discussion_id, :value => discussions.id %>
-                        <% if !@project.one_to_one && self.current_user.moderator %>
-                          Hide responses until answered:
-                          <%= f.check_box :hide_until_answered %>
-                        <% end %>
-			<div class="postButton" style="margin-top:-20px;">
-			<%= submit_tag "Share", :style => "margin-right:10px;" %>
-                        </div>
-          </div>
+<%# if !self.current_user.participant && !self.current_user.client %>
+<% size = size_helper(self.current_user)%>
+<% if show_heatmap(discussions)%>
+    <!-- Heatmap -->
 
+  <% type = heatmap_type(discussions)%>
+  <br />
+  <%unless self.current_user.participant%>
+    <%= image_tag "heatmap_rule.jpg", :class => "heatmap_explication"%>
+  <%end%>
+  <%path = "/heatMap/#{type}.swf" %>
+  <%javascript_tag do -%>
+    var params = {};
+    params.allowfullscreen = "true";
+    swfobject.embedSWF("<%=swf_param_tag(path)%>", "HeatMap", "<%= size[0]%>", "<%= size[1]%>", "6.0.65", "expressInstall.swf","", params);
+  <%end-%>
+  <div class="heatmapContainer" id="HeatMap">
+    <h1>Alternative content</h1>
+  	  <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
+  </div>
+<%else%>
+ <% unless heatmap_screenshot(discussions).blank? %>
+    <br/>
+  <div class="heatmapContainer" id="HeatMap">
+    <h3>Heatmap Response</h3>
+    <img src="<%= heatmap_screenshot(discussions)%>" width= "440" height= "310"/>
+  </div>
+ <%else%>
+    <%if discussions.has_heatmap%>
+      <p>Preparing your heatmap result, please refresh your browser!</p>
+    <%end%>
+  <%end%>
+<%end%>
 
-        </div>
+  <%if  !discussions.flex_modules.empty?%>
+    <%if self.current_user.admin || self.current_user.moderator %>
+      <%if flex_module_display(discussions)%>
+        <%= render :partial => "module_responses/index"%>
+      <%end%>
+    <%elsif user_response_module_type(discussions.flex_modules.last) && discussions.flex_modules.last.published?%>
+      <%@module_response = user_module_response(discussions.flex_modules.last)%>
+      <%= render :partial => "module_responses/show"%>
+    <%elsif discussions.flex_modules.last.published?%>
+      <%= render :partial => "module_responses/new"%>
+    <%end%>
+  <%end%>
 
-
-      <% end -%><!-- form for -->
-          </div>
-
-<% end %>
+  <%if discussions.has_heatmap || !discussions.flex_modules.empty?%>
+      
+      <%comment = Comment.find(:first, :conditions =>{:user_id => self.current_user.id, :discussion_id => discussions.id} )%>
+      <%unless self.current_user.client || module_has_comment(discussions) %>
+          <%= render(:partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id})  unless self.current_user.client%>
+      <%end%>
+  <%else%>
+      <%unless self.current_user.participant || self.current_user.client%>
+        <%= render :partial => 'assignment/response_form', :locals => {:discussions => discussions, :project_id => project_id} %> 
+      <%end%>
+  <%end%>
+<%if (discussions.has_heatmap || !discussions.flex_modules.empty?) && self.current_user.participant %>
+  <% content_for :scripts do -%>
+    <%= javascript_include_tag "loadFlexapp"%>
+  <%end%>
+<%end%>

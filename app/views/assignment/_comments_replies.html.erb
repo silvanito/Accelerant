@@ -2,6 +2,7 @@
 <div id="responses">
     <div class="clientMainEntry" id="latestresponse"></div>
     	<!-- Start comments -->
+
         <%
           if params[:sort] == "by_user"
             @latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => "user_id ASC, id DESC", :include => :user)
@@ -9,42 +10,63 @@
             #@latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => "created_at DESC", :include => :user)
             @latest_postings_redux = Comment.find(:all, :conditions => {:discussion_id => discussion.id }, :order => :position , :include => :user)
           end
-
+            @comment_number = 1
+            @total_comments = @latest_postings_redux.size
             for comment in @latest_postings_redux
 
 
           ####### this block is TEMPORARY to filter at the COMMENT level
 
-                displayflag = true
-      if cookies[:filter] == "yes"
-        displayflag = false
+      displayflag = false
+      if cookies[:filter] == "yes" && !self.current_user.participant
         cookies.to_hash.each_pair do |k, v|
           if cookies[k.to_sym].split('_')[0] == "field"
             testuser = User.find_by_id(comment.user.id,:conditions => cookies[:sql])
             if testuser.nil?
-              if !User.is_participant.find_by_id(comment.user.id)
+              @testusers = "nothing"
+              if !User.is_participant.find_by_id(comment.user_id)
                 displayflag = true
               else
                 displayflag = false
               end
             else
+                @testusers = testuser.id
                 displayflag = true
             end
           end
         end
+        if cookies[:report] == "true" && !self.current_user.participant
+          if comment.for_report == 1
+            report_user = comment.user
+            if displayflag == true
+                unless report_user
+                  @testusers = "nothing"
+                  displayflag = false
+                end
+            elsif @testusers == ""
+              if report_user
+                @testusers = comment.user_id
+                displayflag = true
+              end
+            end
+          end
+          #end tag for_report
+          if comment.user.admin? || comment.user.moderator?
+            replies = Replies.find(:all, :conditions => { :comment_id => comment.id, :for_report => 1}, :order => "id ASC", :include => :user)
+            if replies.size > 0
+              displayflag = true
+            end
+          end
+        end
+      else
+       displayflag = true
       end
-
-
-
-
-
           #######
-
 
             not_visible = CommentAssignments.find(:last, :conditions => {:user_id => self.current_user.id, :comment_id => comment.id })
             my_project = Project.find(:last, :conditions => {:id => project_id})
 
-            if (!not_visible && !my_project.one_to_one && displayflag)
+            if (!not_visible && !my_project.one_to_one && displayflag && discussion_comment_type(comment))
               %>
               <%= show_comment(comment) %>
               <%
@@ -57,8 +79,14 @@
               end
               end
             end
+          unless @testusers == ""
+            @testusers_report << @testusers
+            @testusers = ""
           end
+
+            @comment_number += 1
+
+          end
+          session[:user_filters] = @testusers_report
           %>
-         
-    </div><!-- responses -->
-    
+</div><!-- responses -->

@@ -3,7 +3,13 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+  before_filter :redirect_to_https, :only => :index
   after_filter OutputCompressionFilter
+  
+  def redirect_to_https
+    redirect_to "https://www." + request.host_with_port + request.request_uri if !/^www/.match(request.host) and Rails.env =='production'   
+  end
+
 
 
   # See ActionController::RequestForgeryProtection for details
@@ -18,8 +24,9 @@ class ApplicationController < ActionController::Base
    require 'rtf'
   include RTF
   include AuthenticatedSystem
+  include ProjectStore
   include SslRequirement
-  
+
   uses_yui_editor
 
   #http://www.ruby-forum.com/topic/204710#new
@@ -30,5 +37,7 @@ class ApplicationController < ActionController::Base
   #redirect to page for handling this issue
   #redirect_to('cookies') 
 #end
-
+   def set_flex_module
+     session[:flex_module_id] = params[:flex_module_id]
+   end
 end

@@ -13,9 +13,7 @@
   <div class="discussionWidget"><%= discussions.content %>
   <% if discussions.media_content_type %>
 		<% if discussions.media_content_type =~ /image.*/  %>
-			<a href='<%=discussions.media.url%>' target="_blank">
-			<%= image_tag discussions.media.url(:small), :style => "margin-left:40px;" %>
-			</a>
+      <%= link_to( (image_tag discussions.media.url(:small), :style => "margin-left:40px;"), :controller => "discussion", :action => "show_image", :id => discussions.id)%>
 		<% else %>
 			<p><a href='<%=discussions.media.url%>' target="_blank">View attached file here.</a><%= image_tag "download.png"%></p>
 		<% end %>
@@ -178,6 +176,15 @@
   <%= link_to "Edit", {:controller => "discussion", :id => discussions.id, :action => 'edit'} %> | 
   <%= link_to "Delete", {:controller => "discussion", :id => discussions.id, :action => 'delete'}, :confirm => "Are you sure? Once deleted this action cannot be undone." %>
   <% end  %>
-
+  <div class="x-label" style="margin-top:1px;">
+<% if @X %>
+<%= @X.description %>
+<% end %>
+  </div>
+  <%if modules_show(discussions)%>
+    <div class="modules_assigned">
+      <%= render :partial => "flex_modules"%>
+    </div>
+   <%end%>
   </fieldset>
 <!-- End Discussion display -->

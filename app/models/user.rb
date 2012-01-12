@@ -4,17 +4,21 @@ class User < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
+  #relatioship
   has_many :comments
   has_many :replies
-  has_many :usergroupables
+  has_many :heatmaps
+  has_many :report_comments
+  has_many  :module_responses
+  has_many :themes, :foreign_key => :owner
   belongs_to :user_assignments
 
-
+  #scopes
   named_scope :is_moderator, :conditions => {:moderator => true}
   named_scope :is_admin, :conditions => {:admin => true}
   named_scope :is_participant, :conditions => {:participant => true}
 
-  has_attached_file :avatar, 
+  has_attached_file :avatar,
   :whiny => false, 
   :whiny_thumbnails => false,
   :styles => { :large => "300x300>",:medium => "100x100>", :thumb => "80x80>", :small => "50x50>", :smaller => "30x30>", :tiny => "20x20>" }
@@ -31,6 +35,7 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
+
 
   
 
@@ -72,9 +77,52 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
+  def rol
+    if self.admin
+      return "admin"
+    elsif self.moderator
+      return "moderator"
+    elsif self.client
+      return "client"
+    else
+      return "participant"
+    end
+  end
+
+  def upadate_attributes_as_user(values, user)
+    values.each do |attribute, value|
+      # Update the attribute if the user is allowed to
+      self.send("#{attribute}=", value) if  !user.can_modify?(attribute).nil?
+    end
+    save
+  end
   
+  def can_modify?(attribute)
+    case attribute.to_sym
+      when :login
+        return true if self.admin || self.moderator
+      when :name
+        return true unless self.client
+      when :password
+        return true unless self.client
+      when :password_confirmation
+        return true unless self.client
+      when :admin
+        return true unless self.client
+      when :client
+        return true unless self.client
+      when :moderator
+        return true unless self.client
+      when :participant
+        return true unless self.client
+      else
+        return true
+    end
+  end
+
   protected
-    
+
+
 
 
 end

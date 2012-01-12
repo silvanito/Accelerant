@@ -5,7 +5,8 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
+
 #RAILS_GEM_VERSION = '1.3.3' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
@@ -56,10 +57,10 @@ Rails::Initializer.run do |config|
   # If you change this key, all old sessions will become invalid!
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
-  config.action_controller.session = {
-    :session_key => 'blognog',
-    :secret      => '8942cc24d1a1068feafe25bb96f0c6b4daf54f6857d5bdad7aa724eb85b0c6df2491161da9f9916fc72d0a969ed8c340746966a17061319b5e6ad09ccf4d92a0'
-  }
+    config.action_controller.session = {
+      :session_key => 'blognog',
+      :secret      => '8942cc24d1a1068feafe25bb96f0c6b4daf54f6857d5bdad7aa724eb85b0c6df2491161da9f9916fc72d0a969ed8c340746966a17061319b5e6ad09ccf4d92a0'
+    }
 
   #ENV["RAILS_ASSET_ID"] = ""
 
@@ -79,10 +80,10 @@ Rails::Initializer.run do |config|
   #config.active_record.observers = :user_observer
 
   
-  config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
+  #config.gem 'whenever', :lib => false, :source => 'http://gemcutter.org/'
   #config.gem 'rtf', :lib => false, :source => 'http://rubygems.org/gems/'
   #config.gem 'wysihat-engine', :source => 'http://gemcutter.org'
-  require 'tmail_extensions'
+  #require 'tmail_extensions'
 
   #ActionController::Request.recent_activity_limit = 2.hours
   #ActiveRecord::SessionStore::Session.recent_activity_limit = 2.hours

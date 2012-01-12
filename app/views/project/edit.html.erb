@@ -2,7 +2,7 @@
 <div style="width:400px;float:left;">
 <% form_for @this_project,
 :html => { :multipart => true } do |f| -%>
-
+     <%= f.error_messages %>
 <p><%= label_tag 'Project title:' %><br/>
 <%= f.text_field :title %>
 </p>
@@ -17,7 +17,8 @@
 		<%= image_tag @this_project.photo.url(:small) %>
 	<% end %>
 	Upload File:<br/>
-	<%= f.file_field :photo %>
+	<%= f.file_field :photo %><br/>
+  <strong>Moderator's avatar will be displayed by default, If you don't upload any photo.</strong>
 </p>
 
 
@@ -25,24 +26,27 @@
 
 
 
-<%= f.check_box :response_box %> Show "response box"<br/>
-<% if self.current_user.admin %>
-<p>
-	Moderator:<br/>
-	<%=  select("this_project", "moderator_id", User.find(:all, :conditions => { :moderator => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
-</p>
+<%if self.current_user.admin?%>
+  <p>
+  	Moderator:<br/>
+  	<%=  select("this_project", "moderator_id", User.find(:all, :conditions => { :moderator => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+  </p>
 
 
+  <p>
+  	Client:<br/>
+  	<%=  select("this_project", "client_id", User.find(:all, :conditions => { :client => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+  </p>
+<%end%>
 <p>
-	Client:<br/>
-	<%=  select("this_project", "client_id", User.find(:all, :conditions => { :client => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+	Theme:<br/>
+	<%=  select("this_project", "theme", @themes.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
 </p>
 <% end %>
 
-
-<p>
-	Theme:<br/>
-	<%=  select("this_project", "theme", Themes.find(:all).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
+<p><%= label_tag 'Project Email Support:' %><br/>
+  <%= f.text_field :email_support %><br/>
+  by default is <b>info@accelerantresearch.com</b>
 </p>
 
 <p>
@@ -52,48 +56,60 @@
 <p>
 <%= f.check_box :lock %> This project is locked
 </p>
+<%if self.current_user.admin%>
+  <fieldset>
+  <legend>Sortable Lists</legend>
+  <%= link_to "Add a new list", :controller => "sortables", :action => "new", :id => params[:id] %><br/>
+  <% unless @sortables.empty? %>
 
-<fieldset>
-<legend>Sortable Lists</legend>
-<%= link_to "Add a new list", :controller => "sortables", :action => "new", :id => params[:id] %><br/>
-<% unless @sortables.empty? %>
+  <% for sortable in @sortables %>
 
-<% for sortable in @sortables %>
+    <%= sortable.title %>
+  &nbsp;<%= link_to "Edit", :controller => "sortables", :action => "edit", :id => sortable.id %>
+  &nbsp;<%= link_to "View", :controller => "sortables", :action => "show", :id => sortable.id %>
+  &nbsp;<%= link_to "CSV Report", :controller => 'usersortables', :action => 'csv', :id => sortable.id, :format => 'csv' %>
+  <br/>
+  <% end %>
 
-  <%= sortable.title %>
-&nbsp;<%= link_to "Edit", :controller => "sortables", :action => "edit", :id => sortable.id %>
-&nbsp;<%= link_to "View", :controller => "sortables", :action => "show", :id => sortable.id %>
-&nbsp;<%= link_to "CSV Report", :controller => 'usersortables', :action => 'csv', :id => sortable.id, :format => 'csv' %>
-<br/>
-<% end %>
+  <% else %>
 
-<% else %>
+    <%= link_to "Create a sortable list", :controller => "sortables", :action => "new", :id => params[:id] %>
+  <% end %>
+  </fieldset>
 
-  <%= link_to "Create a sortable list", :controller => "sortables", :action => "new", :id => params[:id] %>
-<% end %>
-</fieldset>
+  <fieldset>
+  <legend>Perception Maps</legend>
 
-<fieldset>
-<legend>Perception Maps</legend>
+  <%= link_to "Add a new map", :controller => "groupables", :action => "new", :id => params[:id] %><br/>
+  <% unless @groupables.empty? %>
 
-<%= link_to "Add a new map", :controller => "groupables", :action => "new", :id => params[:id] %><br/>
-<% unless @groupables.empty? %>
+  <% for groupable in @groupables %>
 
-<% for groupable in @groupables %>
+    <%= groupable.title %>
+  &nbsp;<%= link_to "Edit", :controller => "groupables", :action => "edit", :id => groupable.id %>
+  &nbsp;<%= link_to "View", :controller => "groupables", :action => "show", :id => groupable.id %>
+  &nbsp;<%= link_to "Report", :controller => "groupables", :action => "export_to_csv", :id => groupable.id %>
+  <br/>
+  <% end %>
 
-  <%= groupable.title %>
-&nbsp;<%= link_to "Edit", :controller => "groupables", :action => "edit", :id => groupable.id %>
-&nbsp;<%= link_to "View", :controller => "groupables", :action => "show", :id => groupable.id %>
-&nbsp;<%= link_to "Report", :controller => "groupables", :action => "export_to_csv", :id => groupable.id %>
-&nbsp;<%= link_to "User Maps", :controller => "groupables", :action => "by_user", :id => groupable.id %>
-<br/>
-<% end %>
+  <% else %>
 
-<% else %>
+    <%= link_to "Create a new perception map", :controller => "groupables", :action => "new", :id => params[:id] %>
+  <% end %>
+  </fieldset>
+<%end%>
+<p class="imageSizeText">Choose the size you want to see the images uploaded by participants</p>
+<ul class="imageSizeList">
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :small%> <label>50x50 px</label></li>
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :medium %> <label>100x100 px</label></li>
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :large %> <label>300x300 px</label></li>
+</ul>
+<ul class="imageSizeList">
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "50x50", :class => "imageSizeExample" %></li>
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "100x100",  :class => "imageSizeExample" %></li>
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "300x300",  :class => "imageSizeExample" %></li>
+</ul>
 
-  <%= link_to "Create a new perception map", :controller => "groupables", :action => "new", :id => params[:id] %>
-<% end %>
-</fieldset>
-<p><%= submit_tag 'Enter' %></p>
+<p class="clear"><%= submit_tag 'Enter' %></p>
 <% end -%>
 </div>

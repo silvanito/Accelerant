@@ -4,7 +4,7 @@ class CreateThemes < ActiveRecord::Migration
       t.column :name, :string
       t.timestamps
     end
-    Themes.create(:name => 'default')
+    Theme.create(:name => 'default')
   end
 
   def self.down

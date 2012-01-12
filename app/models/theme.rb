@@ -1,9 +1,13 @@
-class Themes < ActiveRecord::Base
+class Theme < ActiveRecord::Base
 
+  #valitations
   validates_presence_of     :name
   validates_length_of       :name,    :within => 4..20
   validates_uniqueness_of   :name
   validates_format_of       :name, :with => /\A\w+\z/
+
+  #relationship
+  belongs_to :user
 
   has_attached_file :logo,
   :whiny => false,

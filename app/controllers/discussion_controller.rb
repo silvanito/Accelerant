@@ -1,8 +1,10 @@
 class DiscussionController < ApplicationController
   before_filter :login_required
   if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :show, :new, :create, :edit, :update, :delete
+    ssl_required :index, :show, :new, :create, :edit, :update, :delete, :discussion_show, :admin_report, :show_image
   end
+
+
 
   def new
     @discussion = Discussion.new
@@ -13,40 +15,111 @@ class DiscussionController < ApplicationController
     @discussion = Discussion.find(params[:id])
     project = @discussion.project_id
     @discussion.destroy
-    redirect_to :controller => 'assignment', :action => 'show', :id => project
+    @discussion = Discussion.find(:last, :conditions => {:project_id => project})
+    if @discussion.nil?
+      session[:discussion_id] = nil
+      if self.current_user.moderator?
+        redirect_to "/moderator"
+      elsif self.current_user.admin?
+        redirect_to "/project"
+      end
+    else
+      session[:discussion_id] = @discussion.id
+      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project
+    end
   end
 
   def create
-    @discussion = Discussion.new(params[:discussion])
-    @discussion.save
+    @discussion = Discussion.new(params[:new_discussion])
     #new stuff
+    @discussion.has_heatmap = nil if params[:module_type].present?
+    @discussion.heatmap_type_id = nil if params[:module_type].present?
+    module_type = ModuleType.find(params[:flex_module][:module_type_id]) if params[:flex_module][:module_type_id].present?
+    if @discussion.save
+      unless module_type.nil?
+        @flex_module = FlexModule.new(params[:flex_module])
+        @flex_module.discussion = @discussion
+        @flex_module.save
+      end
       if self.current_user.admin? || self.current_user.moderator?
       @user_assignments = params[:comment_assignment]
-      if @user_assignments
-        @these_keys = @user_assignments.keys
-        @user_assignments.each do |key, value|
-          #if value=="0"
-            if value !="0"
-            @comment_assignment = CommentAssignments.new
-            @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
-            @comment_assignment.save
+        if @user_assignments
+          @these_keys = @user_assignments.keys
+          @user_assignments.each do |key, value|
+            #if value=="0"
+              if value !="0"
+                @comment_assignment = CommentAssignments.new
+                @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
+                @comment_assignment.save
+              end
           end
+        end
       end
+      if @discussion.flex_modules.empty?
+        redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @discussion.project_id
+      else
+        redirect_to :controller => "module_images", :action => "index", :flex_module_id => @flex_module.id
       end
+    else
+      flash[:notice] = "something was wrong #{@discussion.errors.full_messages}"
+      @project = Project.find(params[:new_discussion][:project_id])
+      @discussion = @project.discussions.last
+      redirect_to :controller => "discussion", :action => "show", :id => @discussion.id, :project_id => @project.id
     end
-    redirect_to "/assignment/#{@discussion.project_id}"
   end
 
   def show
-    @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+    self.current_project = Project.find(params[:project_id])
+    discussion = Discussion.find(params[:id])
+    @module_types = ModuleType.all#discussion.module_types_available
+    @flex_module = FlexModule.new
+    @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
+    @testusers = ""
+    @testusers_report = []
+    @project_members = []
+    @checked_members = []
+    @categories = []
+    if self.current_user.admin
+      @new_discussion = Discussion.new
+    end
+    if cookies[:filter] == "yes"
+      users = []
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      filter_users = User.find(:all, :conditions => cookies[:sql])
+      assignments.each do |participant|
+        users << participant.user
+      end 
+      users.uniq!
+      users.each do |user|
+        if filter_users.include?(user)
+          @checked_members << user 
+        else
+          @project_members << user
+        end
+      end
+    else
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:project_id]}, :include => :user)
+      assignments.each do |participant|
+        @project_members << participant.user
+      end 
+      @project_members.uniq!  
+    end
     #@project = Project.find(:all, :conditions => {:id => params[:project_id]})
-    @project = Project.find(params[:project_id])
+    @project = Project.find(params[ :project_id])
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:project_id]})
     unless params[:sort] == "by_user"
       @discussion = Discussion.find(params[:id])
     else
-      @discussion = Discussion.find(params[:id])
+      if @discussions && session[:discussion_id].nil?
+        @discussion = Discussion.find(params[:id])
+      else
+         @discussion = Discussion.find(session[:discussion_id])
+      end
     end
+    unless params[:categorize].blank?
+      @categories = @project.categories || []
+    end
+    
     unless !@discussion || @discussion.sortable.nil?
     @sortable = Sortables.find(@discussion.sortable)
     unless @sortable.nil?
@@ -114,6 +187,58 @@ class DiscussionController < ApplicationController
       end
     end
     end
+    @action = "create"
+    @place = :comments
+    if !@discussion.flex_modules.empty?
+       if session[:response_image_id]
+         module_response_image = ModuleResponseImage.find(session[:response_image_id]) 
+         if module_response_image.module_response.nil?
+           module_response_image.destroy
+         end
+       end
+       @flex_module = @discussion.flex_modules.first
+       @module_response = ModuleResponse.new
+       @module_images = ModuleImage.find(:all, :conditions => {:flex_module_id => @flex_module})
+       @comment = Comment.new
+       @place = :module_responses if self.current_user.participant
+    end
+    session[:flex_module_id] = @discussion.flex_modules.last.id unless @discussion.flex_modules.empty?
+    if @discussion.has_heatmap && self.current_user.participant
+      heatmap = Heatmap.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
+      if heatmap.nil? #no contestado
+        @action = "comment_heatmap"
+      end
+      if heatmap && heatmap.comment_id.nil?
+        comment = Comment.find(:last, :conditions => {:discussion_id => @discussion.id , :user_id => self.current_user.id})
+        if comment
+          heatmap.comment_id = session[:comment_id] || comment.id
+          heatmap.save
+        else
+          heatmap.destroy
+        end
+      end
+    end
+    session[:discussion_id] = params[:id].blank? ? @discussion.id : params[:id]
+    heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
+    users_heatmap = []
+    heatmaps.each do |heatmap|
+      users_heatmap << heatmap.user_id
+    end
+    users_heatmap.uniq!
+    users_assigned = []
+    @discussion_members = CommentAssignments.find(:all, :conditions => {:discussion_id=> @discussion.id})
+    @discussion_members.each do |user_assigned|
+      users_assigned << user_assigned.user_id
+    end 
+    answers = users_heatmap & users_assigned
+    session[:answers] = answers
+    session[:users_assigned] = users_assigned
+    discussion = {:user_name => self.current_user.name, :user_id => self.current_user.id, :admin => self.current_user.admin, :image_path => @discussion.media.url, :discussion_id => @discussion.id, :discussion_users => users_assigned.size, :answers => answers.size}
+    respond_to do |format|
+     format.html
+     format.xml { render :xml => discussion.to_xml(:dasherize => false), :layout => false}
+    end
+
   end
 
   def edit
@@ -129,18 +254,58 @@ class DiscussionController < ApplicationController
       if self.current_user.admin? || self.current_user.moderator?
       @user_assignments = params[:comment_assignment]
       if @user_assignments
-        @these_keys = @user_assignments.keys
+        @discussion.comment_assignmentss.delete_all
         @user_assignments.each do |key, value|
-          #if value=="0"
-            if value !="0"
-            @comment_assignment = CommentAssignments.new
-            @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
-            @comment_assignment.save
+          if value !="0"
+            @comment_assignment = CommentAssignments.create(:user_id => key, :discussion_id => @discussion.id)
           end
-      end
+        end
+#        @these_keys = @user_assignments.keys
+#        @user_assignments.each do |key, value|
+#          #if value=="0"
+#            if value !="0"
+#            @comment_assignment = CommentAssignments.new
+#            @comment_assignment.update_attributes(:user_id => key, :discussion_id => @discussion.id)
+#            @comment_assignment.save
+#          end
+#      end
       end
     end
-    redirect_to :controller => 'assignment', :action => 'show', :id => @discussion.project_id
+    redirect_to :controller => 'discussion', :action => 'show', :id => @discussion.id, :project_id => @discussion.project_id
   end
 
+  def discussion_show
+    discussion =  Discussion.find(session[:discussion_id])
+    size = Hash.new
+    xml_data =  Discussion.create_xml(self.current_user, discussion, session[:user_filters], session[:users_assigned], session[:answers])
+    respond_to do |format|
+     format.xml { render :xml => xml_data.to_xml(:dasherize => false)}
+    end
+  end
+
+  def admin_report
+    if !params[:image].blank? && !params[:discussion_id].blank?
+      discussion = Discussion.find(params[:discussion_id])
+      heatmap_admin_result = discussion.admin_tmp_image(params[:image])
+    else
+      heatmap_admin_result = nil
+    end
+    unless heatmap_admin_result.nil?
+      respond_to do |format|
+        format.html { render :nothing => true }
+        format.xml { render :xml => {:path => heatmap_admin_result} }
+      end
+    else
+      respond_to do |format|
+        format.html { render :nothing => true }
+        format.xml { render :xml => {:path => "Error. Params are empty or nil please check"} } 
+      end
+    end
+  end
+  
+  def show_image
+    @discussion = Discussion.find(params[:id])
+    @image = @discussion.media.url
+    render :action => "show_image", :layout => "images"
+  end
 end

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
   # render new.rhtml
   def new
-    @theme = Themes.find_by_name(params["id"])
+    @theme = Theme.find_by_name(params["id"])
   end
 
   def create
@@ -34,8 +34,8 @@ class SessionsController < ApplicationController
       end
       if user.moderator?
         @last_ass = Project.find(:last, :conditions => {:moderator_id => self.current_user.id })
-        @ass = Project.find(@last_ass.id)
-        @theme = Themes.find(@ass.theme)
+        @ass = Project.find(@last_ass.id) unless @last_ass.nil?
+        @theme = Theme.find(@ass.theme) unless @ass.nil?
 
         unless @theme.nil?
           session[:theme] = @theme.id
@@ -45,9 +45,9 @@ class SessionsController < ApplicationController
         redirect_to "/moderator"
       end
       if user.client?
-        @last_ass = Project.find(:last, :conditions => "client_id = #{self.current_user.id}")
+        @last_ass = Project.find(:last, :conditions => {:client_id => self.current_user.id})
         @ass = Project.find(@last_ass.id)
-        @theme = Themes.find(@ass.theme)
+        @theme = Theme.find(@ass.theme)
 
         unless @theme.nil?
           session[:theme] = @theme.id
@@ -74,8 +74,39 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    if self.current_user.admin? || self.current_user.moderator?
+      heatmaps = Heatmap.all
+      discussions = Discussion.all
+      unless heatmaps.empty?
+        heatmaps.each do |heatmap|
+          heatmap.delete_tmp_image
+        end
+      end
+      discussions = Discussion.all
+      unless discussions.empty?
+        discussions.each do |discussion|
+          discussion.delete_admin_tmp_image
+        end
+      end
+      module_responses = ModuleResponse.all
+      module_responses.each do |module_response|
+        module_response.module_response_image.delete_tmp_image if module_response.module_response_image
+      end
+    elsif self.current_user.participant?
+      heatmaps = self.current_user.heatmaps.empty? ? [] : self.current_user.heatmaps
+      unless heatmaps.empty?
+        self.current_user.heatmaps.each do |heatmap|
+          heatmap.delete_tmp_image
+        end
+      end
+      module_responses = self.current_user.module_responses.empty? ? [] : self.current_user.module_responses
+      module_responses.each do |module_response|
+        module_response.module_response_image.delete_tmp_image
+      end
+    end
     logout_killing_session!
     flash[:notice] = "You have been logged out."
+    
     redirect_to  "/login"
   end
 

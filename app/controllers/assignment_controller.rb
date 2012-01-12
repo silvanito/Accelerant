@@ -1,9 +1,12 @@
 class AssignmentController < ApplicationController
   before_filter :login_required
+
   
+
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :new, :create, :edit, :update, :drop, :assign, :show
   end
+
 
   def index
     @all_assignment = Project.find(:all)
@@ -19,6 +22,7 @@ class AssignmentController < ApplicationController
     @new_assignment.save
     redirect_to "/project"
     #render :text => "Assignment Created!"
+
   end
   
   def edit
@@ -51,13 +55,70 @@ class AssignmentController < ApplicationController
   end
   
   def show
-
-    @project_members = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
-    #@project = Project.find(:all, :conditions => {:id => params[:id]})
-    @project = Project.find(params[:id])
+    self.current_project = Project.find(params[:id])
     @latest_postings = Comment.find(:all, :conditions => {:project_id => params[:id] }, :order => "id DESC", :include => :user)
+    @project = Project.find(params[:id])
     @discussions = Discussion.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
     @discussions_desc = Discussion.find(:first, :conditions => {:project_id => params[:id]}, :order => 'id DESC')
+    @flex_module = FlexModule.new
+    @module_types = ModuleType.all
+    @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => params[:id]})
+
+    @testusers = []
+    @testusers_report = []
+    @project_members = []
+    @checked_members = []
+    @categories = []
+    #@project = Project.find(:all, :conditions => {:id => params[:id]})
+
+
+
+
+    if self.current_user.admin || self.current_user.moderator
+      @new_discussion = Discussion.new
+    end
+    if cookies[:filter] == "yes"
+      users = []
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
+      filter_users = User.find(:all, :conditions => cookies[:sql])
+      assignments.each do |participant|
+        users << participant.user
+      end 
+      users.uniq!
+      users.each do |user|
+        if filter_users.include?(user)
+          @checked_members << user 
+        else
+          @project_members << user
+        end
+      end
+    else
+      assignments = UserAssignments.find(:all, :conditions => {:project_id => params[:id]}, :include => :user)
+      assignments.each do |participant|
+        @project_members << participant.user
+      end 
+      @project_members.uniq!  
+    end
+    unless @discussions.empty?
+      @discussion = Discussion.find(:last)
+      session[:discussion_id] = @discussions_desc
+      heatmaps = Heatmap.find(:all, :conditions => {:discussion_id => @discussion.id}) 
+      users_heatmap = []
+      heatmaps.each do |heatmap|
+        users_heatmap << heatmap.user_id
+      end
+      users_heatmap.uniq!
+      users_assigned = []
+
+      @discussion_members = CommentAssignments.find(:all, :conditions => {:discussion_id=> @discussion.id})
+      @discussion_members.each do |user_assigned|
+        users_assigned << user_assigned.user_id
+      end 
+      answers = users_heatmap & users_assigned
+      session[:answers] = answers
+      session[:users_assigned] = users_assigned
+    end
+
     unless !@discussions_desc || @discussions_desc.sortable.nil?
     @sortable = Sortables.find(@discussions_desc.sortable)
     unless @sortable.nil?

@@ -1,0 +1,2 @@
+module ModuleResponseImagesHelper
+end

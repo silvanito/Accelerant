@@ -1,12 +1,13 @@
 class PlainController < ApplicationController
   layout 'plain'
+  uses_yui_editor
 
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :show, :showlatest, :update_count, :sub_comment_form,
       :sub_form, :show_comments, :drop_comment, :drop_reply, :follow_up, :follow_up_reply, :edit_comment,
       :comment_update, :update, :delete_probe
   end
-  
+
   def index
      @latest_postings = Comment.find(:all, :conditions => {:assignment_id => params[:id] }, :limit => 5, :order => "id DESC")
   end
@@ -25,7 +26,7 @@ class PlainController < ApplicationController
   end
 
   def sub_form
-    render :partial => "sub_form"
+    render :partial => "sub_form", :layout => "plain", :locals => {:comment => params[:comment]}
   end
   
   def show_comments
@@ -34,7 +35,11 @@ class PlainController < ApplicationController
   
   def drop_comment
     @comment = Comment.find(params[:id])
-    @comment.destroy
+    unless @comment.module_response.nil?
+      ModuleResponse.find(@comment.module_response).destroy
+    else
+      @comment.destroy
+    end
     render :text => "Deleted"
   end
   
@@ -72,7 +77,7 @@ class PlainController < ApplicationController
     #end
     @discussion = Discussion.find(@comm.discussion_id)
     @project = Project.find(@discussion.project_id)
-    redirect_to "/assignment/#{@project.id}"
+    redirect_to "/discussion/show/#{@discussion.id}?project_id=#{@project.id}"
   end
 
   def delete_probe
@@ -82,4 +87,5 @@ class PlainController < ApplicationController
   end
 
   
+
 end

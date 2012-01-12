@@ -1,0 +1,42 @@
+<div id="module_content">
+  <% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('instructions').hide();", :loaded => "$('loading').hide();$('instructions').show();", :update => {:success => "label_content", :failure => "errors_instructions"} do |f| %>
+    <div id="errors_instructions"></div>
+    <% field_set_tag 'Module Instructions', :id => 'instructions' do%>
+      <%= f.text_area :instructions, :size => "50x05"%><br/>
+    <%end%>
+    <%= submit_tag 'Change Instructions..', :class=> "submit_button right" %>
+  <%end%>
+  <br class="clear"/>
+  <% remote_form_for [@flex_module.discussion, @flex_module], :loading => "$('loading').show();$('label_form').hide();", :loaded => "$('loading').hide();$('label_form').show();", :update => {:success => "label_content", :failure => "errors"} do |f| %>
+    <div id="errors">
+    </div>
+    <% field_set_tag 'Module Options', :id => 'label_form' do%>
+      <div id = "labels_wrapper" class="labels_wrapper <%=show_labels(@flex_module)%>">
+        <%1.upto(@flex_module.divisions) do |number|%>
+          <%= f.label  print_number_label(number), print_number_label(number).to_s.humanize%><br/>
+          <%= f.text_field print_number_label(number)%><br/>
+        <%end%>
+      </div>
+      
+      <ul class="divisions <%=show_divisions(@flex_module)%>">
+        <h3><%= title_of_divisions(@flex_module)%>:</h3>
+        <%division_separate = ""%>
+        <%1.upto(20) do |number| %>
+          <li class = "division_quantity <%division_separate%>">
+          <%= f.label :divisions, "#{number}", :class => "division_label"%>
+          <%=f.radio_button :divisions, "#{number}", :class => "division_option"%>
+          <%division_separate =  print_divisions(number)%>
+          </li>
+
+        <%end%>
+      </ul>
+      <%= link_to "Would you like to edit the labels", "#", :onclick => "show_labels();", :id => "edit_labels"%>
+    <br class="clear_both"/>
+    <%end%>
+    <%= submit_tag ' Update Options..', :class=> "submit_button clear right" %>
+  <%end%>
+</div>
+  <%= image_tag "loader.gif", :style => 'display: none;', :id => 'loading' %>
+  <% content_for :scripts do -%>
+    <%= javascript_include_tag "module_images"%>
+  <%end%>

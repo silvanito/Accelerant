@@ -1,35 +1,39 @@
 <h1 class="lower">Edit Your Account</h1>
 <% form_for @user, :html => { :multipart => true } do |f| -%>
-<% unless self.current_user.participant %>
+<% unless self.current_user.client %>
 <p>
 	Name:<br/>
 	<%= f.text_field :name %>
 </p>
-
-<% end %>
+<%end%>
+<% unless self.current_user.client %>
 <p>
 	Email Address:<br/>
 	<%= f.text_field :email %>
 </p>
-<% unless self.current_user.participant %>
+<%end%>
+<% unless self.current_user.participant || self.current_user.client  %>
 <p>
 	Login Name:<br/>
 	<%= f.text_field :login %>
 </p>
 <% end %>
+<% unless self.current_user.client %>
 <p>
 	Reset Password:<br/>
 	<%= f.password_field :password %>
 </p>
-
+<%end%>
+<% unless self.current_user.client %>
 <p>
 	Confirm Reset Password:<br/>
 	<%= f.password_field :password_confirmation %>
 </p>
+<%end%>
 
 <p>
-	<%= image_tag @user.avatar.url(:thumb) %>
-	Upload a Picture:<br/>
+	<%= image_tag @user.avatar.url(:thumb) %> <br/>
+	Upload a Picture.  This will appear as your personal avatar when you post responses:<br/>
 	<%= f.file_field :avatar %>
 </p>
 

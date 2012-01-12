@@ -1,0 +1,11 @@
+<% content_tag_for :tr, module_image do -%>
+  <td>
+    <%= image_tag(module_image.media.url(:small))%>
+  </td>
+  <td>
+    <%= module_image.media_file_name%>
+  </td>
+  <td>
+    <%= link_to "Delete", flex_module_module_image_path(:flex_module_id =>@flex_module.id,:id => module_image), :method => :delete, :confirm => 'Are you sure?'%>
+  </td>
+<%end -%>

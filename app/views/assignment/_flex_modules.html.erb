@@ -1,0 +1,24 @@
+<h3 class="discussionTitle">Modules assigned</h3>
+<%#unless self.current_user.participant || self.current_user.client && %>
+
+  <%#= render :partial=>"flex_modules/new"%>
+
+<%#end%>
+<table>
+  <thead>
+    <tr>
+      <th> 
+          &nbsp;
+      </th>
+      <th>
+          &nbsp;
+      </th>
+      <th>
+          &nbsp;
+      </th>
+      </tr>
+  </thead>
+  <tbody>
+    <%= render :partial=>"flex_modules/flex_module", :collection => @flex_modules%>
+  </tbody>
+</table>

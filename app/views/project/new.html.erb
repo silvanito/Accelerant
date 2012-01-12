@@ -3,7 +3,9 @@
 <% form_for :projects, @this_project,
 :html => { :multipart => true },
 :url =>{:controller => 'project', :action => 'create' } do |f| -%>
-
+  <p class="errors">
+     <%= f.error_messages %>
+  </p>
 <p><%= label_tag 'Project title:' %><br/>
 <%= f.text_field :title %>
 </p>
@@ -25,15 +27,26 @@
 </p>
 
 <p>
-	Upload File:<br/>
-	<%= f.file_field :photo %>
+	Upload File: <br/>
+	<%= f.file_field :photo %><br/>
+  <strong>Moderator's avatar will be displayed by default, If you don't upload any photo.</strong>
 </p>
 
 <p>
 	Client:<br/>
 	<%=  select("projects", "client_id", User.find(:all, :conditions => { :client => true}).collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
 </p>
-  
+<p class="imageSizeText">Choose the size you want to see the images uploaded by participants</p>
+<ul class="imageSizeList">
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :small%> <label>50x50 px</label></li>
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :medium %> <label>100x100 px</label></li>
+  <li class="imageSizeOptions"><%= f.radio_button :image_size, :large %> <label>300x300 px</label></li>
+</ul>
+<ul class="imageSizeList">
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "50x50", :class => "imageSizeExample" %></li>
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "100x100",  :class => "imageSizeExample" %></li>
+  <li class="imageSizeExamples"><%= image_tag "logo.png", :size => "300x300",  :class => "imageSizeExample" %></li>
+</ul>
 <p><%= submit_tag 'Enter' %></p>
 <% end -%>
 </div>

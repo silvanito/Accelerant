@@ -11,6 +11,7 @@ class FilterController < ApplicationController
   sql = " "
   previousen = ""
   orflag = false
+  
   #puts i
   #1.upto(10) max
   1.upto(i) { |n|
@@ -115,6 +116,7 @@ class FilterController < ApplicationController
     1.upto(i) { |n|
       if field_array[n].length > 0
         if field_array[n].length == 1
+          #value=User.sanitize(field_array[n])
           #this is a single category element so we just wrap it in parenthesis
           if sql == ""
             #if it's the very first condition we don't want the AND
@@ -132,6 +134,7 @@ class FilterController < ApplicationController
           end
           0.upto(field_array[n].length-1) { |z|
             #cycle thru the array and build all the comparisons
+            #valuez=User.sanitize(field_array[n][z])
             if z == 0
               #if it's the first element we don't want the OR
               sql = sql + " field_#{n} = '#{field_array[n][z]}' "
@@ -146,6 +149,15 @@ class FilterController < ApplicationController
     }
     #puts sql
     cookies[:sql] = {:value => sql, :expires => Time.now + 3600}
+    if params[:report]
+      cookies[:report] = {:value => "true", :expires => Time.now + 3600}
+      cookies[:filter] = {:value => "yes", :expires => Time.now + 3600}
+    else
+      cookies[:report] = {:value => "false", :expires => Time.now + 3600}
+    end
+    session[:user_filters] = []
+    @testusers = []
+    @testusers_report = []
     puts "cookies set"
     render :update do |page|
       page << "window.location.reload(false)"
@@ -161,6 +173,7 @@ class FilterController < ApplicationController
       end
     end
     cookies.delete(:filter)
+    cookies.delete(:report)
     #render :text => "Filter cleared"
 
     render :update do |page|

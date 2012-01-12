@@ -40,5 +40,4 @@ class GroupableitemsController < ApplicationController
       usergroupable.save
     render :nothing => true
   end
-
 end

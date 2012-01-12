@@ -18,12 +18,12 @@ test:
   timeout: 5000
 
 production:
-      adapter: mysql
-      database: accelerant
-      username: chazzer
-      password: masterkey
-      host: localhost
-      
+  adapter: mysql
+  database: accelerant
+  username: chazzer
+  password: masterkey
+  host: localhost
+
 #production:
     #adapter: mysql
     #database: db33259_umbrellas_production

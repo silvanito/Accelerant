@@ -1,0 +1,38 @@
+<div id="rightColumn">
+  <br/>
+  <h2>
+    Edit Module Type
+  </h2>
+ 
+  <br/>
+   <% form_for [@module_type] do |f|%>
+    <p>
+      <%= f.label :name%>
+      <%= f.text_field :name%>
+      <br/>
+      <% field_set_tag 'Show labels' do%>
+        <%= f.label :has_label, 'Yes'%>
+        <%= f.radio_button :has_label, true%>
+        <%= f.label :has_label, 'No' %>
+        <%= f.radio_button :has_label, false%>
+      <%end%>
+    </p>
+    <ul class="divisions">
+      <h3>Divisions or Image to rank:</h3>
+      <%division_separate = ""%>
+      <%1.upto(20) do |number| %>
+        <li class = "division_quantity <%division_separate%>">
+        <%= f.label :divisions, "#{number}", :class => "division_label"%>
+        <%= f.radio_button :divisions, "#{number}", :class => "division_option"%>
+        <%division_separate =  print_divisions(number)%>
+        </li>
+      <%end%>
+    </ul>
+    <br class="clear_both"/>
+    <br/>
+    <strong><%=link_to "Return to Module types list", module_types_path%></strong>
+     <br/>
+     <br/> 
+     <%= f.submit 'Save Changes', :class=> "submit_button clear right"%>
+  <%end%>
+</div>

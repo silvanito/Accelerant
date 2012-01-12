@@ -5,17 +5,22 @@ class ThemesController < ApplicationController
   end
 
   def index
-    @themes = Themes.find(:all)
+    case self.current_user.rol.to_sym
+    when :admin
+      @themes = Theme.find(:all)
+    when :moderator
+      @themes = Theme.find(:all, :conditions=>{:owner => self.current_user.id})
+    end
   end
 
   def new
-    @theme = Themes.new
+    @theme = Theme.new
   end
 
   def create
-    @theme = Themes.new(params[:theme])
-    success = @theme && @theme.save
-    if success
+    @theme = Theme.new(params[:theme])
+    @theme.owner = self.current_user.id
+    if @theme.save
       redirect_to '/themes'
     else
       flash[:error]  = @theme.errors
@@ -24,7 +29,7 @@ class ThemesController < ApplicationController
   end
 
   def edit
-    @theme = Themes.find(params[:id])
+    @theme = Theme.find(params[:id])
     respond_to do |format|
       format.html
       format.css
@@ -32,10 +37,9 @@ class ThemesController < ApplicationController
   end
 
   def update
-     @theme = Themes.find(params[:id])
-     @theme.update_attributes(params[:themes])
-     success = @theme && @theme.save
-     if success
+     @theme = Theme.find(params[:id])
+     @theme.update_attributes(params[:theme]) 
+     if @theme.save
       redirect_to '/themes'
      else
       flash[:error]  = @theme.errors

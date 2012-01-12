@@ -1,60 +1,116 @@
   <!-- Discussion form  (Admin Mod posts new discussion)-->
   <% if self.current_user.moderator? || self.current_user.admin? %>
-  <a href="#" onclick ="Effect.SlideDown('discussion_form');">Add a discussion topic</a><br/>
-  <div id="discussion_form" class="adminFlyout" style="display:none;">
-    
+   
+    <a href="#" onclick ="Effect.SlideDown('discussion_form');">Add a discussion topic</a><br/>
+    <div id="discussion_form" class="adminFlyout" style="display:none;">
       <br/>
-  <% form_for :discussion,
-            :html => {:id => "top_form", :multipart => true},
-            :url => {:controller => 'discussion', :action => 'create'} do |f|%>
-      <p>Discussion Title: <%= f.text_field :title %></p>
-  <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><b/>
-  Upload a photo or file:<br/>
-<%= f.file_field :media %>
+      <% form_for :new_discussion, :html => {:id => "top_form", :multipart => true}, :url => {:controller => 'discussion', :action => 'create'} do |f|%>
+        <p>Discussion Title: <%= f.text_field :title %></p>
+        <%= f.text_area :content, :size => "60x10", :class => 'rich_text_editor' %><br/>
+        <b>Upload a photo or file:</b><br/>
+        <p><%= f.file_field :media %></p>
+        <% field_set_tag 'Discussion Comment Type' do%>
+          <%= f.radio_button :comment_type, "public", :checked => true%>
+          <%= label_tag 'Public'%><br/>
+          <%= f.radio_button :comment_type, "private", :checked => false%>
+          <%= label_tag 'Private'%><br/>
+          <%= f.radio_button :comment_type, "private_then_public", :checked => false%>
+          <%= label_tag 'Private Then Public'%>
+        <% end%>
+        <br/>
+        <p>
+          <%= label_tag 'Respond with Heatmap:'%><br/>
+          <%= f.check_box 'has_heatmap', :id=>'has_heatmap'%>
+        </p>
+        <% field_set_tag 'Heatmap Type', :id => 'heatmap_type',:class=>'display_none' do%>
+          <%= f.radio_button :heatmap_type_id, 1, :checked => true%>
+          <%= label_tag 'Image'%>
+          <%= f.radio_button :heatmap_type_id, 2, :checked => false%>
+          <%= label_tag 'Text:'%><br/>
+        <% end%>
+        <p>
+          <%= link_to "See more modules...", "#", :id=>"more_modules"%>
+        </p>
+        <% field_set_tag 'Module Types', :id => 'module_types',:class=>'display_none' do%>
+          <%@module_types.each do |module_type|%>
+            <%= radio_button :flex_module, :module_type_id, module_type.id, :checked => false ,:class => "module_types",:id=> module_type.name.gsub(/ /,""), :has_labels => module_type.has_label, :onclick => "show_labels($(#{ module_type.name.gsub(/ /,"")}).readAttribute('has_labels'));"%>
+            <%= label_tag "#{module_type.name}"%><br/>
+          <%end%>
+        <% end%>
+        <div id="labels", style = 'display: none;'>
+          <%= label_tag 'Enter label name for:'%>
+          <%=text_field_tag "flex_module[top_label]", 'Top position'%><br/>
+          <%= label_tag 'Enter label name for:'%>
+          <%=text_field_tag "flex_module[right_label]", 'Right position'%><br/>
+          <%= label_tag 'Enter label name for:'%>
+          <%=text_field_tag "flex_module[bottom_label]", 'Bottom position'%><br/>
+          <%= label_tag 'Enter label name for:'%>
+          <%=text_field_tag "flex_module[left_label]", 'Left position'%><br/>
+        </div>
+        <p>
+          <%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):'%>
+        </p><br/>
+        <p>
+          <%= f.text_field :character_minimum %>
+        </p>
+        <% @sorties = Sortables.find(:all, :conditions => { :project_id => params[:id]}) %>
+        <% unless @sorties.empty? %>
+          <p>
+            <%= label_tag 'A sortable list is available for this project.  If you wish to include it in this topic, select it here:' %><br/>
+            <%=  select("discussion", "sortable", Sortables.find(:all, :conditions => { :project_id => params[:id]}).collect {|p| [ p.title, p.id ] }, {:include_blank => 'Select...'}) %>
+          </p>
+        <% end %>
+        <% @groupies = Groupables.find(:all, :conditions => { :project_id => params[:id]}) %>
+        <% unless @groupies.empty? %>
+          <p>
+            <%= label_tag 'A groupable list is available for this project.  If you wish to include it in this topic, select it here:' %><br/>
+            <%=  select("discussion", "groupable", Groupables.find(:all, :conditions => { :project_id => params[:id]}).collect {|p| [ p.title, p.id ] }, {:include_blank => 'Select...'}) %>
+          </p>
+        <% end %>
+        <br/>
+        <p>Select participants to be included in this discussion topic below.Click on ‘Select All’ to include all participants in this discussion topic. <strong> Important note: If you want your question asked among only certain groups of participants, use the ‘Set Filter’ function to the left, and the participants that have the characteristic(s) your filter is set to will automatically be checked.</strong></p>
+        <br/>
+      	<input id="check_all" name="check_all" type="checkbox" onclick="Form.getInputs('top_form', 'checkbox').each(function(box){if(box.id != 'has_heatmap') box.checked = $('check_all').checked})" /> 
+        <strong>Select All</strong><br/><br/>
+        <%for participant in @checked_members%>
+          <% if participant %>
+        		<div class="cellClass150">
+              <%= check_box("comment_assignment", participant.id, {:checked=>true}, "#{participant.id}") %>  
+              <% if !participant %>
+                &nbsp;
+              <% else %>
+                <%= participant.name %>
+              <% end %>
+              &nbsp;&nbsp;
+            </div>
+         <% end %>
+       <%end%>
+       <% for participant in @project_members %>
+         <% if participant %>
+           <div class="cellClass150">
+             <%= check_box("comment_assignment", participant.id, {}, "#{participant.id}") %>  
+             <% if !participant %>
+               &nbsp;
+             <% else %>
+               <%= participant.name %>
+             <% end %>
+             &nbsp;&nbsp;
+           </div>
+         <% end %>
+       <% end %>
+       <%if params[:project_id].blank?%>
+         <%= f.hidden_field :project_id, :value => params[:id] %>
+       <%else%>
+         <%= f.hidden_field :project_id, :value => params[:project_id] %>
+       <%end%>
+       <%= f.hidden_field :user_id, :value => self.current_user.id %><br/>
+       <%= submit_tag "Post", :onclick => "return validateForm()" %>
+      <% end  %>
 
- 
-
-  <br/>
-
-  <p><%= label_tag 'Minimum Number of Characters for Comments/Responses (0 for no minimum):' %><br/>
-<%= f.text_field :character_minimum %>
-</p>
-<% @sorties = Sortables.find(:all, :conditions => { :project_id => params[:id]}) %>
-<% unless @sorties.empty? %>
-
-<p>
-  <%= label_tag 'A sortable list is available for this project.  If you wish to include it in this topic, select it here:' %><br/>
-  <%=  select("discussion", "sortable", Sortables.find(:all, :conditions => { :project_id => params[:id]}).collect {|p| [ p.title, p.id ] }, {:include_blank => 'Select...'}) %>
-</p>
-<% end %>
-
-<% @groupies = Groupables.find(:all, :conditions => { :project_id => params[:id]}) %>
-<% unless @groupies.empty? %>
-
-<p>
-  <%= label_tag 'A groupable list is available for this project.  If you wish to include it in this topic, select it here:' %><br/>
-  <%=  select("discussion", "groupable", Groupables.find(:all, :conditions => { :project_id => params[:id]}).collect {|p| [ p.title, p.id ] }, {:include_blank => 'Select...'}) %>
-</p>
-<% end %>
-	<input id="check_all" name="check_all" type="checkbox" onclick="Form.getInputs('top_form', 'checkbox').each(function(box){box.checked = $('check_all').checked})" /> <strong>Select All</strong><br/><br/>
-	<% for participant in @project_members %>
-        <% if participant.user %>
-		<div class="cellClass150"><%= check_box("comment_assignment", participant.user.id, {}, "#{participant.user.id}") %>  
-                <% if !participant.user %>
-                  &nbsp;
-                <% else %>
-                  <%= participant.user.name %>
-                <% end %>
-                &nbsp;&nbsp;</div>
-        <% end  %>
-	<% end %>
-
-<%= f.hidden_field :project_id, :value => params[:id] %>
-  <%= f.hidden_field :user_id, :value => self.current_user.id %><br/>
-  <%= submit_tag "Post" %>
-  <% end  %>
-    
-  </div>
+    </div>
   <% end %>
+<% content_for :scripts do -%>
+  <%= javascript_include_tag "heatmap_type", "discussionformValidator"%>
+<%end%>
+<!-- End Discussion Form -->
 
-  <!-- End Discussion Form -->

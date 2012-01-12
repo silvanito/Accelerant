@@ -2,7 +2,6 @@ class UserImage < ActiveRecord::Base
   belongs_to :user
 
     has_attachment  :content_type => :image,
-      :storage => :file_system,
       :min_size => 0,
       :max_size => 3.megabytes,
       :resize_to => '640x480',

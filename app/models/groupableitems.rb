@@ -15,6 +15,5 @@ class Groupableitems < ActiveRecord::Base
   :size30 => "30x30>",
   :size20 => "20x20>"
   }
-
   
 end

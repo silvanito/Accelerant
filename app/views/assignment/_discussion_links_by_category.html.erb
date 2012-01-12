@@ -1,0 +1,27 @@
+
+<fieldset class="discussionLinks">
+  <legend>Jump to discussion topic:</legend>
+  <div id="test-accordion" class="accordion">
+    <%if categories.size == 1%>
+      <%discussion_class = "uniq_discussion"%>
+    <%end%>
+    <%categories.each do |category|%>
+      
+      <div class="accordion-toggle"><%=category.name%></div>
+      <div class="accordion-content">
+
+        <%category.discussions.each do |discussion|%>
+          <%= link_to discussion.title,
+              {:controller => "discussion", :id => discussion.id, :action => 'show', :sort => params[:sort], :project_id => discussion.project_id, :categorize => 'true'},
+              :class => 'discussion_links_by_category'%>
+        <%end%>
+
+      </div>
+    <%end%>
+  </div>
+</fieldset>
+<% content_for :scripts do -%>
+  <%= javascript_include_tag "builder", "slider", "sound", "accordion"%>
+<%end%>
+
+

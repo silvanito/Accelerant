@@ -4,6 +4,7 @@ class CommentController < ApplicationController
   require 'csv'
   require 'rtf'
 
+
   if ENV['RAILS_ENV'] == 'production'
     ssl_required :index, :new, :create, :edit, :update,
       :drop, :assign, :show, :destroy, :csv_dump, :export_to_csv, :export_to_rtf,
@@ -32,6 +33,8 @@ class CommentController < ApplicationController
     puts "Updating..."
     @comment = Comment.new(params[:comment])
     @comment.save
+
+   # session[:comment_id] = @comment.id
     #redirect_to  "/comment/new"
     render :text => @comment.comment
   end

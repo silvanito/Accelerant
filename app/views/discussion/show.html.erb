@@ -1,20 +1,41 @@
 <!-- discussion/show -->
 <div id="rightColumn">
-  <% if self.current_user.admin%>
-  <% if params[:sort] != "by_user"%>
-  <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
-  <% else %>
-  <%= link_to "Default View", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => '' %>
+   <% if self.current_user.admin || self.current_user.moderator %>
+    <ul class="export_data_formats">
+      <li><%= link_to "CSV", :controller => 'comment', :action => 'export_to_csv', :id => params[:project_id], :format => 'csv' %> </li>
+      <li><%= link_to "RTF", :controller => 'comment', :action => 'export_to_rtf', :id => params[:project_id], :format => 'rtf' %> </li>
+    </ul>
+  <%end%>
+  <% if self.current_user.moderator? || self.current_user.admin%>
+    <% unless @project.lock %>
+      <%= render :partial => '/assignment/discussion_form' %>
+    <% end %>
+    <% if params[:sort] != "by_user"%>
+      <%= link_to "Group Replies by User", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => 'by_user' %>
+    <% else %>
+      <br/>
+      <%= link_to "Default View", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :sort => '' %>
+    <% end %>
   <% end %>
-  <% end %>
-  <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
+  <br/>
+  <%= link_to "Show Discussions by category", :controller => 'discussion', :action => 'show', :id => params[:id], :project_id => params[:project_id], :categorize => 'true' %>
+  <%if !@categories.empty?%>
+    <%= render :partial => 'assignment/discussion_links_by_category', :locals => {:categories => @categories} %>
+  <%else%>
+    <%= render :partial => 'assignment/discussion_links', :locals => {:discussions => @discussions} %>
+  <%end%>
 
-  <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
-<% if !self.current_user.client && !@project.lock %>
-  <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
-  <% end  %>
+  <% unless @discussion.comment_assignmentss.find_by_user_id(self.current_user.id).nil? & self.current_user.participant? %>
+    <%= render :partial => 'assignment/discussion_display', :locals => {:discussions => @discussion} %>
 
+    <% if !@project.lock %>
+      <%= render :partial => 'assignment/responder_form', :locals => {:discussions => @discussion, :project_id => params[:project_id]} %>
+    <% end  %>
 
-<%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
-  
+    <%= render :partial => 'assignment/comments_replies', :locals => {:discussion => @discussion, :project_id => params[:project_id]} %>
+    <div id="notice" style="display:none;">
+      <%= image_tag "loader.gif"%><br/>
+      <span>Preparing your response.  Please wait.</span>
+    </div>
+  <%end%>
 </div>

@@ -1,0 +1,19 @@
+<%- remote_form_for @report_comment, :url => {:controller=>"report_comments", :action => 
+"create" }, :html => { :multipart => true, :target => 'iframe'}, :loading => "delay();", :loaded  => "$('container').setOpacity(1);$('notice').hide();" do |f|%>
+    <%= f.error_messages %>
+    <%= f.hidden_field :comment_id, :value => comment_id %>
+    <%= f.hidden_field :subcomment_id, :value => subcomment_id %>
+    <%= f.hidden_field :owner, :value => owner %>
+    <%= f.label "Post your report comment:" %>
+    <br/>
+    <% if self.current_user.participant && safari_check != "Safari" %>
+      <%= f.text_area :content, :size => "50 x 10", :class => 'rich_text_editor' %><br/>
+    <% else %>
+      <%= f.text_area :content, :size => "50 x 10" %><br/>
+    <% end %>
+
+    <div class="postButton">
+      <%= f.submit "Post"%>
+    </div>
+
+<%end%>

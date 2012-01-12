@@ -1,0 +1,22 @@
+<h1>Flex Modules</h1>
+<br/>
+<%= link_to "Add new module", new_discussion_flex_module_path(@discussion)%>
+<br/>
+<table>
+  <thead>
+    <tr>
+      <th> 
+        Name
+      </th>
+      <th>
+          &nbsp;
+      </th>
+      <th>
+          &nbsp;
+      </th>
+      </tr>
+  </thead>
+  <tbody>
+    <%= render :partial=>"flex_modules/flex_module", :collection => @flex_modules%>
+  </tbody>
+</table>

@@ -1,0 +1,14 @@
+<% content_tag_for :tr, category do -%>
+  <td>
+    <%= category.name%>
+  </td>
+  <td>
+    <%= link_to "Edit", edit_category_path(:id => category)%>
+  </td>
+  <td>
+    <%= link_to "Assign Discussions", assigned_category_path(:id => category)%>
+  </td>
+  <td>
+    <%= link_to "Delete", category_path(:id => category), :method => :delete, :confirm => 'Are you sure?'%>
+  </td>
+<%end -%>
