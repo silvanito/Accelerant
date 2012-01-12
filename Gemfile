@@ -7,8 +7,14 @@ group :production do
   gem "json"
   gem "comma"
   gem "paperclip", "~>2.3.1.1"
-  gem "capistrano"
-  gem "passenger", "2.2.2"
+ # gem "capistrano"
+ # gem "passenger", "2.2.2"
   gem "tmail", "1.2.7.1"
-  gem "mysql"
+  
 end
+group :development do
+	gem "ruby-debug"
+	gem "mysql"
+	gem 'heroku'
+end
+

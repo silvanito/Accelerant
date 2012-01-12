@@ -10,30 +10,24 @@ GEM
     activeresource (2.3.2)
       activesupport (= 2.3.2)
     activesupport (2.3.2)
-    capistrano (2.5.19)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.0.0)
+    addressable (2.2.6)
+    columnize (0.3.4)
     comma (0.4.1)
       activesupport (>= 2.2.2)
     fastercsv (1.1.0)
-    fastthread (1.0.7)
-    highline (1.6.1)
+    heroku (2.18.1)
+      launchy (>= 0.3.2)
+      rest-client (~> 1.6.1)
+      rubyzip
+      term-ansicolor (~> 1.0.5)
     json (1.5.1)
+    launchy (2.0.5)
+      addressable (~> 2.2.6)
+    linecache (0.46)
+      rbx-require-relative (> 0.0.4)
+    mime-types (1.17.2)
     mysql (2.8.1)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
-    net-sftp (2.0.5)
-      net-ssh (>= 2.0.9)
-    net-ssh (2.1.0)
-    net-ssh-gateway (1.0.1)
-      net-ssh (>= 1.99.1)
     paperclip (2.3.1.1)
-    passenger (2.2.2)
-      fastthread (>= 1.0.1)
-      rake (>= 0.8.1)
     rails (2.3.2)
       actionmailer (= 2.3.2)
       actionpack (= 2.3.2)
@@ -42,20 +36,30 @@ GEM
       activesupport (= 2.3.2)
       rake (>= 0.8.3)
     rake (0.8.7)
+    rbx-require-relative (0.0.5)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rtf (0.1.0)
+    ruby-debug (0.10.4)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
+      linecache (>= 0.3)
+    rubyzip (0.9.5)
+    term-ansicolor (1.0.7)
     tmail (1.2.7.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  capistrano
   comma
   fastercsv (= 1.1)
+  heroku
   json
   mysql
   paperclip (~> 2.3.1.1)
-  passenger (= 2.2.2)
   rails (= 2.3.2)
   rtf
+  ruby-debug
   tmail (= 1.2.7.1)
