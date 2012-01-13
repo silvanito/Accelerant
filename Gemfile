@@ -15,6 +15,6 @@ end
 group :development do
 	gem "ruby-debug"
 	gem "mysql"
-	gem 'heroku'
 end
 gem 'aws-sdk'
+gem 'heroku'
