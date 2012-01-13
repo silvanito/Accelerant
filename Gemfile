@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-
+gem "heroku"
 group :production do
   gem "rails", "2.3.2"
   gem "fastercsv", "1.1"
@@ -15,4 +15,4 @@ group :development do
 	gem "mysql"
 end
 gem 'aws-sdk'
-gem 'heroku'
+
