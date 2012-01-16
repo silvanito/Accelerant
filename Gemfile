@@ -6,9 +6,10 @@ group :production do
   gem "rtf"
   gem "json"
   gem "comma"
-#  gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
-  gem "tmail", "1.2.7.1"
-  gem 'pg'
+ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+#  gem "tmail", "1.2.7.1"
+ #	gem 'pg'
+	gem "mysql2"
 end
 group :development do
 	gem "ruby-debug"
