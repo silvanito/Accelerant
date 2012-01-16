@@ -2,6 +2,12 @@ class UserImage < ActiveRecord::Base
   belongs_to :user
 
     has_attachment  :content_type => :image,
+    :storage => :s3,
+    :bucket => 'blognog',
+    :s3_credentials => {
+      :access_key_id =>'AKIAJYKCWTZMXFO2YBNA',
+      :secret_access_key => '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'
+    },
       :min_size => 0,
       :max_size => 3.megabytes,
       :resize_to => '640x480',
