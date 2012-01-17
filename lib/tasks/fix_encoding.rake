@@ -7,6 +7,7 @@ namespace :fix_encoding do
       unless c.discussion.nil? 
         c.comment = Iconv.conv("ASCII//IGNORE", "UTF-8", c.comment) + ' '
         c.save
+        puts c.id
       end
     end
     puts 'Comments ... done '
