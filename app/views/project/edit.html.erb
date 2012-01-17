@@ -42,7 +42,6 @@
 	Theme:<br/>
 	<%=  select("this_project", "theme", @themes.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select...'}) %>
 </p>
-<% end %>
 
 <p><%= label_tag 'Project Email Support:' %><br/>
   <%= f.text_field :email_support %><br/>
