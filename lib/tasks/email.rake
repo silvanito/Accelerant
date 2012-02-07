@@ -16,7 +16,7 @@ namespace :email do
       subject = mail.subject
       puts subject
       from = mail.from
-      @emailing_user = User.find(:last, :conditions => {:login => subject})
+      @emailing_user = User.find_by_login subject
 
       if @emailing_user
         puts "encontro al usuario"
