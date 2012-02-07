@@ -3,7 +3,7 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  #before_filter :redirect_to_https, :only => :index
+  before_filter :redirect_to_https, :only => :index
   after_filter OutputCompressionFilter
   
   def redirect_to_https

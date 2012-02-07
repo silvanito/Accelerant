@@ -2,9 +2,9 @@ class CategoriesController < ApplicationController
   before_filter :login_required
   before_filter :validate_users
 
- # if ENV['RAILS_ENV'] == 'production'
-  #  ssl_required :index, :create, :destroy, :edit, :update, :unassign, :validate_users, :assign, :assigned
-  #end
+  if ENV['RAILS_ENV'] == 'production'
+    ssl_required :index, :create, :destroy, :edit, :update, :unassign, :validate_users, :assign, :assigned
+  end
 
   def index
     @categories = Category.all

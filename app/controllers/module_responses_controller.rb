@@ -6,9 +6,9 @@ class ModuleResponsesController < ApplicationController
   before_filter :get_module_response_image, :only => :create
   before_filter :validate_users, :only => :index
 
-#  if ENV['RAILS_ENV'] == 'production'
- #     ssl_required :new, :create
-#  end
+  if ENV['RAILS_ENV'] == 'production'
+      ssl_required :new, :create
+  end
 
   def index
     @responses = ModuleResponse.find(:all, :conditions=>{:flex_module_id =>  @flex_module.id})

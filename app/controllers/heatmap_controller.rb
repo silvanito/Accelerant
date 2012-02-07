@@ -1,9 +1,9 @@
 class HeatmapController < ApplicationController
   before_filter :login_required
  
- #if ENV['RAILS_ENV'] == 'production'
-  #  ssl_required :create
-  #end
+ if ENV['RAILS_ENV'] == 'production'
+    ssl_required :create
+  end
 
   def create
     heatmap = Heatmap.create_heatmap(params[:image_data], params[:encodeData], params[:user_id], params[:discussion_id], params[:screen_data])
