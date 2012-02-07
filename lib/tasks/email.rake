@@ -16,10 +16,11 @@ namespace :email do
       subject = mail.subject
       puts subject
       from = mail.from
+      puts from
       @emailing_user = User.find_by_login subject
-
+      puts @emailing_user.class
       if @emailing_user
-        puts "encontro al usuario"
+        puts "user found"
         comment = Comment.new()
         comment.comment = body
 
@@ -33,6 +34,7 @@ namespace :email do
 
       else
         UserMailer.deliver_not_found(from, subject)
+        puts "not found"
       end# end if 
       imap.store(message_id, "+FLAGS", [:Deleted])
     end #end each
