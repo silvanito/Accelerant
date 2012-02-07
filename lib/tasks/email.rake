@@ -17,7 +17,7 @@ namespace :email do
       puts subject
       from = mail.from
       puts from
-      emailing_user = User.find_by_login subject
+      emailing_user = User.find_by_login(mail.subject.to_s.strip.downcase)
       puts emailing_user.class
       if emailing_user
         puts "user found"
