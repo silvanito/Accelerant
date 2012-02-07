@@ -17,14 +17,14 @@ namespace :email do
       puts subject
       from = mail.from
       puts from
-      @emailing_user = User.find_by_login subject
-      puts @emailing_user.class
-      if @emailing_user
+      emailing_user = User.find_by_login subject
+      puts emailing_user.class
+      if emailing_user
         puts "user found"
         comment = Comment.new()
         comment.comment = body
 
-        comment.user_id = @emailing_user.id
+        comment.user_id = emailing_user.id
         if ! mail.attachments.blank?
           #File.open(mail.attachments.first.original_filename, 'rb') { |attachment| comment.photo = attachment }
           comment.photo = mail.attachments.first
