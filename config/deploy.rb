@@ -24,7 +24,7 @@ set :bundle_without,      [:development, :test]
 # your SCM below:
 
 set :scm, "git"
-set :branch, "blognog2-silvano"
+set :branch, "master"
 #ssh_options[:forward_agent] = true
 #set :user, "chazzer@Accelerant"  # The server's user for deploys
 #set :scm_passphrase, "At0m1cD0g"  # The deploy user's password

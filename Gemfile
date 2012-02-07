@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 group :production do
   gem "rails", "2.3.2"
+	gem "rake", "0.8.7"
   gem "fastercsv", "1.1"
   gem "rtf"
   gem "json"
