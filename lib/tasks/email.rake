@@ -13,7 +13,7 @@ namespace :email do
       mail = TMail::Mail.parse(msg)
       body = mail.body
 
-      subject = mail.subject
+      subject = mail.subject.strip.downcase
       puts subject
       from = mail.from
       puts from
