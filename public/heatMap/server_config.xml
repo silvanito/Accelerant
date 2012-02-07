@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<environment>PRODUCTION</environment>
-	<base_url>http://ec2-174-129-193-71.compute-1.amazonaws.com</base_url>
-	<root_url>http://ec2-174-129-193-71.compute-1.amazonaws.com</root_url>
+	<base_url>https://www.blognogresearch.com</base_url>
+	<root_url>https://blognogresearch.com</root_url>
 </config>
 
