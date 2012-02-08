@@ -14,10 +14,10 @@ namespace :email do
       body = mail.body
 
       subject = mail.subject.to_s.strip.downcase
-      puts "Y bien este es el subject:#{subject}"
+      puts "Y bien este es el subject:#{subject}:se termina"
       from = mail.from
       puts from
-      user = User.find(:last, :conditions => ["login = ?", subject])
+      user = User.find(:all, :conditions => ["login = ?", subject]).first
       puts user.class
       if user
         puts "user found"
