@@ -9,7 +9,7 @@ namespace :email do
     imap.login('study@blognogresearch.com', 'masterkey')
     imap.select('INBOX')
     imap.search(["NOT", "DELETED"]).each do |message_id|
-      msg = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+      msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
       mail = TMail::Mail.parse(msg)
       body = mail.body
 
@@ -17,14 +17,14 @@ namespace :email do
       puts subject
       from = mail.from
       puts from
-      emailing_user = User.find_by_login(subject)
-      puts emailing_user.class
-      if emailing_user
+      user = User.find(:last, :conditions => {:login => subject})
+      puts user.class
+      if user
         puts "user found"
         comment = Comment.new()
         comment.comment = body
 
-        comment.user_id = emailing_user.id
+        comment.user_id = user.id
         if ! mail.attachments.blank?
           #File.open(mail.attachments.first.original_filename, 'rb') { |attachment| comment.photo = attachment }
           comment.photo = mail.attachments.first
