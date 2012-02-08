@@ -40,7 +40,7 @@ if @emailing_user
     comment.photo = mail.attachments.first
     #comment.photo = mail.attachments.first.base64_decode!
   end
-  comment.save
+  comment.save(false)
 
 else
 UserMailer.deliver_not_found(from, subject)
