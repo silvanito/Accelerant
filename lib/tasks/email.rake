@@ -9,15 +9,15 @@ namespace :email do
     imap.login('study@blognogresearch.com', 'masterkey')
     imap.select('INBOX')
     imap.search(["NOT", "DELETED"]).each do |message_id|
-      msg = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
+      msg = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
       mail = TMail::Mail.parse(msg)
       body = mail.body
 
-      subject = mail.subject.strip.downcase
+      subject = mail.subject.to_s.strip.downcase
       puts subject
       from = mail.from
       puts from
-      emailing_user = User.find_by_login(mail.subject.to_s.strip.downcase)
+      emailing_user = User.find_by_login(subject)
       puts emailing_user.class
       if emailing_user
         puts "user found"
@@ -30,7 +30,7 @@ namespace :email do
           comment.photo = mail.attachments.first
           #comment.photo = mail.attachments.first.base64_decode!
         end #end if
-        puts comment.save
+        puts comment.save(false)
 
       else
         UserMailer.deliver_not_found(from, subject)
