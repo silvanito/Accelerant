@@ -14,11 +14,9 @@ namespace :email do
       body = mail.body
 
       subject = mail.subject.to_s.strip.downcase
-      puts "Y bien este es el subject:#{subject}:se termina"
       from = mail.from
       puts from
       user = User.find(:all, :conditions => ["login = ?", subject]).first
-      puts user.class
       if user
         puts "user found"
         comment = Comment.new()
@@ -26,9 +24,7 @@ namespace :email do
 
         comment.user_id = user.id
         if ! mail.attachments.blank?
-          #File.open(mail.attachments.first.original_filename, 'rb') { |attachment| comment.photo = attachment }
           comment.photo = mail.attachments.first
-          #comment.photo = mail.attachments.first.base64_decode!
         end #end if
         puts comment.save(false)
 
