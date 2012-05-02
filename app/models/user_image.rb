@@ -1,6 +1,6 @@
 class UserImage < ActiveRecord::Base
   belongs_to :user
-
+=begin
     has_attachment  :content_type => :image,
       :min_size => 0,
       :max_size => 3.megabytes,
@@ -25,4 +25,5 @@ class UserImage < ActiveRecord::Base
         end
       end
     end
+=end
 end
