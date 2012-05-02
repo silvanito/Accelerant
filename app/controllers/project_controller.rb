@@ -1,10 +1,7 @@
 class ProjectController < ApplicationController
   before_filter :login_required
 
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :new, :create, :edit, :update, :drop, :show_image
-  end
-
+  
   def index
     cookies.to_hash.each_pair do |k, v|
       if cookies[k.to_sym].split('_')[0] == "field"

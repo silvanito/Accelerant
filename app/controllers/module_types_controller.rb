@@ -1,11 +1,6 @@
 class ModuleTypesController < ApplicationController
   before_filter :login_required
 
-
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :create, :destroy, :edit, :update
-  end
-
   def index
     @module_types = ModuleType.all
     @module_type = ModuleType.new

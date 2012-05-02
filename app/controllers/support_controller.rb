@@ -1,8 +1,5 @@
 class SupportController < ApplicationController
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index
-  end
-
+  
   def index
     project = Project.find(params[:project_id]) unless params[:project_id].blank?
     unless project.nil?

@@ -5,10 +5,7 @@ class SessionsController < ApplicationController
 
   layout 'login'
 
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :create, :new, :destroy, :wrong
-  end
-
+  
   # render new.rhtml
   def new
     @theme = Theme.find_by_name(params["id"])

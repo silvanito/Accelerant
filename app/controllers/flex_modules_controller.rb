@@ -3,10 +3,6 @@ class FlexModulesController < ApplicationController
   before_filter :get_discussion, :except => :change_status
   before_filter :set_flex_module
 
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :index, :create, :destroy, :edit, :update
-  end
-
   def index
     @flex_modules = FlexModule.not_deleted.find(:all, :conditions=>{:discussion_id => @discussion.id})
   end

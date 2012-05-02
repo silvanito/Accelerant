@@ -2,9 +2,6 @@
 
   require 'csv'
 
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :sort, :csv
-  end
 
   def sort
     params[:usersortables].each_with_index do |id, index|

@@ -1,9 +1,7 @@
 class SortableitemsController < ApplicationController
 
   #before_filter :login_required
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :new, :create, :sort
-  end
+ 
 
   def new
     @previousitems = Sortableitems.find_all_by_sortables(params[:id])

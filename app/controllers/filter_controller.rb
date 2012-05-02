@@ -2,10 +2,6 @@ class FilterController < ApplicationController
 
   layout 'filter'
 
-  if ENV['RAILS_ENV'] == 'production'
-    ssl_required :filter_set, :filter_set_new, :filter_clear, :index
-  end
-
   def filter_set
   i = Integer(params[:filter][:num_params])
   sql = " "
