@@ -1,10 +1,11 @@
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+    adapter: mysql
+    database: accelerant
+    username: root
+    password: 
+    host: localhost
 
 
 
@@ -20,8 +21,8 @@ test:
 production:
   adapter: mysql
   database: accelerant
-  username: chazzer
-  password: masterkey
+  username: root
+  password: blognog1
   host: localhost
 
 #production:
