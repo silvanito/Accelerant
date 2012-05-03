@@ -7,7 +7,7 @@ class ReportComment < ActiveRecord::Base
   has_attached_file :photo,
   :whiny => false, 
   :whiny_thumbnails => false, 
-  :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "50x50>", :tiny => "20x20>" }
+  :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "50x50>", :tiny => "20x20>" },
   :storage => :s3,
   :bucket => 'blognog1',
   :s3_credentials => { 
