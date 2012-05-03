@@ -8,4 +8,11 @@ class ReportComment < ActiveRecord::Base
   :whiny => false, 
   :whiny_thumbnails => false, 
   :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "50x50>", :tiny => "20x20>" }
+  :storage => :s3,
+  :bucket => 'blognog1',
+  :s3_credentials => { 
+      :access_key_id => "AKIAJPBL7M7Q6JJOT24A", 
+      :secret_access_key => "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"
+  },
+  :path =>   "photos/:id/:style/:filename"
 end
