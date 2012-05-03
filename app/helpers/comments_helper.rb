@@ -195,7 +195,7 @@ module CommentsHelper
     comment = Comment.find(comment_id)
     heatmap = Heatmap.find(:last, :conditions => {:user_id =>  comment.user_id, :comment_id =>  comment.id})
     if heatmap
-      heatmap.create_tmp_image
+      ""  #      heatmap.create_tmp_image
     else
       ""
     end
