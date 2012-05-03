@@ -1,0 +1,8 @@
+development:
+  bucket: "blognog1"
+  access_key_id: "AKIAJPBL7M7Q6JJOT24A"
+  secret_access_key: "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"
+production:
+  bucket: "blognog1"
+  access_key_id: "AKIAJPBL7M7Q6JJOT24A"
+  secret_access_key: "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"
