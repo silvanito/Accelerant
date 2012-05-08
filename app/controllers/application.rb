@@ -3,11 +3,11 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
- # before_filter :redirect_to_https, :only => :index
+  before_filter :redirect_to_https, :only => :index
   after_filter OutputCompressionFilter
   
   def redirect_to_https
-    redirect_to "https://www." + request.host_with_port + request.request_uri if !/^www/.match(request.host) and Rails.env =='production'   
+    redirect_to "http://www.blognog.com
   end
 
 
