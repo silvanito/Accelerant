@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   after_filter OutputCompressionFilter
   
   def redirect_to_https
-    redirect_to "http://www.blognog.com
+    redirect_to "http://www.blognog.com"
   end
 
 
@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   require 'rubygems'
-   require 'rtf'
+  require 'rtf'
   include RTF
   include AuthenticatedSystem
   include ProjectStore
