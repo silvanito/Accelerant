@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   after_filter OutputCompressionFilter
   
   def redirect_to_https
-    redirect_to "https://www." + request.host_with_port + request.request_uri if !/^www/.match(request.host) and Rails.env =='production'   
+    redirect_to "http://www.blognog.com" 
   end
 
 
